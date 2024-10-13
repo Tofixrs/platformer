@@ -9,7 +9,6 @@ import { Dummy } from "./entities/dummy";
 import { WorldManager } from "./world/manager";
 
 export class Game {
-	static debug = true;
 	static debug = false;
 	graphics = new Graphics();
 	player!: Player;
@@ -22,6 +21,7 @@ export class Game {
 		await this.graphics.preload();
 
 		Actions.bind("debug", ["`"]);
+
 		const world = new World(this.graphics.pixi);
 		this.worldManager = new WorldManager(
 			this.graphics.pixi,
@@ -33,15 +33,15 @@ export class Game {
 		this.worldManager.world?.addEntity(this.player);
 
 		const sprite = new Draw();
-		sprite.rect(0, 0, 640 * 2, 64 * 10);
+		sprite.rect(0, 0, 20 * 128, 128);
 		sprite.fill({ color: 0x000000 });
 		const box = new Entity({
 			bodyType: "static",
 			pos: new Vec2(-10, 500),
 			type: "ground",
-			density: 1,
-			friction: 1,
-			shape: new Box(10, 5),
+			density: 0.2,
+			friction: 0.5,
+			shape: new Box(20, 1),
 			sprite: new Sprite(this.graphics.pixi.renderer.generateTexture(sprite)),
 			world: this.worldManager.world!,
 		});
@@ -62,6 +62,7 @@ export class Game {
 			Actions.debug = Game.debug;
 			this.graphics.debugDraw.clear();
 		}
+
 		this.worldManager.world?.update(ticker);
 	}
 }
