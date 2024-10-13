@@ -1,0 +1,19 @@
+{
+	"frames": {
+		"player_normal": {
+			"frame": { "x": 0, "y": 0, "w": 32, "h": 64 }
+		},
+		"player_crouch": {
+			"frame": { "x": 32, "y": 32, "w": 32, "h": 32 }
+		}
+	},
+	"meta": {
+		"image": "char.png",
+		"format": "RGBA8888",
+		"scale": 1,
+		"size": {
+			"w": 64,
+			"h": 64
+		}
+	}
+}

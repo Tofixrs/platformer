@@ -10,7 +10,7 @@ export class Dummy extends Entity {
 			shape: new Box(0.25, 0.5),
 			world,
 			pos,
-			sprite: Sprite.from("player"),
+			sprite: Sprite.from("player_normal"),
 			bodyType: "dynamic",
 			type: "ent",
 			density: 10,

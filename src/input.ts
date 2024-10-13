@@ -1,8 +1,7 @@
-import { Game } from "@lib/game";
-
 export class Actions {
 	static actions: Map<string, boolean> = new Map();
 	static inputs: Map<string, string[]> = new Map();
+	static clicked: Map<string, boolean> = new Map();
 	static debug = false;
 	static bind(name: string, keys: string[]) {
 		for (const key of keys) {
@@ -20,6 +19,20 @@ export class Actions {
 				key,
 				actionsBound.filter((v) => v != name),
 			);
+		}
+	}
+	static hold(name: string) {
+		return this.actions.get(name);
+	}
+	static click(name: string) {
+		if (this.hold(name) && !this.clicked.get(name)) {
+			this.clicked.set(name, true);
+			return true;
+		} else if (this.hold(name) && this.clicked.get(name)) {
+			return false;
+		} else if (!this.hold(name) && this.clicked.get(name)) {
+			this.clicked.set(name, false);
+			return false;
 		}
 	}
 }
@@ -40,4 +53,5 @@ window.addEventListener("keyup", (ev) => {
 	}
 });
 
-Actions.bind("switchWorld", ["p"]);
+//@ts-expect-error
+window.action = Actions;

@@ -1,6 +1,6 @@
 import { World } from "@lib/game/world";
 import { lerp2D } from "@lib/math/lerp";
-import { Container, Sprite, Ticker } from "pixi.js";
+import { Container, Sprite, Texture, Ticker } from "pixi.js";
 import { Entity } from ".";
 import { Box, Fixture, Vec2 } from "planck-js";
 import { planckToPixiPos } from "@lib/math/units";
@@ -11,21 +11,22 @@ export class Player extends Entity {
 	jumping = false;
 	sensor!: Fixture;
 	onGround = false;
+	crouching = false;
 	constructor(pos: Vec2, world: World) {
 		super({
 			friction: 0.2,
 			shape: new Box(0.25, 0.5),
 			density: 10,
 			pos,
-			sprite: Sprite.from("player"),
+			sprite: Sprite.from("player_normal"),
 			bodyType: "dynamic",
 			world,
 			type: "ent",
 		});
-		Actions.bind("jump", [" "]);
-		Actions.bind("left", ["a", "A"]);
-		Actions.bind("right", ["D", "d"]);
-		Actions.bind("down", ["s", "S"]);
+		Actions.bind("jump", ["ArrowUp"]);
+		Actions.bind("crouch", ["ArrowDown"]);
+		Actions.bind("left", ["ArrowLeft"]);
+		Actions.bind("right", ["ArrowRight"]);
 	}
 	onCreate(world: World) {
 		this.sensor = this.body!.createFixture({
@@ -58,6 +59,10 @@ export class Player extends Entity {
 		world.pivot.set(x, y);
 	}
 	handleJump() {
+		if (Actions.hold("crouch")) {
+			this.jumping = false;
+			return;
+		}
 		if (Actions.actions.get("jump") && this.onGround) {
 			this.jumping = true;
 		}
@@ -80,18 +85,37 @@ export class Player extends Entity {
 			Actions.actions.get("left") &&
 			this.body!.getLinearVelocity().x > -7.5
 		) {
-			this.body?.applyForceToCenter(new Vec2(-50, 0), true);
+			this.body?.applyForceToCenter(new Vec2(-25, 0), true);
 		}
 
 		if (
 			Actions.actions.get("right") &&
 			this.body!.getLinearVelocity().x < 7.5
 		) {
-			this.body?.applyForceToCenter(new Vec2(50, 0), true);
+			this.body?.applyForceToCenter(new Vec2(25, 0), true);
 		}
 	}
-	update(ticker: Ticker, world: World): void {
+	handleCrouch() {
+		if (Actions.hold("crouch")) {
+			if (this.crouching) return;
+			this.crouching = true;
+			const shape = this.shape as Box;
+			shape.m_vertices[0].y += 0.5;
+			shape.m_vertices[3].y += 0.5;
+			this.sprite.texture = Texture.from("player_crouch");
+			this.sprite.anchor.set(0.5, 0);
+		} else if (this.crouching) {
+			const shape = this.shape as Box;
+			shape.m_vertices[0].y -= 0.5;
+			shape.m_vertices[3].y -= 0.5;
+			this.crouching = false;
+			this.sprite.texture = Texture.from("player_normal");
+			this.sprite.anchor.set(0.5, 0.5);
+		}
+	}
+	update(_ticker: Ticker, world: World): void {
 		this.followCam(world.c);
 		this.handleMove();
+		this.handleCrouch();
 	}
 }

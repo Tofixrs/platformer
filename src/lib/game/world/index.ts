@@ -20,8 +20,6 @@ export class World {
 			attributes: true,
 			attributeFilter: ["width", "height"],
 		});
-
-		app.stage.addChild(this.c);
 	}
 	addEntity<T extends Entity>(entity: T) {
 		this.c.addChild(entity.sprite);

@@ -1,5 +1,4 @@
 import { Application, Assets, Graphics as Draw } from "pixi.js";
-import { Body } from "planck-js";
 import { PolygonShape } from "planck-js/lib/shape";
 import { World } from "../world";
 
@@ -8,8 +7,7 @@ export class Graphics {
 	pixi = new Application();
 
 	async preload() {
-		const assets = [{ alias: "player", src: "/char.png" }];
-		await Assets.load(assets);
+		await Assets.load("/assets/char/meta.json");
 	}
 	async setup() {
 		await this.pixi.init({ resizeTo: window, backgroundColor: "#fff" });
