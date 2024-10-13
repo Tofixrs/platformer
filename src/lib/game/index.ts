@@ -10,6 +10,7 @@ import { WorldManager } from "./world/manager";
 
 export class Game {
 	static debug = true;
+	static debug = false;
 	graphics = new Graphics();
 	player!: Player;
 	worldManager!: WorldManager;
@@ -20,6 +21,7 @@ export class Game {
 		await this.graphics.setup();
 		await this.graphics.preload();
 
+		Actions.bind("debug", ["`"]);
 		const world = new World(this.graphics.pixi);
 		this.worldManager = new WorldManager(
 			this.graphics.pixi,
@@ -55,6 +57,11 @@ export class Game {
 			this.graphics.debugRender(this.worldManager.world!);
 		}
 
+		if (Actions.click("debug")) {
+			Game.debug = !Game.debug;
+			Actions.debug = Game.debug;
+			this.graphics.debugDraw.clear();
+		}
 		this.worldManager.world?.update(ticker);
 	}
 }
