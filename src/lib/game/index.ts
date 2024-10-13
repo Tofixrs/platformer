@@ -7,6 +7,7 @@ import { Box, Vec2 } from "planck-js";
 import { Entity } from "./entities";
 import { Dummy } from "./entities/dummy";
 import { WorldManager } from "./world/manager";
+import { MainMenu } from "./world/worlds/mainMenu";
 
 export class Game {
 	static debug = false;
@@ -22,15 +23,19 @@ export class Game {
 
 		Actions.bind("debug", ["`"]);
 
-		const world = new World(this.graphics.pixi);
 		this.worldManager = new WorldManager(
 			this.graphics.pixi,
 			this.graphics.debugDraw,
 		);
-		this.worldManager.addWorld("main", world);
-		this.worldManager.changeWorld("main");
+		const mainMenu = new MainMenu(this.graphics.pixi, this.worldManager);
+		this.worldManager.addWorld("mainMenu", mainMenu);
+		this.worldManager.changeWorld("mainMenu");
+
+		const world = new World(this.graphics.pixi);
+		this.worldManager.addWorld("game", world);
+
 		this.player = new Player(new Vec2(0, 0), world);
-		this.worldManager.world?.addEntity(this.player);
+		world.addEntity(this.player);
 
 		const sprite = new Draw();
 		sprite.rect(0, 0, 20 * 128, 128);
@@ -43,12 +48,10 @@ export class Game {
 			friction: 0.5,
 			shape: new Box(20, 1),
 			sprite: new Sprite(this.graphics.pixi.renderer.generateTexture(sprite)),
-			world: this.worldManager.world!,
+			world: world!,
 		});
-		this.worldManager.world?.addEntity(box);
-		this.worldManager.world?.addEntity(
-			new Dummy(new Vec2(0, 0), this.worldManager.world),
-		);
+		world.addEntity(box);
+		world.addEntity(new Dummy(new Vec2(0, 0), world));
 
 		this.graphics.pixi.ticker.add((ticker) => this.loop(ticker));
 	}

@@ -1,6 +1,9 @@
 import { Application, Assets, Graphics as Draw } from "pixi.js";
 import { PolygonShape } from "planck-js/lib/shape";
 import { World } from "../world";
+import { Vec2 } from "planck-js";
+import { rotate } from "@lib/math/rotateVec2";
+import { planckToPixiPos } from "@lib/math/units";
 
 export class Graphics {
 	debugDraw = new Draw();
@@ -25,23 +28,22 @@ export class Graphics {
 			) {
 				if (fixture.getType() != "polygon") continue;
 				const shape = fixture.getShape() as PolygonShape;
+				const pivot = planckToPixiPos(
+					new Vec2(body.getPosition().x, body.getPosition().y),
+				);
 
-				this.debugDraw.setStrokeStyle({ color: 0x0000ff, width: 3 });
-				this.debugDraw.moveTo(
-					(shape.m_vertices[0].x + body.getPosition().x) * 64,
-					(shape.m_vertices[0].y + body.getPosition().y) * 64,
+				const startPos = planckToPixiPos(
+					new Vec2(shape.m_vertices[0].x, shape.m_vertices[0].y),
 				);
+				const rotatedPos = rotate(startPos, pivot, body.getAngle());
+				this.debugDraw.moveTo(rotatedPos.x, rotatedPos.y);
 				for (const vert of shape.m_vertices) {
-					this.debugDraw.lineTo(
-						(vert.x + body.getPosition().x) * 64,
-						(vert.y + body.getPosition().y) * 64,
-					);
+					const point = planckToPixiPos(new Vec2(vert.x, vert.y));
+					const rotatedPoint = rotate(point, pivot, body.getAngle());
+					this.debugDraw.lineTo(rotatedPoint.x, rotatedPoint.y);
 				}
-				this.debugDraw.lineTo(
-					(shape.m_vertices[0].x + body.getPosition().x) * 64,
-					(shape.m_vertices[0].y + body.getPosition().y) * 64,
-				);
-				this.debugDraw.stroke();
+				this.debugDraw.lineTo(rotatedPos.x, rotatedPos.y);
+				this.debugDraw.stroke({ color: 0x0000ff, width: 3 });
 			}
 		}
 	}
