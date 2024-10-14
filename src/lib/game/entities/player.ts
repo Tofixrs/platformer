@@ -8,8 +8,9 @@ import { Actions } from "input";
 export class Player extends Entity {
 	maxJumpVel = -10;
 	moveForce = 100;
-	jumpPower = -500;
-	maxMoveSpeed = 7.5;
+	jumpPower = -750;
+	maxMoveSpeed = 10;
+	maxRollSpeed = 15;
 	jumping = false;
 	sensor!: Fixture;
 	onGround = false;
@@ -136,10 +137,7 @@ export class Player extends Entity {
 		this.rolling = true;
 		this.body?.setFixedRotation(false);
 		this.setRollSensorHitbox(true);
-		if (
-			this.body!.getLinearVelocity().x * this.direction >
-			this.maxMoveSpeed * 2
-		)
+		if (this.body!.getLinearVelocity().x * this.direction > this.maxRollSpeed)
 			return;
 
 		//extra grav
