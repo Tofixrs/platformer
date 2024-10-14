@@ -121,7 +121,9 @@ class BindTab extends Tab {
 			if (!this.rebinding) return;
 
 			Actions.unbind(this.reboundAction, [this.reboundKey]);
-			Actions.bind(this.reboundAction, [v.key.toLowerCase()]);
+			if (v.key.toLowerCase() != "escape") {
+				Actions.bind(this.reboundAction, [v.key.toLowerCase()]);
+			}
 			this.rebinding = false;
 
 			this.scrollbox.removeItems();
@@ -139,7 +141,7 @@ class BindTab extends Tab {
 			Actions.inputs.forEach((v, k) => {
 				if (v.includes(action)) keys.push(k);
 			});
-			let x = 500;
+			let x = 550;
 			keys.forEach((v) => {
 				const button = Button({
 					content: v,
@@ -152,6 +154,17 @@ class BindTab extends Tab {
 				x += 500;
 				container.addChild(button);
 			});
+			if (container.children.length != 3) {
+				const button = Button({
+					content: "",
+					size: new Vec2(150, 50),
+					fontSize: 20,
+				});
+
+				button.onPress.connect(() => this.rebind(action, ""));
+				button.x = x;
+				container.addChild(button);
+			}
 
 			bindContainers.push(container);
 		});
