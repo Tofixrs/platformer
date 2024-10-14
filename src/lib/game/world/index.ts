@@ -35,6 +35,7 @@ export class World {
 			friction: entity.friction,
 			density: entity.density,
 			filterCategoryBits: entity.type == "ground" ? 10 : undefined,
+			filterGroupIndex: entity.type == "ground" ? undefined : -11,
 		});
 
 		entity.body = body;
