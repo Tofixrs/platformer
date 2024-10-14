@@ -4,4 +4,4 @@ import "./style.css";
 const game = new Game();
 //@ts-expect-error
 window.game = game;
-await game.run();
+(async () => await game.run())();
