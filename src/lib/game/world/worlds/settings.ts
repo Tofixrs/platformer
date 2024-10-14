@@ -120,9 +120,11 @@ class BindTab extends Tab {
 		window.addEventListener("keydown", (v) => {
 			if (!this.rebinding) return;
 
-			Actions.unbind(this.reboundAction, [this.reboundKey]);
+			Actions.unbind(this.reboundAction, [this.reboundKey, ""]);
 			if (v.key.toLowerCase() != "escape") {
 				Actions.bind(this.reboundAction, [v.key.toLowerCase()]);
+			} else {
+				Actions.bind(this.reboundAction, [""]);
 			}
 			this.rebinding = false;
 
