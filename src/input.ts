@@ -84,6 +84,7 @@ const defaultBinds = [
 	["right", "ArrowRight"],
 	["roll", "c"],
 	["debug", "`"],
+	["groundpound", "x"],
 ];
 defaultBinds.forEach(([action, key]) => {
 	console.log(Actions.isBound(action));

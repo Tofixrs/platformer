@@ -11,11 +11,13 @@ export class Player extends Entity {
 	jumpPower = -750;
 	maxMoveSpeed = 10;
 	maxRollSpeed = 15;
+	groundpoundSpeed = 15;
 	jumping = false;
 	sensor!: Fixture;
 	onGround = false;
 	crouching = false;
 	rolling = false;
+	pounding = false;
 	direction = 1;
 	constructor(pos: Vec2, world: World) {
 		super({
@@ -54,6 +56,11 @@ export class Player extends Entity {
 			this.onGround = contact.isTouching();
 		});
 	}
+
+	update(ticker: Ticker, world: World): void {
+		this.followCam(world.c);
+		this.handleMove();
+	}
 	followCam(world: Container) {
 		const { x, y } = lerp2D(
 			world.pivot.x,
@@ -63,6 +70,21 @@ export class Player extends Entity {
 			0.25,
 		);
 		world.pivot.set(x, y);
+	}
+
+	handleMove() {
+		if (Actions.hold("left")) {
+			this.direction = -1;
+		}
+
+		if (Actions.hold("right")) {
+			this.direction = 1;
+		}
+		this.handleJump();
+		this.handleCrouch();
+		this.handleRoll();
+		this.handleGroundpound();
+		this.handleWalk();
 	}
 	handleJump() {
 		if (Actions.hold("crouch")) {
@@ -83,30 +105,6 @@ export class Player extends Entity {
 		if (this.jumping) {
 			this.body?.applyForce(new Vec2(0, this.jumpPower), new Vec2(0, -1), true);
 		}
-	}
-	handleMove() {
-		if (Actions.hold("left")) {
-			this.direction = -1;
-		}
-
-		if (Actions.hold("right")) {
-			this.direction = 1;
-		}
-		this.handleJump();
-		this.handleCrouch();
-		this.handleRoll();
-		this.handleWalk();
-	}
-	handleWalk() {
-		if (this.rolling) return;
-
-		if (!Actions.hold("left") && !Actions.hold("right")) return;
-		if (this.body!.getLinearVelocity().x * this.direction > this.maxMoveSpeed)
-			return;
-		this.body?.applyForceToCenter(
-			new Vec2(this.moveForce * this.direction, 0),
-			true,
-		);
 	}
 	handleCrouch() {
 		if (Actions.hold("crouch")) {
@@ -149,9 +147,44 @@ export class Player extends Entity {
 			true,
 		);
 	}
-	update(ticker: Ticker, world: World): void {
-		this.followCam(world.c);
-		this.handleMove();
+	handleGroundpound() {
+		if (this.rolling) return;
+		console.log(this.pounding);
+
+		if (Actions.click("groundpound") && !this.onGround) {
+			this.pounding = true;
+		}
+		if (this.onGround) {
+			this.pounding = false;
+			this.body?.setGravityScale(1);
+		}
+
+		if (!this.pounding) return;
+
+		this.body?.setLinearVelocity(new Vec2(0, this.groundpoundSpeed));
+		this.body?.setGravityScale(0);
+	}
+	handleWalk() {
+		if (this.rolling) return;
+		if (this.pounding) return;
+
+		if (!Actions.hold("left") && !Actions.hold("right")) return;
+		if (this.body!.getLinearVelocity().x * this.direction > this.maxMoveSpeed)
+			return;
+		this.body?.applyForceToCenter(
+			new Vec2(this.moveForce * this.direction, 0),
+			true,
+		);
+	}
+	setCrouchHitbox(yes: boolean) {
+		const shape = this.shape as Box;
+		if (yes) {
+			shape.m_vertices[0].y = 0;
+			shape.m_vertices[3].y = 0;
+		} else {
+			shape.m_vertices[0].y = -0.5;
+			shape.m_vertices[3].y = -0.5;
+		}
 	}
 	setRollSensorHitbox(yes: boolean) {
 		const shape = this.sensor.m_shape as Box;
@@ -173,16 +206,6 @@ export class Player extends Entity {
 			shape.m_vertices[2].y = 0.62;
 			shape.m_vertices[3].x = -0.2;
 			shape.m_vertices[3].y = 0.4;
-		}
-	}
-	setCrouchHitbox(yes: boolean) {
-		const shape = this.shape as Box;
-		if (yes) {
-			shape.m_vertices[0].y = 0;
-			shape.m_vertices[3].y = 0;
-		} else {
-			shape.m_vertices[0].y = -0.5;
-			shape.m_vertices[3].y = -0.5;
 		}
 	}
 }
