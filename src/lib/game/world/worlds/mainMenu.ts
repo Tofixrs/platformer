@@ -1,12 +1,4 @@
-import {
-	Application,
-	Container,
-	Graphics,
-	Sprite,
-	Text,
-	TextStyle,
-	Ticker,
-} from "pixi.js";
+import { Application } from "pixi.js";
 import { World } from "..";
 import { WorldManager } from "../manager";
 import { ButtonContainer } from "@pixi/ui";
@@ -25,8 +17,7 @@ export class MainMenu extends World {
 			content: "⚙️",
 			borderRadius: 100,
 		});
-		this.settingsButton.x = app.screen.width / 2 - 200;
-		this.settingsButton.y = -app.screen.height / 2 + 50;
+		this.recenter(app);
 
 		this.playButton = Button({
 			size: new Vec2(200, 75),
@@ -39,11 +30,14 @@ export class MainMenu extends World {
 		this.playButton.onPress.connect(() => {
 			worldManager.changeWorld("game");
 		});
+		this.settingsButton.onPress.connect(() => {
+			worldManager.changeWorld("settings");
+		});
 		this.c.addChild(this.settingsButton, this.playButton);
 	}
 	recenter(app: Application): void {
 		super.recenter(app);
-		this.settingsButton.x = app.screen.width / 2 - 200;
+		this.settingsButton.x = app.screen.width / 2 - 100;
 		this.settingsButton.y = -app.screen.height / 2 + 50;
 	}
 }

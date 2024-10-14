@@ -1,14 +1,18 @@
+import { Storage } from "@lib/game/storage";
+
 export class Actions {
 	static actions: Map<string, boolean> = new Map();
-	static inputs: Map<string, string[]> = new Map();
+	static inputs: Map<string, string[]> = Storage.getMap("inputs");
 	static clicked: Map<string, boolean> = new Map();
 	static debug = false;
 	static bind(name: string, keys: string[]) {
+		this.actions.set(name, false);
 		for (const key of keys) {
-			const actionsBound = this.inputs.get(key) || [];
+			const actionsBound = this.inputs.get(key.toLowerCase()) || [];
 			actionsBound.push(name);
-			this.inputs.set(key, actionsBound);
+			this.inputs.set(key.toLowerCase(), actionsBound);
 		}
+		Storage.setMap("inputs", this.inputs);
 	}
 
 	static unbind(name: string, keys: string[]) {
@@ -20,6 +24,7 @@ export class Actions {
 				actionsBound.filter((v) => v != name),
 			);
 		}
+		Storage.setMap("inputs", this.inputs);
 	}
 	static hold(name: string) {
 		return this.actions.get(name);
@@ -35,23 +40,53 @@ export class Actions {
 			return false;
 		}
 	}
+	static isBound(action: string) {
+		let res = false;
+		this.inputs.forEach((v) =>
+			v.forEach((v) => {
+				if (v == action) res = true;
+			}),
+		);
+		return res;
+	}
 }
 
 window.addEventListener("keydown", (ev) => {
-	const actions = Actions.inputs.get(ev.key) || [];
+	const actions = Actions.inputs.get(ev.key.toLowerCase()) || [];
 	for (const action of actions) {
 		Actions.actions.set(action, true);
-		if (Actions.debug) console.log(`Pressed: ${action}`);
+		if (Actions.debug)
+			console.log(`Pressed: ${action} with key ${ev.key.toLowerCase()}`);
 	}
 });
 
 window.addEventListener("keyup", (ev) => {
-	const actions = Actions.inputs.get(ev.key) || [];
+	const actions = Actions.inputs.get(ev.key.toLowerCase()) || [];
 	for (const action of actions) {
 		Actions.actions.set(action, false);
-		if (Actions.debug) console.log(`Unpressed: ${action}`);
+		if (Actions.debug)
+			console.log(`Unpressed: ${action} with key ${ev.key.toLowerCase()}`);
 	}
 });
 
 //@ts-expect-error
 window.action = Actions;
+
+Actions.inputs.forEach((v) =>
+	v.forEach((v) => {
+		Actions.actions.set(v, false);
+	}),
+);
+const defaultBinds = [
+	["jump", "ArrowUp"],
+	["crouch", "ArrowDown"],
+	["left", "ArrowLeft"],
+	["right", "ArrowRight"],
+	["roll", "c"],
+	["debug", "`"],
+];
+defaultBinds.forEach(([action, key]) => {
+	console.log(Actions.isBound(action));
+	if (Actions.isBound(action)) return;
+	Actions.bind(action, [key]);
+});

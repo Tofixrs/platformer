@@ -9,6 +9,7 @@ interface ButtonOptions {
 	borderColor?: ColorSource;
 	color?: ColorSource;
 	borderRadius?: number;
+	fontSize?: number;
 }
 
 export const Button = ({
@@ -18,6 +19,7 @@ export const Button = ({
 	content,
 	borderColor,
 	borderRadius,
+	fontSize,
 }: ButtonOptions) => {
 	const button = new ButtonContainer();
 	button.enabled = enabled || true;
@@ -28,7 +30,7 @@ export const Button = ({
 		.fill({ color: color || 0xffffff });
 	const text = new Text({
 		text: content,
-		style: new TextStyle({ fontSize: 50 }),
+		style: new TextStyle({ fontSize: fontSize || 50 }),
 	});
 	text.anchor.set(0.5);
 	text.y = size.y / 2;

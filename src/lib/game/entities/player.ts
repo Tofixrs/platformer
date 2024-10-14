@@ -25,11 +25,6 @@ export class Player extends Entity {
 			world,
 			type: "ent",
 		});
-		Actions.bind("jump", ["ArrowUp"]);
-		Actions.bind("crouch", ["ArrowDown"]);
-		Actions.bind("left", ["ArrowLeft"]);
-		Actions.bind("right", ["ArrowRight"]);
-		Actions.bind("roll", ["c", "C"]);
 	}
 	onCreate(world: World) {
 		this.sensor = this.body!.createFixture({
@@ -124,6 +119,7 @@ export class Player extends Entity {
 			this.sprite.texture = Texture.from("player_normal");
 			this.sprite.anchor.set(0.5, 0.5);
 		}
+		this.body?.setAwake(true);
 	}
 	handleRoll() {
 		if (!Actions.hold("crouch") || !Actions.hold("roll") || !this.onGround) {

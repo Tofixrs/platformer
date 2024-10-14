@@ -8,6 +8,7 @@ import { Entity } from "./entities";
 import { Dummy } from "./entities/dummy";
 import { WorldManager } from "./world/manager";
 import { MainMenu } from "./world/worlds/mainMenu";
+import { Settings } from "./world/worlds/settings";
 
 export class Game {
 	static debug = false;
@@ -21,8 +22,6 @@ export class Game {
 		await this.graphics.setup();
 		await this.graphics.preload();
 
-		Actions.bind("debug", ["`"]);
-
 		this.worldManager = new WorldManager(
 			this.graphics.pixi,
 			this.graphics.debugDraw,
@@ -30,6 +29,9 @@ export class Game {
 		const mainMenu = new MainMenu(this.graphics.pixi, this.worldManager);
 		this.worldManager.addWorld("mainMenu", mainMenu);
 		this.worldManager.changeWorld("mainMenu");
+
+		const settings = new Settings(this.graphics.pixi, this.worldManager);
+		this.worldManager.addWorld("settings", settings);
 
 		const world = new World(this.graphics.pixi);
 		this.worldManager.addWorld("game", world);
