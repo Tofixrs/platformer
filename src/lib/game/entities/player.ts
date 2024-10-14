@@ -124,7 +124,7 @@ export class Player extends Entity {
 	}
 	handleRoll() {
 		if (!Actions.hold("crouch") || !Actions.hold("roll") || !this.onGround) {
-			if (this.rolling && !Actions.hold("crouch") && !Actions.hold("roll")) {
+			if (this.rolling && (!Actions.hold("crouch") || !Actions.hold("roll"))) {
 				this.body?.setFixedRotation(true);
 				this.body?.setAngle(0);
 				this.rolling = false;
