@@ -103,6 +103,8 @@ export class Player extends Entity {
 		}
 	}
 	handleCrouch() {
+		console.log(this.pounding, Actions.hold("crouch"));
+		if (this.pounding) return;
 		if (Actions.hold("crouch")) {
 			if (this.crouching) return;
 			this.crouching = true;
@@ -145,14 +147,21 @@ export class Player extends Entity {
 	}
 	handleGroundpound() {
 		if (this.rolling) return;
-		console.log(this.pounding);
 
 		if (Actions.click("groundpound") && !this.onGround) {
 			this.pounding = true;
+			this.sprite.texture = Texture.from("player_crouch");
+
+			this.sprite.anchor.set(0.5, 0.5);
+			this.setCrouchHitbox(true);
 		}
-		if (this.onGround) {
+		if (this.onGround && !Actions.hold("crouch")) {
 			this.pounding = false;
 			this.body?.setGravityScale(1);
+			this.sprite.texture = Texture.from("player_normal");
+
+			this.sprite.anchor.set(0.5, 0.5);
+			this.setCrouchHitbox(false);
 		}
 
 		if (!this.pounding) return;
