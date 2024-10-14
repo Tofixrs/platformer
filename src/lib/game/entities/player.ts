@@ -84,10 +84,6 @@ export class Player extends Entity {
 		}
 	}
 	handleMove() {
-		this.handleJump();
-
-		if (this.rolling) return;
-
 		if (Actions.hold("left")) {
 			this.direction = -1;
 		}
@@ -95,6 +91,13 @@ export class Player extends Entity {
 		if (Actions.hold("right")) {
 			this.direction = 1;
 		}
+		this.handleJump();
+		this.handleCrouch();
+		this.handleRoll();
+		this.handleWalk();
+	}
+	handleWalk() {
+		if (this.rolling) return;
 
 		if (!Actions.hold("left") && !Actions.hold("right")) return;
 		if (this.body!.getLinearVelocity().x * this.direction > this.maxMoveSpeed)
@@ -119,7 +122,7 @@ export class Player extends Entity {
 		}
 		this.body?.setAwake(true);
 	}
-	handleRoll(ticker: Ticker) {
+	handleRoll() {
 		if (!Actions.hold("crouch") || !Actions.hold("roll") || !this.onGround) {
 			if (this.rolling && !Actions.hold("crouch") && !Actions.hold("roll")) {
 				this.body?.setFixedRotation(true);
@@ -151,8 +154,6 @@ export class Player extends Entity {
 	update(ticker: Ticker, world: World): void {
 		this.followCam(world.c);
 		this.handleMove();
-		this.handleCrouch();
-		this.handleRoll(ticker);
 	}
 	setRollSensorHitbox(yes: boolean) {
 		const shape = this.sensor.m_shape as Box;
