@@ -6,7 +6,7 @@ import { pixiToPlanckPos } from "@lib/math/units";
 export class World {
 	c: Container = new Container();
 	p = new PhysicsWorld({
-		gravity: new Vec2(0.0, 10.0),
+		gravity: new Vec2(0.0, 20.0),
 	});
 	entities: Entity[] = [];
 	constructor(app: Application) {
@@ -44,7 +44,7 @@ export class World {
 	}
 
 	update(ticker: Ticker) {
-		this.p.step(1 / 60, 6, 2);
+		this.p.step(ticker.elapsedMS / 1000, 6, 2);
 		this.entities.forEach((e) => e._update(ticker, this));
 	}
 	recenter(app: Application) {

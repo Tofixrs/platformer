@@ -2,12 +2,14 @@ import { World } from "@lib/game/world";
 import { lerp2D } from "@lib/math/lerp";
 import { Container, Sprite, Texture, Ticker } from "pixi.js";
 import { Entity } from ".";
-import { Box, Fixture, Transform, Vec2 } from "planck-js";
-import { planckToPixiPos } from "@lib/math/units";
+import { Box, Fixture, Vec2 } from "planck-js";
 import { Actions } from "input";
 
 export class Player extends Entity {
-	static maxJumpVel = 50;
+	maxJumpVel = -10;
+	moveForce = 100;
+	jumpPower = -500;
+	maxMoveSpeed = 7.5;
 	jumping = false;
 	sensor!: Fixture;
 	onGround = false;
@@ -16,9 +18,9 @@ export class Player extends Entity {
 	direction = 1;
 	constructor(pos: Vec2, world: World) {
 		super({
-			friction: 0.1,
+			friction: 0.2,
 			shape: new Box(0.25, 0.5),
-			density: 10,
+			density: 5,
 			pos,
 			sprite: Sprite.from("player_normal"),
 			bodyType: "dynamic",
@@ -73,12 +75,12 @@ export class Player extends Entity {
 			this.jumping = false;
 		}
 
-		if (this.body!.getLinearVelocity().y < -7.5) {
+		if (this.body!.getLinearVelocity().y < this.maxJumpVel) {
 			this.jumping = false;
 		}
 
 		if (this.jumping) {
-			this.body?.applyForce(new Vec2(0, -200), new Vec2(0, -1), true);
+			this.body?.applyForce(new Vec2(0, this.jumpPower), new Vec2(0, -1), true);
 		}
 	}
 	handleMove() {
@@ -86,66 +88,102 @@ export class Player extends Entity {
 
 		if (this.rolling) return;
 
-		if (
-			Actions.actions.get("left") &&
-			this.body!.getLinearVelocity().x > -7.5
-		) {
-			this.body?.applyForceToCenter(new Vec2(-25, 0), true);
+		if (Actions.hold("left")) {
 			this.direction = -1;
 		}
 
-		if (
-			Actions.actions.get("right") &&
-			this.body!.getLinearVelocity().x < 7.5
-		) {
-			this.body?.applyForceToCenter(new Vec2(25, 0), true);
+		if (Actions.hold("right")) {
 			this.direction = 1;
 		}
+
+		if (!Actions.hold("left") && !Actions.hold("right")) return;
+		if (this.body!.getLinearVelocity().x * this.direction > this.maxMoveSpeed)
+			return;
+		this.body?.applyForceToCenter(
+			new Vec2(this.moveForce * this.direction, 0),
+			true,
+		);
 	}
 	handleCrouch() {
 		if (Actions.hold("crouch")) {
 			if (this.crouching) return;
 			this.crouching = true;
-			const shape = this.shape as Box;
-			shape.m_vertices[0].y += 0.5;
-			shape.m_vertices[3].y += 0.5;
+			this.setCrouchHitbox(true);
 			this.sprite.texture = Texture.from("player_crouch");
 			this.sprite.anchor.set(0.5, 0);
 		} else if (this.crouching) {
-			const shape = this.shape as Box;
-			shape.m_vertices[0].y -= 0.5;
-			shape.m_vertices[3].y -= 0.5;
+			this.setCrouchHitbox(false);
 			this.crouching = false;
 			this.sprite.texture = Texture.from("player_normal");
 			this.sprite.anchor.set(0.5, 0.5);
 		}
 		this.body?.setAwake(true);
 	}
-	handleRoll() {
+	handleRoll(ticker: Ticker) {
 		if (!Actions.hold("crouch") || !Actions.hold("roll") || !this.onGround) {
 			if (this.rolling && !Actions.hold("crouch") && !Actions.hold("roll")) {
 				this.body?.setFixedRotation(true);
 				this.body?.setAngle(0);
 				this.rolling = false;
+				this.setRollSensorHitbox(false);
 			}
 			return;
 		}
 
 		this.rolling = true;
 		this.body?.setFixedRotation(false);
-		const maxRollSpeed = 10;
-		if (this.body!.getLinearVelocity().x * this.direction > maxRollSpeed)
+		this.setRollSensorHitbox(true);
+		if (
+			this.body!.getLinearVelocity().x * this.direction >
+			this.maxMoveSpeed * 2
+		)
 			return;
+
+		//extra grav
+		this.body?.applyForceToCenter(new Vec2(0, 2500), true);
+
 		this.body?.applyForce(
-			new Vec2(50 * this.direction, 0),
+			new Vec2(this.direction * this.moveForce, 0),
 			new Vec2(0, 0.05),
 			true,
 		);
 	}
-	update(_ticker: Ticker, world: World): void {
+	update(ticker: Ticker, world: World): void {
 		this.followCam(world.c);
 		this.handleMove();
 		this.handleCrouch();
-		this.handleRoll();
+		this.handleRoll(ticker);
+	}
+	setRollSensorHitbox(yes: boolean) {
+		const shape = this.sensor.m_shape as Box;
+		if (yes) {
+			shape.m_vertices[0].x = 0.4;
+			shape.m_vertices[0].y = -0.2;
+			shape.m_vertices[1].x = 0.4;
+			shape.m_vertices[1].y = 0.7;
+			shape.m_vertices[2].x = -0.4;
+			shape.m_vertices[2].y = 0.7;
+			shape.m_vertices[3].x = -0.4;
+			shape.m_vertices[3].y = -0.2;
+		} else {
+			shape.m_vertices[0].x = 0.2;
+			shape.m_vertices[0].y = 0.4;
+			shape.m_vertices[1].x = 0.2;
+			shape.m_vertices[1].y = 0.62;
+			shape.m_vertices[2].x = -0.2;
+			shape.m_vertices[2].y = 0.62;
+			shape.m_vertices[3].x = -0.2;
+			shape.m_vertices[3].y = 0.4;
+		}
+	}
+	setCrouchHitbox(yes: boolean) {
+		const shape = this.shape as Box;
+		if (yes) {
+			shape.m_vertices[0].y = 0;
+			shape.m_vertices[3].y = 0;
+		} else {
+			shape.m_vertices[0].y = -0.5;
+			shape.m_vertices[3].y = -0.5;
+		}
 	}
 }

@@ -46,6 +46,6 @@ export class Entity {
 		this.sprite.rotation = this.body!.getAngle();
 		this.update(ticker, world);
 	}
-	onCreate(world: World) {}
-	update(ticker: Ticker, world: World) {}
+	onCreate(_world: World) {}
+	update(_ticker: Ticker, _world: World) {}
 }

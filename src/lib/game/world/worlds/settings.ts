@@ -1,4 +1,4 @@
-import { Application, Container, Graphics, Text, TextStyle } from "pixi.js";
+import { Application, Container, Text } from "pixi.js";
 import { World } from "..";
 import { ButtonContainer, ScrollBox } from "@pixi/ui";
 import { Button } from "@lib/game/ui/button";
