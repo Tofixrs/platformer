@@ -10,7 +10,7 @@ export class Graphics {
 	pixi = new Application();
 
 	async preload() {
-		await Assets.load("/assets/char/meta.json");
+		await Assets.load("./assets/char/meta.json");
 	}
 	async setup() {
 		await this.pixi.init({ resizeTo: window, backgroundColor: "#fff" });
