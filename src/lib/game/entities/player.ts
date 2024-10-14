@@ -143,7 +143,7 @@ export class Player extends Entity {
 			return;
 
 		//extra grav
-		this.body?.applyForceToCenter(new Vec2(0, 2500), true);
+		this.body?.applyForceToCenter(new Vec2(0, 1000), true);
 
 		this.body?.applyForce(
 			new Vec2(this.direction * this.moveForce, 0),
