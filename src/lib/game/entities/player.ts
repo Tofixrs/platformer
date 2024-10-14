@@ -87,10 +87,6 @@ export class Player extends Entity {
 		this.handleWalk();
 	}
 	handleJump() {
-		if (Actions.hold("crouch")) {
-			this.jumping = false;
-			return;
-		}
 		if (Actions.actions.get("jump") && this.onGround) {
 			this.jumping = true;
 		}
