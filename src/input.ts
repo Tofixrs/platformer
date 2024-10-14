@@ -87,7 +87,6 @@ const defaultBinds = [
 	["groundpound", "x"],
 ];
 defaultBinds.forEach(([action, key]) => {
-	console.log(Actions.isBound(action));
 	if (Actions.isBound(action)) return;
 	Actions.bind(action, [key]);
 });
