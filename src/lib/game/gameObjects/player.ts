@@ -7,9 +7,9 @@ import { Actions } from "input";
 
 export class Player extends Entity {
 	maxJumpVel = -25;
-	moveForce = 100;
-	rollForce = 25;
-	jumpPower = -400;
+	moveForce = 10000;
+	rollForce = 1000;
+	jumpPower = -40000;
 	maxMoveSpeed = 10;
 	maxRollSpeed = 25;
 	groundpoundSpeed = 15;
@@ -59,7 +59,7 @@ export class Player extends Entity {
 	update(ticker: Ticker, world: World): void {
 		super.update(ticker, world);
 		this.followCam(world);
-		this.handleMove();
+		this.handleMove(ticker);
 	}
 	followCam(world: World) {
 		const pos = lerp2D(
@@ -69,7 +69,7 @@ export class Player extends Entity {
 		);
 		world.c.pivot.set(pos.x, pos.y);
 	}
-	handleMove() {
+	handleMove(ticker: Ticker) {
 		if (Actions.hold("left")) {
 			this.direction = -1;
 		}
@@ -77,13 +77,13 @@ export class Player extends Entity {
 		if (Actions.hold("right")) {
 			this.direction = 1;
 		}
-		this.handleJump();
+		this.handleJump(ticker);
 		this.handleCrouch();
-		this.handleRoll();
-		this.handleGroundpound();
-		this.handleWalk();
+		this.handleRoll(ticker);
+		this.handleGroundpound(ticker);
+		this.handleWalk(ticker);
 	}
-	handleJump() {
+	handleJump(ticker: Ticker) {
 		if (Actions.actions.get("jump") && this.onGround) {
 			this.jumping = true;
 		}
@@ -100,7 +100,11 @@ export class Player extends Entity {
 		}
 		if (!this.jumping) return;
 
-		this.body?.applyForce(new Vec2(0, this.jumpPower), new Vec2(0, -1), true);
+		this.body?.applyForce(
+			new Vec2(0, this.jumpPower * (ticker.deltaMS / 1000)),
+			new Vec2(0, -1),
+			true,
+		);
 	}
 
 	handleCrouch() {
@@ -114,7 +118,7 @@ export class Player extends Entity {
 		this.sprite.anchor.set(0.5, this.crouching ? 0 : 0.5);
 	}
 
-	handleRoll() {
+	handleRoll(ticker: Ticker) {
 		const shouldRoll = !!Actions.hold("crouch") && !!Actions.hold("roll");
 
 		if (this.rolling && !shouldRoll) {
@@ -139,15 +143,18 @@ export class Player extends Entity {
 			return;
 		}
 
-		this.body?.applyForceToCenter(new Vec2(0, 25), true);
+		this.body?.applyForceToCenter(
+			new Vec2(0, 25 * (ticker.deltaMS / 1000)),
+			true,
+		);
 		this.body?.applyForce(
-			new Vec2(this.direction * this.rollForce, 0),
+			new Vec2(this.direction * this.rollForce * (ticker.deltaMS / 1000), 0),
 			new Vec2(0, 0.05),
 			true,
 		);
 	}
 
-	handleGroundpound() {
+	handleGroundpound(ticker: Ticker) {
 		if (this.rolling) return;
 
 		if (Actions.click("groundpound") && !this.onGround) {
@@ -168,10 +175,12 @@ export class Player extends Entity {
 
 		if (!this.pounding) return;
 
-		this.body?.setLinearVelocity(new Vec2(0, this.groundpoundSpeed));
+		this.body?.setLinearVelocity(
+			new Vec2(0, (this.groundpoundSpeed * ticker.deltaMS) / 1000),
+		);
 		this.body?.setGravityScale(0);
 	}
-	handleWalk() {
+	handleWalk(ticker: Ticker) {
 		if (this.rolling) return;
 		if (this.pounding) return;
 
@@ -179,7 +188,7 @@ export class Player extends Entity {
 		if (this.body!.getLinearVelocity().x * this.direction > this.maxMoveSpeed)
 			return;
 		this.body?.applyForceToCenter(
-			new Vec2(this.moveForce * this.direction, 0),
+			new Vec2(this.moveForce * this.direction * (ticker.deltaMS / 1000), 0),
 			true,
 		);
 	}
