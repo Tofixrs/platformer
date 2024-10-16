@@ -1,5 +1,5 @@
 import { World } from "@lib/game/world";
-import { lerp, lerp2D } from "@lib/math/lerp";
+import { lerp, lerp2D, physicsLerp } from "@lib/math/lerp";
 import { planckToPixiPos } from "@lib/math/units";
 import { Sprite, Ticker } from "pixi.js";
 import { Vec2 } from "planck-js";
@@ -23,7 +23,7 @@ export class Entity extends PhysicsObject {
 		this.sprite.y = spritePos.y;
 	}
 
-	update(ticker: Ticker, _world: World): void {
+	update(ticker: Ticker, alpha: number, _world: World): void {
 		if (!this.lastState) {
 			this.lastState = {
 				pos: new Vec2(this.sprite.x, this.sprite.y),
@@ -31,10 +31,10 @@ export class Entity extends PhysicsObject {
 			};
 		}
 
-		const lerpedPos = lerp2D(
+		const lerpedPos = physicsLerp(
 			this.lastState?.pos,
 			planckToPixiPos(this.body!.getPosition()),
-			Math.min(1 / (1 / 60 / (ticker.deltaMS / 1000)), 1),
+			alpha,
 		);
 		const lerpedAngle = lerp(this.lastState.angle, this.body!.getAngle(), 1);
 		this.sprite.x = lerpedPos.x;
