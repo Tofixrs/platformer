@@ -11,15 +11,15 @@ export class MainMenu extends World {
 	playButton: ButtonContainer;
 	constructor(graphics: Graphics, worldManager: WorldManager) {
 		super(graphics);
+		this.c.x = 0;
+		this.c.y = 0;
 		this.settingsButton = Button({
-			size: new Vec2(200, 75),
+			size: new Vec2(75, 75),
 			color: 0xff0000,
 			borderColor: 0x00ff00,
-			content: "⚙️asd",
+			content: "⚙️",
 			borderRadius: 100,
 		});
-		this.settingsButton.x += 100;
-		this.recenter(graphics.renderer.screen);
 
 		this.playButton = Button({
 			size: new Vec2(200, 75),
@@ -36,10 +36,12 @@ export class MainMenu extends World {
 			worldManager.changeWorld("settings");
 		});
 		this.c.addChild(this.settingsButton, this.playButton);
+		this.recenter(graphics.renderer.screen);
 	}
 	recenter(screen: Rectangle): void {
-		console.log(screen);
-		super.recenter(screen);
-		this.settingsButton.y = -screen.height + screen.height / 16;
+		this.playButton.x = screen.width / 2;
+		this.playButton.y = screen.height / 2;
+		this.settingsButton.x = screen.width - screen.width / 32;
+		this.settingsButton.y = 30;
 	}
 }
