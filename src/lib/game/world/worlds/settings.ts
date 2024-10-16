@@ -1,10 +1,11 @@
-import { Application, Container, Text } from "pixi.js";
+import { Application, Container, Rectangle, Text } from "pixi.js";
 import { World } from "..";
 import { ButtonContainer, ScrollBox } from "@pixi/ui";
 import { Button } from "@lib/game/ui/button";
 import { Vec2 } from "planck-js";
 import { WorldManager } from "../manager";
 import { Actions } from "input";
+import { Graphics } from "@lib/game/graphics";
 
 export class Settings extends World {
 	public audioTabBtn: ButtonContainer;
@@ -12,8 +13,8 @@ export class Settings extends World {
 	public closeButton: ButtonContainer;
 	public tabs: Map<string, Tab> = new Map();
 	public currentTab = "";
-	constructor(app: Application, worldManager: WorldManager) {
-		super(app);
+	constructor(graphics: Graphics, worldManager: WorldManager) {
+		super(graphics);
 		this.audioTabBtn = Button({
 			size: new Vec2(200, 75),
 			color: 0xff0000,
@@ -52,7 +53,7 @@ export class Settings extends World {
 		this.tabs.set("bind", bindTab);
 		this.changeTab("bind");
 
-		this.recenter(app);
+		this.recenter(graphics.renderer.screen);
 
 		this.c.addChild(this.bindTabBtn);
 		this.c.addChild(this.audioTabBtn);
@@ -68,28 +69,22 @@ export class Settings extends World {
 			this.c.addChild(this.tabs.get(this.currentTab)!.c);
 		}
 	}
-	recenter(app: Application): void {
-		super.recenter(app);
+	recenter(screen: Rectangle): void {
+		super.recenter(screen);
 
-		this.audioTabBtn.position.set(
-			-app.screen.width / 4,
-			-app.screen.height / 2 + 50,
-		);
+		this.audioTabBtn.position.set(-screen.width / 4, -screen.height / 2 + 50);
 
-		this.bindTabBtn.position.set(
-			app.screen.width / 4,
-			-app.screen.height / 2 + 50,
-		);
+		this.bindTabBtn.position.set(screen.width / 4, -screen.height / 2 + 50);
 
 		this.closeButton.position.set(
-			app.screen.width / 2 - 100,
-			-app.screen.height / 2 + 50,
+			screen.width / 2 - 100,
+			-screen.height / 2 + 50,
 		);
 
 		this.tabs.forEach((v) => {
-			v.c.y = -app.screen.height / 2 + 150;
-			v.c.x = -app.screen.width / 4 - 100;
-			v.recenter(app);
+			v.c.y = -screen.height / 2 + 150;
+			v.c.x = -screen.width / 4 - 100;
+			v.recenter(screen);
 		});
 	}
 	createBindTab() {}
@@ -97,7 +92,7 @@ export class Settings extends World {
 
 class Tab {
 	c: Container = new Container();
-	recenter(_app: Application) {}
+	recenter(screen: Rectangle) {}
 }
 
 class BindTab extends Tab {
@@ -179,7 +174,7 @@ class BindTab extends Tab {
 		this.reboundAction = action;
 		this.reboundKey = key;
 	}
-	recenter(app: Application) {
-		this.scrollbox.height = app.screen.height + (-app.screen.height / 2 + 100);
+	recenter(screen: Rectangle) {
+		this.scrollbox.height = screen.height + (-screen.height / 2 + 100);
 	}
 }

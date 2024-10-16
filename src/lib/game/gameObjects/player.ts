@@ -1,16 +1,17 @@
-import { World } from "@lib/game/world";
+import { Box, Contact, Fixture, Vec2 } from "planck-js";
+import { Sprite, Texture, Ticker } from "pixi.js";
+import { Entity } from "./types/entity";
+import { World } from "../world";
 import { lerp2D } from "@lib/math/lerp";
-import { Container, Sprite, Texture, Ticker } from "pixi.js";
-import { Entity } from ".";
-import { Box, Fixture, Vec2 } from "planck-js";
 import { Actions } from "input";
 
 export class Player extends Entity {
-	maxJumpVel = -10;
+	maxJumpVel = -25;
 	moveForce = 100;
-	jumpPower = -750;
+	rollForce = 25;
+	jumpPower = -400;
 	maxMoveSpeed = 10;
-	maxRollSpeed = 15;
+	maxRollSpeed = 25;
 	groundpoundSpeed = 15;
 	jumping = false;
 	sensor!: Fixture;
@@ -19,59 +20,55 @@ export class Player extends Entity {
 	rolling = false;
 	pounding = false;
 	direction = 1;
-	constructor(pos: Vec2, world: World) {
+	constructor(pos: Vec2) {
 		super({
+			initPos: pos,
 			friction: 0.2,
-			shape: new Box(0.25, 0.5),
 			density: 5,
-			pos,
+			shape: new Box(0.25, 0.5),
 			sprite: Sprite.from("player_normal"),
 			bodyType: "dynamic",
-			world,
-			type: "ent",
+			fixedRotation: true,
 		});
 	}
-	onCreate(world: World) {
-		this.sensor = this.body!.createFixture({
+	create(world: World): void {
+		super.create(world);
+		this.sensor = this.body.createFixture({
 			shape: new Box(0.2, 0.1, new Vec2(0, 0.52)),
 			isSensor: true,
 			filterMaskBits: 10,
 		});
 
 		world.p.on("begin-contact", (contact) => {
-			const fixA = contact.getFixtureA();
-			const fixB = contact.getFixtureB();
-
-			if (fixA != this.sensor && fixB != this.sensor) return;
-
-			this.onGround = contact.isTouching();
+			this.checkSensorContact(contact);
 		});
 
 		world.p.on("end-contact", (contact) => {
-			const fixA = contact.getFixtureA();
-			const fixB = contact.getFixtureB();
-
-			if (fixA != this.sensor && fixB != this.sensor) return;
-
-			this.onGround = contact.isTouching();
+			this.checkSensorContact(contact);
 		});
 	}
 
+	checkSensorContact(contact: Contact) {
+		const fixA = contact.getFixtureA();
+		const fixB = contact.getFixtureB();
+
+		if (fixA != this.sensor && fixB != this.sensor) return;
+
+		this.onGround = contact.isTouching();
+	}
 	update(ticker: Ticker, world: World): void {
-		this.followCam(world.c);
+		super.update(ticker, world);
+		this.followCam(world);
 		this.handleMove();
 	}
-	followCam(world: Container) {
-		const { x, y } = lerp2D(
-			world.pivot.x,
-			world.pivot.y,
-			this.sprite.x,
-			this.sprite.y,
-			0.25,
+	followCam(world: World) {
+		const pos = lerp2D(
+			new Vec2(world.c.pivot.x, world.c.pivot.y),
+			new Vec2(this.sprite.x, this.sprite.y),
+			0.1,
 		);
-		world.pivot.set(x, y);
+		world.c.pivot.set(pos.x, pos.y);
 	}
-
 	handleMove() {
 		if (Actions.hold("left")) {
 			this.direction = -1;
@@ -90,61 +87,66 @@ export class Player extends Entity {
 		if (Actions.actions.get("jump") && this.onGround) {
 			this.jumping = true;
 		}
+
 		if (!Actions.actions.get("jump")) {
 			this.jumping = false;
 		}
 
 		if (this.body!.getLinearVelocity().y < this.maxJumpVel) {
 			this.jumping = false;
+			this.body?.setLinearVelocity(
+				new Vec2(this.body.getLinearVelocity().x, this.maxJumpVel),
+			);
 		}
+		if (!this.jumping) return;
 
-		if (this.jumping) {
-			this.body?.applyForce(new Vec2(0, this.jumpPower), new Vec2(0, -1), true);
-		}
+		this.body?.applyForce(new Vec2(0, this.jumpPower), new Vec2(0, -1), true);
 	}
+
 	handleCrouch() {
-		console.log(this.pounding, Actions.hold("crouch"));
 		if (this.pounding) return;
-		if (Actions.hold("crouch")) {
-			if (this.crouching) return;
-			this.crouching = true;
-			this.setCrouchHitbox(true);
-			this.sprite.texture = Texture.from("player_crouch");
-			this.sprite.anchor.set(0.5, 0);
-		} else if (this.crouching) {
-			this.setCrouchHitbox(false);
-			this.crouching = false;
-			this.sprite.texture = Texture.from("player_normal");
-			this.sprite.anchor.set(0.5, 0.5);
-		}
-		this.body?.setAwake(true);
+
+		this.crouching = Actions.hold("crouch") || false;
+		this.setCrouchHitbox(this.crouching);
+		this.sprite.texture = Texture.from(
+			this.crouching ? "player_crouch" : "player_normal",
+		);
+		this.sprite.anchor.set(0.5, this.crouching ? 0 : 0.5);
 	}
+
 	handleRoll() {
-		if (!Actions.hold("crouch") || !Actions.hold("roll") || !this.onGround) {
-			if (this.rolling && (!Actions.hold("crouch") || !Actions.hold("roll"))) {
-				this.body?.setFixedRotation(true);
-				this.body?.setAngle(0);
-				this.rolling = false;
-				this.setRollSensorHitbox(false);
-			}
+		const shouldRoll = !!Actions.hold("crouch") && !!Actions.hold("roll");
+
+		if (this.rolling && !shouldRoll) {
+			this.body.setFixedRotation(true);
+			this.body.setAngle(0);
+			this.setRollSensorHitbox(false);
+		} else if (!this.rolling && shouldRoll && this.onGround) {
+			this.body.setFixedRotation(false);
+			this.setRollSensorHitbox(true);
+		}
+		this.rolling = this.rolling ? shouldRoll : shouldRoll && this.onGround;
+
+		if (!this.rolling) return;
+
+		if (this.body!.getLinearVelocity().x * this.direction > this.maxRollSpeed) {
+			this.body.setLinearVelocity(
+				new Vec2(
+					this.maxRollSpeed * this.direction,
+					this.body.getLinearVelocity().y,
+				),
+			);
 			return;
 		}
 
-		this.rolling = true;
-		this.body?.setFixedRotation(false);
-		this.setRollSensorHitbox(true);
-		if (this.body!.getLinearVelocity().x * this.direction > this.maxRollSpeed)
-			return;
-
-		//extra grav
-		this.body?.applyForceToCenter(new Vec2(0, 1000), true);
-
+		this.body?.applyForceToCenter(new Vec2(0, 25), true);
 		this.body?.applyForce(
-			new Vec2(this.direction * this.moveForce, 0),
+			new Vec2(this.direction * this.rollForce, 0),
 			new Vec2(0, 0.05),
 			true,
 		);
 	}
+
 	handleGroundpound() {
 		if (this.rolling) return;
 
@@ -181,6 +183,7 @@ export class Player extends Entity {
 			true,
 		);
 	}
+
 	setCrouchHitbox(yes: boolean) {
 		const shape = this.shape as Box;
 		if (yes) {
@@ -191,6 +194,7 @@ export class Player extends Entity {
 			shape.m_vertices[3].y = -0.5;
 		}
 	}
+
 	setRollSensorHitbox(yes: boolean) {
 		const shape = this.sensor.m_shape as Box;
 		if (yes) {

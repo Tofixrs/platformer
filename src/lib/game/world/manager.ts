@@ -6,8 +6,8 @@ export class WorldManager {
 	currentWorld: string = "";
 	worldContainer = new Container();
 	debug: Draw;
-	constructor(pixi: Application, debug: Draw) {
-		pixi.stage.addChild(this.worldContainer);
+	constructor(stage: Container, debug: Draw) {
+		stage.addChild(this.worldContainer);
 		this.debug = debug;
 	}
 	addWorld(name: string, world: World) {

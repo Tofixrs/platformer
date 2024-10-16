@@ -1,55 +1,47 @@
-import { Application, Container, Ticker } from "pixi.js";
-import { Entity } from "../entities";
+import { Container, Rectangle, Ticker } from "pixi.js";
 import { World as PhysicsWorld, Vec2 } from "planck-js";
-import { pixiToPlanckPos } from "@lib/math/units";
+import { Graphics } from "../graphics";
+import { GameObject } from "../gameObject";
 
 export class World {
 	c: Container = new Container();
 	p = new PhysicsWorld({
-		gravity: new Vec2(0.0, 20.0),
+		gravity: new Vec2(0.0, 50.0),
 	});
-	entities: Entity[] = [];
-	constructor(app: Application) {
-		this.c.x = app.screen.width / 2;
-		this.c.y = app.screen.height / 2;
+	entities: GameObject[] = [];
+	accumulator = 0;
+	static physicsStepTime = 1 / 60;
+	constructor(graphics: Graphics) {
+		this.c.x = graphics.renderer.screen.width / 2;
+		this.c.y = graphics.renderer.screen.height / 2;
 
-		const canvas = app.renderer.canvas;
+		const canvas = graphics.renderer.canvas;
 		new MutationObserver(() => {
-			this.recenter(app);
+			this.recenter(graphics.renderer.screen);
 		}).observe(canvas, {
 			attributes: true,
 			attributeFilter: ["width", "height"],
 		});
 	}
-	addEntity<T extends Entity>(entity: T) {
-		this.c.addChild(entity.sprite);
-
-		const body = this.p.createBody({
-			type: entity.bodyType,
-			position: pixiToPlanckPos(new Vec2(entity.sprite.x, entity.sprite.y)),
-			fixedRotation: true,
-		});
-
-		body.createFixture({
-			shape: entity.shape,
-			friction: entity.friction,
-			density: entity.density,
-			filterCategoryBits: entity.type == "ground" ? 10 : undefined,
-			filterGroupIndex: entity.type == "ground" ? undefined : -11,
-		});
-
-		entity.body = body;
-
-		entity.onCreate(this);
+	addEntity<T extends GameObject>(entity: T) {
+		entity.create(this);
 		this.entities.push(entity);
 	}
 
 	update(ticker: Ticker) {
-		this.p.step(ticker.elapsedMS / 1000, 6, 2);
-		this.entities.forEach((e) => e._update(ticker, this));
+		this.accumulator += ticker.elapsedMS / 1000;
+		while (this.accumulator >= World.physicsStepTime) {
+			this.p.step(1 / 60, 6, 2);
+			this.accumulator -= World.physicsStepTime;
+			this.entities.forEach((e) => e.fixedUpdate());
+		}
+
+		this.entities.forEach((e) => {
+			e.update(ticker, this);
+		});
 	}
-	recenter(app: Application) {
-		this.c.x = app.screen.width / 2;
-		this.c.y = app.screen.height / 2;
+	recenter(screen: Rectangle) {
+		this.c.x = screen.width / 2;
+		this.c.y = screen.height / 2;
 	}
 }

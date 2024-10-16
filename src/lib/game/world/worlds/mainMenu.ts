@@ -1,23 +1,25 @@
-import { Application } from "pixi.js";
+import { Rectangle } from "pixi.js";
 import { World } from "..";
 import { WorldManager } from "../manager";
 import { ButtonContainer } from "@pixi/ui";
 import { Button } from "@lib/game/ui/button";
 import { Vec2 } from "planck-js";
+import { Graphics } from "@lib/game/graphics";
 
 export class MainMenu extends World {
 	settingsButton: ButtonContainer;
 	playButton: ButtonContainer;
-	constructor(app: Application, worldManager: WorldManager) {
-		super(app);
+	constructor(graphics: Graphics, worldManager: WorldManager) {
+		super(graphics);
 		this.settingsButton = Button({
-			size: new Vec2(75, 75),
+			size: new Vec2(200, 75),
 			color: 0xff0000,
 			borderColor: 0x00ff00,
-			content: "⚙️",
+			content: "⚙️asd",
 			borderRadius: 100,
 		});
-		this.recenter(app);
+		this.settingsButton.x += 100;
+		this.recenter(graphics.renderer.screen);
 
 		this.playButton = Button({
 			size: new Vec2(200, 75),
@@ -35,9 +37,9 @@ export class MainMenu extends World {
 		});
 		this.c.addChild(this.settingsButton, this.playButton);
 	}
-	recenter(app: Application): void {
-		super.recenter(app);
-		this.settingsButton.x = app.screen.width / 2 - 100;
-		this.settingsButton.y = -app.screen.height / 2 + 50;
+	recenter(screen: Rectangle): void {
+		console.log(screen);
+		super.recenter(screen);
+		this.settingsButton.y = -screen.height + screen.height / 16;
 	}
 }
