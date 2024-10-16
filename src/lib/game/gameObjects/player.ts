@@ -6,8 +6,8 @@ import { lerp2D } from "@lib/math/lerp";
 import { Actions } from "input";
 
 export class Player extends Entity {
-	maxJumpVel = -25;
-	moveForce = 10000;
+	maxJumpVel = -20;
+	moveForce = 5000;
 	rollForce = 1000;
 	jumpPower = -40000;
 	maxMoveSpeed = 10;

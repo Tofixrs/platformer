@@ -23,7 +23,7 @@ export class Entity extends PhysicsObject {
 		this.sprite.y = spritePos.y;
 	}
 
-	update(_ticker: Ticker, _world: World): void {
+	update(ticker: Ticker, _world: World): void {
 		if (!this.lastState) {
 			this.lastState = {
 				pos: new Vec2(this.sprite.x, this.sprite.y),
@@ -34,7 +34,7 @@ export class Entity extends PhysicsObject {
 		const lerpedPos = lerp2D(
 			this.lastState?.pos,
 			planckToPixiPos(this.body!.getPosition()),
-			0.2,
+			Math.min(1 / (1 / 60 / (ticker.deltaMS / 1000)), 1),
 		);
 		const lerpedAngle = lerp(this.lastState.angle, this.body!.getAngle(), 1);
 		this.sprite.x = lerpedPos.x;
