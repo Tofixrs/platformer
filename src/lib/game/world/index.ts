@@ -37,7 +37,7 @@ export class World {
 		}
 
 		this.entities.forEach((e) => {
-			e.update(ticker, this.accumulator / World.physicsStepTime, this);
+			e.update(ticker, this);
 		});
 	}
 	recenter(screen: Rectangle) {

@@ -5,7 +5,7 @@ export interface GameObjectOptions {}
 
 export class GameObject {
 	constructor({}: GameObjectOptions) {}
-	update(_ticker: Ticker, _alpha: number, _world: World) {}
+	update(_ticker: Ticker, _world: World) {}
 	fixedUpdate() {}
 	create(_world: World) {}
 }

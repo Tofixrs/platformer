@@ -10,7 +10,7 @@ export class Player extends Entity {
 	moveForce = 5000;
 	rollForce = 1000;
 	jumpPower = -40000;
-	maxMoveSpeed = 15;
+	maxMoveSpeed = 10;
 	maxRollSpeed = 25;
 	groundpoundSpeed = 15;
 	jumping = false;
@@ -56,8 +56,8 @@ export class Player extends Entity {
 
 		this.onGround = contact.isTouching();
 	}
-	update(ticker: Ticker, alpha: number, world: World): void {
-		super.update(ticker, alpha, world);
+	update(ticker: Ticker, world: World): void {
+		super.update(ticker, world);
 		this.followCam(world);
 		this.handleMove(ticker);
 	}

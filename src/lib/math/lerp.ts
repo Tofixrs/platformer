@@ -13,10 +13,3 @@ export function lerp(s: number, e: number, amt: number) {
 	const lerped = s + d * amt;
 	return isNaN(lerped) ? 0 : lerped;
 }
-
-export function physicsLerp(s: Vec2, e: Vec2, alpha: number) {
-	return new Vec2(
-		e.x * alpha + s.x * (1 - alpha),
-		e.y * alpha + s.y * (1 - alpha),
-	);
-}
