@@ -16,6 +16,7 @@
 		"vite-tsconfig-paths": "^5.0.1"
 	},
 	"dependencies": {
+		"@pixi/layout": "^2.0.1",
 		"@pixi/ui": "^2.1.5",
 		"pixi.js": "^8.5.0",
 		"planck-js": "^0.3.31"

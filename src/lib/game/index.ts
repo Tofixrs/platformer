@@ -28,10 +28,10 @@ export class Game {
 		);
 		const mainMenu = new MainMenu(this.graphics, this.worldManager);
 		this.worldManager.addWorld("mainMenu", mainMenu);
-		this.worldManager.changeWorld("mainMenu");
 
 		const settings = new Settings(this.graphics, this.worldManager);
 		this.worldManager.addWorld("settings", settings);
+		this.worldManager.changeWorld("settings");
 
 		const world = new World(this.graphics);
 		this.worldManager.addWorld("game", world);

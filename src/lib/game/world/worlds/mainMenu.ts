@@ -1,47 +1,57 @@
-import { Rectangle } from "pixi.js";
+import { Rectangle, Graphics as Draw } from "pixi.js";
 import { World } from "..";
 import { WorldManager } from "../manager";
-import { ButtonContainer } from "@pixi/ui";
-import { Button } from "@lib/game/ui/button";
-import { Vec2 } from "planck-js";
+import { FancyButton } from "@pixi/ui";
 import { Graphics } from "@lib/game/graphics";
+import { Layout } from "@pixi/layout";
 
 export class MainMenu extends World {
-	settingsButton: ButtonContainer;
-	playButton: ButtonContainer;
+	layout: Layout;
 	constructor(graphics: Graphics, worldManager: WorldManager) {
 		super(graphics);
 		this.c.x = 0;
 		this.c.y = 0;
-		this.settingsButton = Button({
-			size: new Vec2(75, 75),
-			color: 0xff0000,
-			borderColor: 0x00ff00,
-			content: "⚙️",
-			borderRadius: 100,
+		const settings = new FancyButton({
+			defaultView: "settingsBtn",
 		});
-
-		this.playButton = Button({
-			size: new Vec2(200, 75),
-			color: 0xff0000,
-			borderColor: 0x00ff00,
-			content: "Play",
-			borderRadius: 100,
-		});
-
-		this.playButton.onPress.connect(() => {
-			worldManager.changeWorld("game");
-		});
-		this.settingsButton.onPress.connect(() => {
+		settings.onPress.connect(() => {
 			worldManager.changeWorld("settings");
 		});
-		this.c.addChild(this.settingsButton, this.playButton);
+
+		const play = new FancyButton({
+			defaultView: "playBtn",
+		});
+		play.onPress.connect(() => {
+			worldManager.changeWorld("game");
+		});
+
+		this.layout = new Layout({
+			content: [
+				{
+					id: "play",
+					content: play,
+					styles: {
+						position: "center",
+					},
+				},
+				{
+					id: "settings",
+					content: settings,
+					styles: {
+						position: "topRight",
+						margin: 10,
+					},
+				},
+			],
+			styles: {
+				width: "100%",
+				height: "100%",
+			},
+		});
+		this.c.addChild(this.layout);
 		this.recenter(graphics.renderer.screen);
 	}
 	recenter(screen: Rectangle): void {
-		this.playButton.x = screen.width / 2;
-		this.playButton.y = screen.height / 2;
-		this.settingsButton.x = screen.width - screen.width / 32;
-		this.settingsButton.y = 30;
+		this.layout.resize(screen.width, screen.height);
 	}
 }
