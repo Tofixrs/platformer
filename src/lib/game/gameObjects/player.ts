@@ -10,7 +10,7 @@ export class Player extends Entity {
 	moveForce = 5000;
 	rollForce = 1000;
 	jumpPower = -40000;
-	maxMoveSpeed = 10;
+	maxMoveSpeed = 15;
 	maxRollSpeed = 25;
 	groundpoundSpeed = 15;
 	jumping = false;
