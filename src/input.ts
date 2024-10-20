@@ -27,7 +27,7 @@ export class Actions {
 		Storage.setMap("inputs", this.inputs);
 	}
 	static hold(name: string) {
-		return this.actions.get(name);
+		return this.actions.get(name) || false;
 	}
 	static click(name: string) {
 		if (this.hold(name) && !this.clicked.get(name)) {
@@ -83,8 +83,9 @@ const defaultBinds = [
 	["left", "ArrowLeft"],
 	["right", "ArrowRight"],
 	["roll", "c"],
-	["debug", "`"],
 	["groundpound", "x"],
+	["longjump", "z"],
+	["debug", "`"],
 ];
 defaultBinds.forEach(([action, key]) => {
 	if (Actions.isBound(action)) return;

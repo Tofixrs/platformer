@@ -9,16 +9,19 @@ export class Player extends Entity {
 	maxJumpVel = -20;
 	moveForce = 5000;
 	rollForce = 1000;
+	longJumpVertForce = 1500;
 	jumpPower = -40000;
 	maxMoveSpeed = 15;
 	maxRollSpeed = 25;
-	groundpoundSpeed = 15;
+	maxLongJumpSpeed = 30;
+	groundpoundSpeed = 2500;
 	jumping = false;
 	sensor!: Fixture;
 	onGround = false;
 	crouching = false;
 	rolling = false;
 	pounding = false;
+	lj = false;
 	direction = 1;
 	constructor(pos: Vec2) {
 		super({
@@ -77,11 +80,13 @@ export class Player extends Entity {
 		if (Actions.hold("right")) {
 			this.direction = 1;
 		}
+		this.sprite.scale.x = this.direction;
 		this.handleJump(ticker);
 		this.handleCrouch();
 		this.handleRoll(ticker);
 		this.handleGroundpound(ticker);
 		this.handleWalk(ticker);
+		this.handleLongJump(ticker);
 	}
 	handleJump(ticker: Ticker) {
 		if (Actions.actions.get("jump") && this.onGround) {
@@ -110,12 +115,12 @@ export class Player extends Entity {
 	handleCrouch() {
 		if (this.pounding) return;
 
-		this.crouching = Actions.hold("crouch") || false;
-		this.setCrouchHitbox(this.crouching);
-		this.sprite.texture = Texture.from(
-			this.crouching ? "player_crouch" : "player_normal",
-		);
-		this.sprite.anchor.set(0.5, this.crouching ? 0 : 0.5);
+		const shouldCrouch = Actions.hold("crouch");
+		if (!this.crouching && shouldCrouch) {
+			this.setCrouch(true);
+		} else if (this.crouching && !shouldCrouch) {
+			this.setCrouch(false);
+		}
 	}
 
 	handleRoll(ticker: Ticker) {
@@ -161,7 +166,7 @@ export class Player extends Entity {
 			this.pounding = true;
 			this.sprite.texture = Texture.from("player_crouch");
 
-			this.sprite.anchor.set(0.5, 0.5);
+			this.sprite.anchor.set(0.5, 0);
 			this.setCrouchHitbox(true);
 		}
 		if (this.onGround && !Actions.hold("crouch")) {
@@ -192,7 +197,47 @@ export class Player extends Entity {
 			true,
 		);
 	}
+	handleLongJump(ticker: Ticker) {
+		if (this.rolling || this.pounding) return;
+		const shouldLJ = Actions.hold("longjump") && Actions.hold("crouch");
+		if (!this.lj && shouldLJ) {
+			this.setLJ(true);
+			this.lj = true;
+		} else if (this.lj && !shouldLJ) {
+			this.lj = false;
+			this.setLJ(false);
+		}
+		if (!this.lj || !this.onGround) return;
 
+		const vel = this.body.getLinearVelocity();
+		vel.x += vel.x * 0.25;
+		vel.x = Math.min(vel.x, this.maxLongJumpSpeed);
+		vel.x = Math.max(vel.x, -this.maxLongJumpSpeed);
+		vel.y -= this.longJumpVertForce * (ticker.deltaMS / 1000);
+		this.body.setLinearVelocity(vel);
+	}
+
+	setCrouch(yes: boolean) {
+		this.crouching = yes;
+		this.setCrouchHitbox(true);
+		this.sprite.texture = yes
+			? Texture.from("player_crouch")
+			: Texture.from("player_normal");
+		this.sprite.anchor.set(0.5, yes ? 0 : 0.5);
+	}
+	setLJ(yes: boolean) {
+		if (this.crouching) {
+			this.sprite.texture = yes
+				? Texture.from("player_lj")
+				: Texture.from("player_crouch");
+			this.sprite.anchor.set(yes ? 0.375 : 0.5, yes ? 0.5 : 0);
+		} else {
+			this.sprite.texture = yes
+				? Texture.from("player_lj")
+				: Texture.from("player_normal");
+			this.sprite.anchor.set(yes ? 0.375 : 0.5, 0.5);
+		}
+	}
 	setCrouchHitbox(yes: boolean) {
 		const shape = this.shape as Box;
 		if (yes) {

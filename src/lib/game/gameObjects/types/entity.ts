@@ -31,7 +31,6 @@ export class Entity extends PhysicsObject {
 			};
 		}
 
-		console.log(Math.min(1 / (1 / 60 / (ticker.deltaMS / 1000)), 1));
 		const lerpedPos = lerp2D(
 			this.lastState?.pos,
 			planckToPixiPos(this.body!.getPosition()),
