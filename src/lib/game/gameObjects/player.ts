@@ -208,7 +208,7 @@ export class Player extends Entity {
 		if (!this.lj || !this.onGround) return;
 
 		const vel = this.body.getLinearVelocity();
-		vel.x += vel.x * 0.25;
+		vel.x += vel.x * (25 * (ticker.deltaMS / 1000));
 		vel.x = Math.min(vel.x, this.maxLongJumpSpeed);
 		vel.x = Math.max(vel.x, -this.maxLongJumpSpeed);
 		vel.y -= this.longJumpVertForce * (ticker.deltaMS / 1000);
