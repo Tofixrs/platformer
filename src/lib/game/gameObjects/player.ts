@@ -14,7 +14,7 @@ export class Player extends Entity {
 	maxMoveSpeed = 15;
 	maxRollSpeed = 25;
 	maxLongJumpSpeed = 30;
-	groundpoundSpeed = 2500;
+	groundpoundSpeed = 25;
 	jumping = false;
 	sensor!: Fixture;
 	onGround = false;
@@ -180,9 +180,7 @@ export class Player extends Entity {
 
 		if (!this.pounding) return;
 
-		this.body?.setLinearVelocity(
-			new Vec2(0, (this.groundpoundSpeed * ticker.deltaMS) / 1000),
-		);
+		this.body?.setLinearVelocity(new Vec2(0, this.groundpoundSpeed));
 		this.body?.setGravityScale(0);
 	}
 	handleWalk(ticker: Ticker) {
