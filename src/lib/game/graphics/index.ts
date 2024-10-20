@@ -4,17 +4,21 @@ import {
 	Container,
 	Graphics as Draw,
 	Renderer,
+	Text,
+	Ticker,
 } from "pixi.js";
 import { CircleShape, PolygonShape } from "planck-js/lib/shape";
 import { World } from "../world";
 import { Body, Vec2 } from "planck-js";
 import { rotate } from "@lib/math/rotateVec2";
 import { planckToPixiPos } from "@lib/math/units";
+import { Game } from "..";
 
 export class Graphics<R extends Renderer = Renderer> {
 	debugDraw = new Draw();
 	stage = new Container();
 	renderer!: R;
+	fpsElem: Text = new Text({ text: "0" });
 
 	async preload() {
 		const assets = [
@@ -49,16 +53,22 @@ export class Graphics<R extends Renderer = Renderer> {
 			this.resize();
 		});
 		this.resize();
+		this.fpsElem.label = "fpsElem";
 
 		document.getElementById("app")?.appendChild(this.renderer.canvas);
 	}
 	public render() {
+		this.fpsElem.visible = Game.debug;
 		this.renderer.render({ container: this.stage });
 	}
 	public resize() {
 		this.renderer.resize(globalThis.innerWidth, globalThis.innerHeight);
 	}
-	debugRender(world: World) {
+	debugRender(world: World, ticker: Ticker) {
+		if (!world.c.getChildByLabel(this.fpsElem.label)) {
+			this.stage.addChild(this.fpsElem);
+		}
+		this.fpsElem.text = Math.floor(ticker.FPS);
 		this.debugDraw.clear();
 
 		for (let body = world.p.getBodyList(); body; body = body?.getNext()) {

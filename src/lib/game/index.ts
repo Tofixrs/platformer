@@ -57,7 +57,7 @@ export class Game {
 	}
 	loop(ticker: Ticker) {
 		if (Game.debug) {
-			this.graphics.debugRender(this.worldManager.world!);
+			this.graphics.debugRender(this.worldManager.world!, ticker);
 		}
 
 		if (Actions.click("debug")) {
