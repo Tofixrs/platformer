@@ -202,9 +202,7 @@ export class Player extends Entity {
 		const shouldLJ = Actions.hold("longjump") && Actions.hold("crouch");
 		if (!this.lj && shouldLJ) {
 			this.setLJ(true);
-			this.lj = true;
 		} else if (this.lj && !shouldLJ) {
-			this.lj = false;
 			this.setLJ(false);
 		}
 		if (!this.lj || !this.onGround) return;
@@ -237,6 +235,7 @@ export class Player extends Entity {
 				: Texture.from("player_normal");
 			this.sprite.anchor.set(yes ? 0.375 : 0.5, 0.5);
 		}
+		this.lj = yes;
 	}
 	setCrouchHitbox(yes: boolean) {
 		const shape = this.shape as Box;
