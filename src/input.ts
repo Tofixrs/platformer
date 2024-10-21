@@ -49,6 +49,31 @@ export class Actions {
 		);
 		return res;
 	}
+	static init() {
+		//@ts-expect-error
+		window.action = Actions;
+
+		Actions.inputs.forEach((v) =>
+			v.forEach((v) => {
+				Actions.actions.set(v, false);
+			}),
+		);
+		const defaultBinds = [
+			["jump", "ArrowUp"],
+			["crouch", "ArrowDown"],
+			["left", "ArrowLeft"],
+			["right", "ArrowRight"],
+			["roll", "c"],
+			["groundpound", "x"],
+			["longjump", "z"],
+			["dive", "v"],
+			["debug", "`"],
+		];
+		defaultBinds.forEach(([action, key]) => {
+			if (Actions.isBound(action)) return;
+			Actions.bind(action, [key]);
+		});
+	}
 }
 
 window.addEventListener("keydown", (ev) => {
@@ -67,27 +92,4 @@ window.addEventListener("keyup", (ev) => {
 		if (Actions.debug)
 			console.log(`Unpressed: ${action} with key ${ev.key.toLowerCase()}`);
 	}
-});
-
-//@ts-expect-error
-window.action = Actions;
-
-Actions.inputs.forEach((v) =>
-	v.forEach((v) => {
-		Actions.actions.set(v, false);
-	}),
-);
-const defaultBinds = [
-	["jump", "ArrowUp"],
-	["crouch", "ArrowDown"],
-	["left", "ArrowLeft"],
-	["right", "ArrowRight"],
-	["roll", "c"],
-	["groundpound", "x"],
-	["longjump", "z"],
-	["debug", "`"],
-];
-defaultBinds.forEach(([action, key]) => {
-	if (Actions.isBound(action)) return;
-	Actions.bind(action, [key]);
 });

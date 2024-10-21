@@ -20,6 +20,8 @@ export class Game {
 	async run() {
 		await this.graphics.setup();
 		await this.graphics.preload();
+		Actions.init();
+
 		this.ticker.autoStart = true;
 
 		this.worldManager = new WorldManager(

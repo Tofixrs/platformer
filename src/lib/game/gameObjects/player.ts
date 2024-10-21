@@ -10,7 +10,9 @@ export class Player extends Entity {
 	moveForce = 5000;
 	rollForce = 1000;
 	longJumpVertForce = 1500;
-	jumpPower = -40000;
+	jumpForce = -40000;
+	diveForce = 500000;
+	maxDiveSpeed = 40;
 	maxMoveSpeed = 15;
 	maxRollSpeed = 25;
 	maxLongJumpSpeed = 30;
@@ -22,6 +24,7 @@ export class Player extends Entity {
 	rolling = false;
 	pounding = false;
 	lj = false;
+	diving = false;
 	direction = 1;
 	constructor(pos: Vec2) {
 		super({
@@ -87,6 +90,7 @@ export class Player extends Entity {
 		this.handleGroundpound(ticker);
 		this.handleWalk(ticker);
 		this.handleLongJump(ticker);
+		this.handleDive(ticker);
 	}
 	handleJump(ticker: Ticker) {
 		if (Actions.actions.get("jump") && this.onGround) {
@@ -106,7 +110,7 @@ export class Player extends Entity {
 		if (!this.jumping) return;
 
 		this.body?.applyForce(
-			new Vec2(0, this.jumpPower * (ticker.deltaMS / 1000)),
+			new Vec2(0, this.jumpForce * (ticker.deltaMS / 1000)),
 			new Vec2(0, -1),
 			true,
 		);
@@ -212,6 +216,24 @@ export class Player extends Entity {
 		vel.y -= this.longJumpVertForce * (ticker.deltaMS / 1000);
 		this.body.setLinearVelocity(vel);
 	}
+	handleDive(ticker: Ticker) {
+		if (this.pounding || this.rolling || this.lj) return;
+		const shouldDive = Actions.hold("dive") && !this.onGround;
+		if (!this.diving && shouldDive) {
+			this.setDive(true);
+			this.body.applyForceToCenter(
+				new Vec2(this.diveForce * this.direction * (ticker.deltaMS / 1000), 0),
+			);
+		} else if (this.onGround) {
+			this.setDive(false);
+		}
+		if (this.diving) {
+			const vel = this.body.getLinearVelocity();
+			vel.x = Math.min(vel.x, this.maxDiveSpeed);
+			vel.x = Math.max(vel.x, -this.maxDiveSpeed);
+			this.body.setLinearVelocity(vel);
+		}
+	}
 
 	setCrouch(yes: boolean) {
 		this.crouching = yes;
@@ -234,6 +256,32 @@ export class Player extends Entity {
 			this.sprite.anchor.set(yes ? 0.375 : 0.5, 0.5);
 		}
 		this.lj = yes;
+	}
+	setDive(yes: boolean) {
+		this.body.setAngle(yes ? (Math.PI / 2) * this.direction : 0);
+		this.diving = yes;
+		const shape = this.sensor.m_shape as Box;
+
+		//gotta love modifing verts of hitboxes lmao
+		if (yes) {
+			shape.m_vertices[0].x = 0.35 * this.direction;
+			shape.m_vertices[0].y = -0.4;
+			shape.m_vertices[1].x = 0.35 * this.direction;
+			shape.m_vertices[1].y = 0.4;
+			shape.m_vertices[2].x = 0.2 * this.direction;
+			shape.m_vertices[2].y = 0.4;
+			shape.m_vertices[3].x = 0.2 * this.direction;
+			shape.m_vertices[3].y = -0.4;
+		} else {
+			shape.m_vertices[0].x = 0.2;
+			shape.m_vertices[0].y = 0.4;
+			shape.m_vertices[1].x = 0.2;
+			shape.m_vertices[1].y = 0.62;
+			shape.m_vertices[2].x = -0.2;
+			shape.m_vertices[2].y = 0.62;
+			shape.m_vertices[3].x = -0.2;
+			shape.m_vertices[3].y = 0.4;
+		}
 	}
 	setCrouchHitbox(yes: boolean) {
 		const shape = this.shape as Box;
