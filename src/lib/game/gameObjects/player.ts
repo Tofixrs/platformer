@@ -27,7 +27,7 @@ export class Player extends Entity {
 	diving = false;
 	direction = 1;
 	divingDelayCounter = 0;
-	divingDelay = 250; // in ms
+	divingDelay = 500; // in ms
 	lockedMovement = false;
 	constructor(pos: Vec2) {
 		super({
@@ -238,7 +238,6 @@ export class Player extends Entity {
 				new Vec2(this.diveForce * this.direction * (ticker.deltaMS / 1000), 0),
 			);
 		} else if (this.onGround && this.diving) {
-			this.setDive(false);
 			this.divingDelayCounter += ticker.deltaMS;
 			this.lockedMovement = true;
 		}
@@ -251,6 +250,7 @@ export class Player extends Entity {
 		if (this.divingDelayCounter >= this.divingDelay) {
 			this.divingDelayCounter = 0;
 			this.lockedMovement = false;
+			this.setDive(false);
 		} else if (this.divingDelayCounter > 0) {
 			this.divingDelayCounter += ticker.deltaMS;
 		}
