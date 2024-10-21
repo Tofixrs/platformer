@@ -26,6 +26,9 @@ export class Player extends Entity {
 	lj = false;
 	diving = false;
 	direction = 1;
+	divingDelayCounter = 0;
+	divingDelay = 250; // in ms
+	lockedMovement = false;
 	constructor(pos: Vec2) {
 		super({
 			initPos: pos,
@@ -93,6 +96,7 @@ export class Player extends Entity {
 		this.handleDive(ticker);
 	}
 	handleJump(ticker: Ticker) {
+		if (this.lockedMovement) return;
 		if (Actions.actions.get("jump") && this.onGround) {
 			this.jumping = true;
 		}
@@ -117,7 +121,7 @@ export class Player extends Entity {
 	}
 
 	handleCrouch() {
-		if (this.pounding || this.diving) return;
+		if (this.pounding || this.diving || this.lockedMovement) return;
 
 		const shouldCrouch = Actions.hold("crouch");
 		if (!this.crouching && shouldCrouch) {
@@ -128,6 +132,7 @@ export class Player extends Entity {
 	}
 
 	handleRoll(ticker: Ticker) {
+		if (this.lockedMovement || this.pounding || this.diving || this.lj) return;
 		const shouldRoll = !!Actions.hold("crouch") && !!Actions.hold("roll");
 
 		if (this.rolling && !shouldRoll) {
@@ -164,7 +169,7 @@ export class Player extends Entity {
 	}
 
 	handleGroundpound(ticker: Ticker) {
-		if (this.rolling) return;
+		if (this.rolling || this.lockedMovement || this.diving) return;
 
 		if (Actions.click("groundpound") && !this.onGround) {
 			this.pounding = true;
@@ -188,8 +193,14 @@ export class Player extends Entity {
 		this.body?.setGravityScale(0);
 	}
 	handleWalk(ticker: Ticker) {
-		if (this.rolling) return;
-		if (this.pounding) return;
+		if (
+			this.rolling ||
+			this.diving ||
+			this.pounding ||
+			this.lockedMovement ||
+			this.lj
+		)
+			return;
 
 		if (!Actions.hold("left") && !Actions.hold("right")) return;
 		if (this.body!.getLinearVelocity().x * this.direction > this.maxMoveSpeed)
@@ -200,7 +211,8 @@ export class Player extends Entity {
 		);
 	}
 	handleLongJump(ticker: Ticker) {
-		if (this.rolling || this.pounding) return;
+		if (this.rolling || this.pounding || this.lockedMovement || this.diving)
+			return;
 		const shouldLJ = Actions.hold("longjump") && Actions.hold("crouch");
 		if (!this.lj && shouldLJ) {
 			this.setLJ(true);
@@ -218,20 +230,30 @@ export class Player extends Entity {
 	}
 	handleDive(ticker: Ticker) {
 		if (this.pounding || this.rolling || this.lj) return;
-		const shouldDive = Actions.hold("dive") && !this.onGround;
+		console.log(this.divingDelayCounter);
+		const shouldDive =
+			Actions.hold("dive") && !this.onGround && this.divingDelayCounter == 0;
 		if (!this.diving && shouldDive) {
 			this.setDive(true);
 			this.body.applyForceToCenter(
 				new Vec2(this.diveForce * this.direction * (ticker.deltaMS / 1000), 0),
 			);
-		} else if (this.onGround) {
+		} else if (this.onGround && this.diving) {
 			this.setDive(false);
+			this.divingDelayCounter += ticker.deltaMS;
+			this.lockedMovement = true;
 		}
 		if (this.diving) {
 			const vel = this.body.getLinearVelocity();
 			vel.x = Math.min(vel.x, this.maxDiveSpeed);
 			vel.x = Math.max(vel.x, -this.maxDiveSpeed);
 			this.body.setLinearVelocity(vel);
+		}
+		if (this.divingDelayCounter >= this.divingDelay) {
+			this.divingDelayCounter = 0;
+			this.lockedMovement = false;
+		} else if (this.divingDelayCounter > 0) {
+			this.divingDelayCounter += ticker.deltaMS;
 		}
 	}
 
