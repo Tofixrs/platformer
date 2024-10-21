@@ -54,6 +54,8 @@ export class Graphics<R extends Renderer = Renderer> {
 		});
 		this.resize();
 		this.fpsElem.label = "fpsElem";
+		this.fpsElem.visible = false;
+		this.stage.addChild(this.fpsElem);
 
 		document.getElementById("app")?.appendChild(this.renderer.canvas);
 	}
@@ -65,9 +67,6 @@ export class Graphics<R extends Renderer = Renderer> {
 		this.renderer.resize(globalThis.innerWidth, globalThis.innerHeight);
 	}
 	debugRender(world: World, ticker: Ticker) {
-		if (!world.c.getChildByLabel(this.fpsElem.label)) {
-			this.stage.addChild(this.fpsElem);
-		}
 		this.fpsElem.text = Math.floor(ticker.FPS);
 		this.debugDraw.clear();
 

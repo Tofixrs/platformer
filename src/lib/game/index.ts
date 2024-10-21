@@ -43,8 +43,8 @@ export class Game {
 		sprite.rect(0, 0, 20 * 128, 128);
 		sprite.fill({ color: 0x000000 });
 		const box = new Ground({
-			initPos: new Vec2(-10, 50),
-			shape: new Box(20, 1),
+			initPos: new Vec2(-200, 50),
+			shape: new Box(500, 0.5),
 			bodyType: "static",
 			friction: 0.5,
 			density: 0,
