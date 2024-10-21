@@ -117,7 +117,7 @@ export class Player extends Entity {
 	}
 
 	handleCrouch() {
-		if (this.pounding) return;
+		if (this.pounding || this.diving) return;
 
 		const shouldCrouch = Actions.hold("crouch");
 		if (!this.crouching && shouldCrouch) {
