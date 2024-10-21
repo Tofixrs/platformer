@@ -230,7 +230,6 @@ export class Player extends Entity {
 	}
 	handleDive(ticker: Ticker) {
 		if (this.pounding || this.rolling || this.lj) return;
-		console.log(this.divingDelayCounter);
 		const shouldDive =
 			Actions.hold("dive") && !this.onGround && this.divingDelayCounter == 0;
 		if (!this.diving && shouldDive) {
