@@ -31,7 +31,7 @@ export class World {
 	update(ticker: Ticker) {
 		this.accumulator += ticker.elapsedMS / 1000;
 		while (this.accumulator >= World.physicsStepTime) {
-			this.p.step(1 / 60, 6, 2);
+			this.p.step(World.physicsStepTime, 6, 2);
 			this.accumulator -= World.physicsStepTime;
 			this.entities.forEach((e) => e.fixedUpdate());
 		}
