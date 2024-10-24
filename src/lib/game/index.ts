@@ -40,7 +40,7 @@ export class Game {
 
 		const editor = new Editor(this.graphics);
 		this.worldManager.addWorld("editor", editor);
-		this.worldManager.changeWorld("editor");
+		this.worldManager.changeWorld("mainMenu");
 
 		const player = new Player(new Vec2(0, 0));
 		world.addEntity(player);
