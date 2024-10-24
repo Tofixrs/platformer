@@ -15,8 +15,8 @@ export class Settings extends World {
 	tabContainer: Container = new Container();
 	constructor(graphics: Graphics, worldManager: WorldManager) {
 		super(graphics);
-		this.c.x = 0;
-		this.c.y = 0;
+		this.main.x = 0;
+		this.main.y = 0;
 		const audio = new FancyButton({
 			defaultView: "audioBtn",
 		});
@@ -89,7 +89,7 @@ export class Settings extends World {
 
 		this.tabs.set("bind", bindTab);
 		this.changeTab("bind");
-		this.c.addChild(this.layout);
+		this.main.addChild(this.layout);
 		this.recenter(graphics.renderer.screen);
 	}
 	changeTab(name: string) {

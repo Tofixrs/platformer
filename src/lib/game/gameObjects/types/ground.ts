@@ -33,6 +33,6 @@ export class Ground extends PhysicsObject {
 			.rect(pos.x - size.x / 2, pos.y - size.y / 2, size.x, size.y)
 			.fill({ color: "black" });
 
-		world.c.addChild(graphics);
+		world.main.addChild(graphics);
 	}
 }

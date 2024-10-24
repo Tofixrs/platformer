@@ -8,6 +8,7 @@ import { MainMenu } from "./world/worlds/mainMenu";
 import { Settings } from "./world/worlds/settings";
 import { Player } from "./gameObjects/player";
 import { Ground } from "./gameObjects/types/ground";
+import { Editor } from "./world/worlds/editor";
 
 export class Game {
 	static debug = false;
@@ -30,13 +31,16 @@ export class Game {
 		);
 		const mainMenu = new MainMenu(this.graphics, this.worldManager);
 		this.worldManager.addWorld("mainMenu", mainMenu);
-		this.worldManager.changeWorld("mainMenu");
 
 		const settings = new Settings(this.graphics, this.worldManager);
 		this.worldManager.addWorld("settings", settings);
 
 		const world = new World(this.graphics);
 		this.worldManager.addWorld("game", world);
+
+		const editor = new Editor(this.graphics);
+		this.worldManager.addWorld("editor", editor);
+		this.worldManager.changeWorld("editor");
 
 		const player = new Player(new Vec2(0, 0));
 		world.addEntity(player);

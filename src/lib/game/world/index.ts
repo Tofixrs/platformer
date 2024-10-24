@@ -4,6 +4,8 @@ import { Graphics } from "../graphics";
 import { GameObject } from "../gameObject";
 
 export class World {
+	top: Container = new Container();
+	main: Container = new Container();
 	c: Container = new Container();
 	p = new PhysicsWorld({
 		gravity: new Vec2(0.0, 50.0),
@@ -12,8 +14,8 @@ export class World {
 	accumulator = 0;
 	static physicsStepTime = 1 / 60;
 	constructor(graphics: Graphics) {
-		this.c.x = graphics.renderer.screen.width / 2;
-		this.c.y = graphics.renderer.screen.height / 2;
+		this.main.x = graphics.renderer.screen.width / 2;
+		this.main.y = graphics.renderer.screen.height / 2;
 
 		const canvas = graphics.renderer.canvas;
 		new MutationObserver(() => {
@@ -22,6 +24,9 @@ export class World {
 			attributes: true,
 			attributeFilter: ["width", "height"],
 		});
+
+		this.c.addChild(this.main);
+		this.c.addChild(this.top);
 	}
 	addEntity<T extends GameObject>(entity: T) {
 		entity.create(this);
@@ -41,7 +46,7 @@ export class World {
 		});
 	}
 	recenter(screen: Rectangle) {
-		this.c.x = screen.width / 2;
-		this.c.y = screen.height / 2;
+		this.main.x = screen.width / 2;
+		this.main.y = screen.height / 2;
 	}
 }

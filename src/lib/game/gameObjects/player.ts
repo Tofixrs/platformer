@@ -72,11 +72,11 @@ export class Player extends Entity {
 	}
 	followCam(world: World, ticker: Ticker) {
 		const pos = lerp2D(
-			new Vec2(world.c.pivot.x, world.c.pivot.y),
+			new Vec2(world.main.pivot.x, world.main.pivot.y),
 			new Vec2(this.sprite.x, this.sprite.y),
 			0.025 * ticker.deltaMS,
 		);
-		world.c.pivot.set(pos.x, pos.y);
+		world.main.pivot.set(pos.x, pos.y);
 	}
 	handleMove(ticker: Ticker) {
 		if (Actions.hold("left")) {

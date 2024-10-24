@@ -48,7 +48,7 @@ export class Entity extends PhysicsObject {
 	create(world: World): void {
 		super.create(world);
 
-		world.c.addChild(this.sprite);
+		world.main.addChild(this.sprite);
 	}
 }
 

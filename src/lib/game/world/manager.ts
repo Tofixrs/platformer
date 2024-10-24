@@ -16,12 +16,12 @@ export class WorldManager {
 	changeWorld(name: string) {
 		if (this.world) {
 			this.worldContainer.removeChild(this.world.c);
-			this.world.c.removeChild(this.debug);
+			this.world.main.removeChild(this.debug);
 		}
 		this.currentWorld = name;
 		if (this.world) {
 			this.worldContainer.addChild(this.world.c);
-			this.world.c.addChild(this.debug);
+			this.world.main.addChild(this.debug);
 		}
 	}
 	get world() {

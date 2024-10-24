@@ -9,8 +9,6 @@ export class MainMenu extends World {
 	layout: Layout;
 	constructor(graphics: Graphics, worldManager: WorldManager) {
 		super(graphics);
-		this.c.x = 0;
-		this.c.y = 0;
 		const settings = new FancyButton({
 			defaultView: "settingsBtn",
 		});
@@ -48,7 +46,7 @@ export class MainMenu extends World {
 				height: "100%",
 			},
 		});
-		this.c.addChild(this.layout);
+		this.top.addChild(this.layout);
 		this.recenter(graphics.renderer.screen);
 	}
 	recenter(screen: Rectangle): void {
