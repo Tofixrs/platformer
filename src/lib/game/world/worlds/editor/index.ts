@@ -17,6 +17,7 @@ export class Editor extends World {
 	lastPivot: Vec2;
 	didDrawOnece = false;
 	lastTime = 0;
+	moveSpeed = 500;
 	constructor(graphics: Graphics) {
 		super(graphics);
 		this.main.x = 0;
@@ -109,17 +110,18 @@ export class Editor extends World {
 			this.drag.fill({ color: "black" });
 		}
 		this.lastPivot = new Vec2(this.main.pivot.x, this.main.pivot.y);
+		const currMoveSpeed = this.moveSpeed * (ticker.deltaMS / 1000);
 		if (Actions.hold("jump")) {
-			this.main.pivot.y -= 5;
+			this.main.pivot.y -= currMoveSpeed;
 		}
 		if (Actions.hold("left")) {
-			this.main.pivot.x -= 5;
+			this.main.pivot.x -= currMoveSpeed;
 		}
 		if (Actions.hold("right")) {
-			this.main.pivot.x += 5;
+			this.main.pivot.x += currMoveSpeed;
 		}
 		if (Actions.hold("crouch")) {
-			this.main.pivot.y += 5;
+			this.main.pivot.y += currMoveSpeed;
 		}
 	}
 	drawGrid() {
