@@ -110,14 +110,23 @@ export class Editor extends World {
 		}
 		this.lastPivot = new Vec2(this.main.pivot.x, this.main.pivot.y);
 		if (Actions.hold("jump")) {
-			this.main.pivot.x += 1;
+			this.main.pivot.y -= 5;
+		}
+		if (Actions.hold("left")) {
+			this.main.pivot.x -= 5;
+		}
+		if (Actions.hold("right")) {
+			this.main.pivot.x += 5;
+		}
+		if (Actions.hold("crouch")) {
+			this.main.pivot.y += 5;
 		}
 	}
 	drawGrid() {
 		if (this.didDrawOnece) {
 			if (
 				this.lastPivot.x == this.main.pivot.x &&
-				this.main.pivot.y == this.main.pivot.y
+				this.lastPivot.y == this.main.pivot.y
 			)
 				return;
 		}
