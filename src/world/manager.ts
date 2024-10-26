@@ -1,4 +1,4 @@
-import { Application, Container, Graphics as Draw } from "pixi.js";
+import { Container, Graphics as Draw } from "pixi.js";
 import { World } from ".";
 
 export class WorldManager {

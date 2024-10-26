@@ -1,11 +1,10 @@
-import { Ticker } from "pixi.js";
-import { World } from "./world";
+import { World } from "world";
 
 export interface GameObjectOptions {}
 
 export class GameObject {
 	constructor({}: GameObjectOptions) {}
-	update(_ticker: Ticker, _world: World) {}
+	update(_dt: number, _world: World) {}
 	fixedUpdate() {}
 	create(_world: World) {}
 }

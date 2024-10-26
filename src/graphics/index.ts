@@ -5,14 +5,13 @@ import {
 	Graphics as Draw,
 	Renderer,
 	Text,
-	Ticker,
 } from "pixi.js";
 import { CircleShape, PolygonShape } from "planck-js/lib/shape";
 import { World } from "../world";
 import { Body, Vec2 } from "planck-js";
 import { rotate } from "@lib/math/rotateVec2";
 import { planckToPixiPos } from "@lib/math/units";
-import { Game } from "..";
+import { Game } from "game";
 
 export class Graphics<R extends Renderer = Renderer> {
 	debugDraw = new Draw();
@@ -66,8 +65,8 @@ export class Graphics<R extends Renderer = Renderer> {
 	public resize() {
 		this.renderer.resize(globalThis.innerWidth, globalThis.innerHeight);
 	}
-	debugRender(world: World, ticker: Ticker) {
-		this.fpsElem.text = Math.floor(ticker.FPS);
+	debugRender(world: World, dt: number) {
+		this.fpsElem.text = Math.floor(1 / dt);
 		this.debugDraw.clear();
 
 		for (let body = world.p.getBodyList(); body; body = body?.getNext()) {

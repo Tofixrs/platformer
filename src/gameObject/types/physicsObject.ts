@@ -1,5 +1,5 @@
-import { GameObject, GameObjectOptions } from "@lib/game/gameObject";
-import { World } from "@lib/game/world";
+import { GameObject, GameObjectOptions } from "gameObject";
+import { World } from "world";
 import { Body, Shape, Vec2 } from "planck-js";
 
 export interface PhysicsObjectOptions extends GameObjectOptions {

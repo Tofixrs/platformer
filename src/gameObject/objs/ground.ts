@@ -1,5 +1,5 @@
-import { World } from "@lib/game/world";
-import { PhysicsObject, PhysicsObjectOptions } from "./physicsObject";
+import { World } from "world";
+import { PhysicsObject, PhysicsObjectOptions } from "../types/physicsObject";
 import { Graphics } from "pixi.js";
 import { PolygonShape } from "planck-js/lib/shape";
 import { planckToPixiPos } from "@lib/math/units";

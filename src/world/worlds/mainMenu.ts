@@ -1,8 +1,8 @@
-import { Rectangle, Graphics as Draw } from "pixi.js";
+import { Rectangle } from "pixi.js";
 import { World } from "..";
 import { WorldManager } from "../manager";
 import { FancyButton } from "@pixi/ui";
-import { Graphics } from "@lib/game/graphics";
+import { Graphics } from "graphics";
 import { Layout } from "@pixi/layout";
 
 export class MainMenu extends World {

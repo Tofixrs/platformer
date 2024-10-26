@@ -1,7 +1,7 @@
-import { Container, Rectangle, Ticker } from "pixi.js";
+import { Container, Rectangle } from "pixi.js";
 import { World as PhysicsWorld, Vec2 } from "planck-js";
-import { Graphics } from "../graphics";
-import { GameObject } from "../gameObject";
+import { Graphics } from "graphics";
+import { GameObject } from "gameObject";
 
 export class World {
 	top: Container = new Container();
@@ -33,8 +33,8 @@ export class World {
 		this.entities.push(entity);
 	}
 
-	update(ticker: Ticker) {
-		this.accumulator += ticker.elapsedMS / 1000;
+	update(dt: number) {
+		this.accumulator += dt;
 		while (this.accumulator >= World.physicsStepTime) {
 			this.p.step(World.physicsStepTime, 6, 2);
 			this.accumulator -= World.physicsStepTime;
@@ -42,7 +42,7 @@ export class World {
 		}
 
 		this.entities.forEach((e) => {
-			e.update(ticker, this);
+			e.update(dt, this);
 		});
 	}
 	recenter(screen: Rectangle) {

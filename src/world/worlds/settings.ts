@@ -1,11 +1,11 @@
-import { Application, Container, Rectangle, Text } from "pixi.js";
+import { Container, Rectangle, Text } from "pixi.js";
 import { World } from "..";
-import { ButtonContainer, FancyButton, ScrollBox } from "@pixi/ui";
-import { Button } from "@lib/game/ui/button";
+import { FancyButton, ScrollBox } from "@pixi/ui";
+import { Button } from "@ui/button";
 import { Vec2 } from "planck-js";
 import { WorldManager } from "../manager";
-import { Actions } from "input";
-import { Graphics } from "@lib/game/graphics";
+import { Actions } from "@lib/input";
+import { Graphics } from "graphics";
 import { Layout } from "@pixi/layout";
 
 export class Settings extends World {
@@ -109,12 +109,12 @@ export class Settings extends World {
 
 class Tab {
 	c: Container = new Container();
-	recenter(screen: Rectangle) {}
+	recenter(_screen: Rectangle) {}
 }
 
 class BindTab extends Tab {
 	public scrollbox: ScrollBox = new ScrollBox({
-		height: 1000,
+		height: 800,
 		width: 1000,
 		topPadding: 10,
 		elementsMargin: 50,
@@ -191,7 +191,5 @@ class BindTab extends Tab {
 		this.reboundAction = action;
 		this.reboundKey = key;
 	}
-	recenter(screen: Rectangle) {
-		this.scrollbox.height = screen.height / 4 + screen.height / 2;
-	}
+	recenter(_screen: Rectangle) {}
 }

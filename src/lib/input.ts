@@ -1,4 +1,4 @@
-import { Storage } from "@lib/game/storage";
+import { Storage } from "@lib/storage";
 
 export class Actions {
 	static actions: Map<string, boolean> = new Map();

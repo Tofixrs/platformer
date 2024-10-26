@@ -19,7 +19,10 @@
 		"paths": {
 			"@": ["./."],
 			"@lib/*": ["./lib/*"],
-			"@math/*": ["./lib/math/*"]
+			"@math/*": ["./lib/math/*"],
+			"@ui/*": ["./lib/ui/*"],
+			"@worlds/*": ["./world/worlds/*"],
+			"@gameObjs/*": ["./gameObject/objs/*"]
 		}
 	},
 	"include": ["src"]

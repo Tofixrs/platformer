@@ -1,20 +1,19 @@
-import { Ticker, Graphics as Draw } from "pixi.js";
 import { Graphics } from "./graphics";
 import { World } from "./world";
-import { Actions } from "input";
+import { Actions } from "@lib/input";
 import { Box, Vec2 } from "planck-js";
 import { WorldManager } from "./world/manager";
 import { MainMenu } from "./world/worlds/mainMenu";
 import { Settings } from "./world/worlds/settings";
-import { Player } from "./gameObjects/player";
-import { Ground } from "./gameObjects/types/ground";
+import { Player } from "@gameObjs/player";
+import { Ground } from "@gameObjs/ground";
 import { Editor } from "./world/worlds/editor";
 
 export class Game {
 	static debug = false;
 	graphics = new Graphics();
 	worldManager!: WorldManager;
-	ticker = new Ticker();
+	lastTime: number = 0;
 	constructor() {
 		Actions.debug = Game.debug;
 	}
@@ -22,8 +21,6 @@ export class Game {
 		await this.graphics.setup();
 		await this.graphics.preload();
 		Actions.init();
-
-		this.ticker.autoStart = true;
 
 		this.worldManager = new WorldManager(
 			this.graphics.stage,
@@ -56,11 +53,16 @@ export class Game {
 		world.addEntity(box);
 		// world.addEntity(new Dummy(new Vec2(0, 0), world));
 
-		this.ticker.add((ticker) => this.loop(ticker));
+		requestAnimationFrame((time) => {
+			this.loop(time);
+		});
 	}
-	loop(ticker: Ticker) {
+	loop(time: number) {
+		const dt = (time - this.lastTime) / 1000;
+		this.lastTime = time;
+
 		if (Game.debug) {
-			this.graphics.debugRender(this.worldManager.world!, ticker);
+			this.graphics.debugRender(this.worldManager.world!, dt);
 		}
 
 		if (Actions.click("debug")) {
@@ -69,7 +71,8 @@ export class Game {
 			this.graphics.debugDraw.clear();
 		}
 
-		this.worldManager.world?.update(ticker);
+		this.worldManager.world?.update(dt);
 		this.graphics.render();
+		requestAnimationFrame((time) => this.loop(time));
 	}
 }

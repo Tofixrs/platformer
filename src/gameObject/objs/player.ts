@@ -1,9 +1,9 @@
 import { Box, Contact, Fixture, Vec2 } from "planck-js";
-import { Sprite, Texture, Ticker } from "pixi.js";
-import { Entity } from "./types/entity";
-import { World } from "../world";
+import { Sprite, Texture } from "pixi.js";
+import { Entity } from "../types/entity";
+import { World } from "world";
 import { lerp2D } from "@lib/math/lerp";
-import { Actions } from "input";
+import { Actions } from "@lib/input";
 
 export class Player extends Entity {
 	maxJumpVel = -20;
@@ -27,7 +27,7 @@ export class Player extends Entity {
 	diving = false;
 	direction = 1;
 	divingDelayCounter = 0;
-	divingDelay = 500; // in ms
+	divingDelay = 0.5; // in ms
 	lockedMovement = false;
 	constructor(pos: Vec2) {
 		super({
@@ -65,20 +65,20 @@ export class Player extends Entity {
 
 		this.onGround = contact.isTouching();
 	}
-	update(ticker: Ticker, world: World): void {
-		super.update(ticker, world);
-		this.followCam(world, ticker);
-		this.handleMove(ticker);
+	update(dt: number, world: World): void {
+		super.update(dt, world);
+		this.followCam(world, dt);
+		this.handleMove(dt);
 	}
-	followCam(world: World, ticker: Ticker) {
+	followCam(world: World, dt: number) {
 		const pos = lerp2D(
 			new Vec2(world.main.pivot.x, world.main.pivot.y),
 			new Vec2(this.sprite.x, this.sprite.y),
-			0.025 * ticker.deltaMS,
+			20 * dt,
 		);
 		world.main.pivot.set(pos.x, pos.y);
 	}
-	handleMove(ticker: Ticker) {
+	handleMove(dt: number) {
 		if (Actions.hold("left")) {
 			this.direction = -1;
 		}
@@ -87,15 +87,15 @@ export class Player extends Entity {
 			this.direction = 1;
 		}
 		this.sprite.scale.x = this.direction;
-		this.handleJump(ticker);
+		this.handleJump(dt);
 		this.handleCrouch();
-		this.handleRoll(ticker);
-		this.handleGroundpound(ticker);
-		this.handleWalk(ticker);
-		this.handleLongJump(ticker);
-		this.handleDive(ticker);
+		this.handleRoll(dt);
+		this.handleGroundpound();
+		this.handleWalk(dt);
+		this.handleLongJump(dt);
+		this.handleDive(dt);
 	}
-	handleJump(ticker: Ticker) {
+	handleJump(dt: number) {
 		if (this.lockedMovement) return;
 		if (Actions.actions.get("jump") && this.onGround) {
 			this.jumping = true;
@@ -114,7 +114,7 @@ export class Player extends Entity {
 		if (!this.jumping) return;
 
 		this.body?.applyForce(
-			new Vec2(0, this.jumpForce * (ticker.deltaMS / 1000)),
+			new Vec2(0, this.jumpForce * dt),
 			new Vec2(0, -1),
 			true,
 		);
@@ -131,7 +131,7 @@ export class Player extends Entity {
 		}
 	}
 
-	handleRoll(ticker: Ticker) {
+	handleRoll(dt: number) {
 		if (this.lockedMovement || this.pounding || this.diving || this.lj) return;
 		const shouldRoll = !!Actions.hold("crouch") && !!Actions.hold("roll");
 
@@ -157,18 +157,15 @@ export class Player extends Entity {
 			return;
 		}
 
-		this.body?.applyForceToCenter(
-			new Vec2(0, 25 * (ticker.deltaMS / 1000)),
-			true,
-		);
+		this.body?.applyForceToCenter(new Vec2(0, 25 * dt), true);
 		this.body?.applyForce(
-			new Vec2(this.direction * this.rollForce * (ticker.deltaMS / 1000), 0),
-			new Vec2(0, 0.05),
+			new Vec2(this.direction * this.rollForce * dt, 0),
+			new Vec2(0, -10),
 			true,
 		);
 	}
 
-	handleGroundpound(ticker: Ticker) {
+	handleGroundpound() {
 		if (this.rolling || this.lockedMovement || this.diving) return;
 
 		if (Actions.click("groundpound") && !this.onGround) {
@@ -192,7 +189,7 @@ export class Player extends Entity {
 		this.body?.setLinearVelocity(new Vec2(0, this.groundpoundSpeed));
 		this.body?.setGravityScale(0);
 	}
-	handleWalk(ticker: Ticker) {
+	handleWalk(dt: number) {
 		if (
 			this.rolling ||
 			this.diving ||
@@ -206,11 +203,11 @@ export class Player extends Entity {
 		if (this.body!.getLinearVelocity().x * this.direction > this.maxMoveSpeed)
 			return;
 		this.body?.applyForceToCenter(
-			new Vec2(this.moveForce * this.direction * (ticker.deltaMS / 1000), 0),
+			new Vec2(this.moveForce * this.direction * dt, 0),
 			true,
 		);
 	}
-	handleLongJump(ticker: Ticker) {
+	handleLongJump(dt: number) {
 		if (this.rolling || this.pounding || this.lockedMovement || this.diving)
 			return;
 		const shouldLJ = Actions.hold("longjump") && Actions.hold("crouch");
@@ -222,23 +219,23 @@ export class Player extends Entity {
 		if (!this.lj || !this.onGround) return;
 
 		const vel = this.body.getLinearVelocity();
-		vel.x += vel.x * (25 * (ticker.deltaMS / 1000));
+		vel.x += vel.x * (25 * dt);
 		vel.x = Math.min(vel.x, this.maxLongJumpSpeed);
 		vel.x = Math.max(vel.x, -this.maxLongJumpSpeed);
-		vel.y -= this.longJumpVertForce * (ticker.deltaMS / 1000);
+		vel.y -= this.longJumpVertForce * dt;
 		this.body.setLinearVelocity(vel);
 	}
-	handleDive(ticker: Ticker) {
+	handleDive(dt: number) {
 		if (this.pounding || this.rolling || this.lj) return;
 		const shouldDive =
 			Actions.hold("dive") && !this.onGround && this.divingDelayCounter == 0;
 		if (!this.diving && shouldDive) {
 			this.setDive(true);
 			this.body.applyForceToCenter(
-				new Vec2(this.diveForce * this.direction * (ticker.deltaMS / 1000), 0),
+				new Vec2(this.diveForce * this.direction * dt, 0),
 			);
 		} else if (this.onGround && this.diving) {
-			this.divingDelayCounter += ticker.deltaMS;
+			this.divingDelayCounter += dt;
 			this.lockedMovement = true;
 		}
 		if (this.diving) {
@@ -252,7 +249,7 @@ export class Player extends Entity {
 			this.lockedMovement = false;
 			this.setDive(false);
 		} else if (this.divingDelayCounter > 0) {
-			this.divingDelayCounter += ticker.deltaMS;
+			this.divingDelayCounter += dt;
 		}
 	}
 

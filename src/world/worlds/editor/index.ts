@@ -1,11 +1,11 @@
-import { Graphics as Draw, Rectangle, Ticker } from "pixi.js";
+import { Graphics as Draw, Rectangle } from "pixi.js";
 import { World } from "../..";
-import { Graphics } from "@lib/game/graphics";
+import { Graphics } from "graphics";
 import { Box, Vec2 } from "planck-js";
-import { Ground } from "@lib/game/gameObjects/types/ground";
+import { Ground } from "@gameObjs/ground";
 import { pixiToPlanckPos } from "@lib/math/units";
-import { Actions } from "input";
-import { Player } from "@lib/game/gameObjects/player";
+import { Actions } from "@lib/input";
+import { Player } from "@gameObjs/player";
 
 export class Editor extends World {
 	gridDraw = new Draw();
@@ -48,7 +48,7 @@ export class Editor extends World {
 				new Vec2(ev.x + this.main.pivot.x, ev.y + this.main.pivot.y),
 			);
 		});
-		window.addEventListener("mouseup", (ev) => {
+		window.addEventListener("mouseup", () => {
 			if (this.testing) return;
 			if (!this.startDragPos || !this.currDragPos) return;
 
@@ -83,12 +83,12 @@ export class Editor extends World {
 			this.drag.clear();
 		});
 	}
-	update(ticker: Ticker): void {
+	update(dt: number): void {
 		if (Actions.click("test")) {
 			this.setTesting(!this.testing);
 		}
 		if (this.testing) {
-			super.update(ticker);
+			super.update(dt);
 			return;
 		}
 		this.drawGrid();
@@ -125,7 +125,7 @@ export class Editor extends World {
 			this.drag.fill({ color: "black" });
 		}
 		this.lastPivot = new Vec2(this.main.pivot.x, this.main.pivot.y);
-		const currMoveSpeed = this.moveSpeed * (ticker.deltaMS / 1000);
+		const currMoveSpeed = this.moveSpeed * dt;
 		if (Actions.hold("jump")) {
 			this.main.pivot.y -= currMoveSpeed;
 		}
@@ -211,6 +211,7 @@ export class Editor extends World {
 		} else {
 			this.main.x = 0;
 			this.main.y = 0;
+			this.main.pivot.set(0, 0);
 		}
 		this.didDrawOnece = false;
 		this.drawGrid();
