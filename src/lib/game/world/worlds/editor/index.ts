@@ -5,6 +5,7 @@ import { Box, Vec2 } from "planck-js";
 import { Ground } from "@lib/game/gameObjects/types/ground";
 import { pixiToPlanckPos } from "@lib/math/units";
 import { Actions } from "input";
+import { Player } from "@lib/game/gameObjects/player";
 
 export class Editor extends World {
 	gridDraw = new Draw();
@@ -18,6 +19,7 @@ export class Editor extends World {
 	didDrawOnece = false;
 	lastTime = 0;
 	moveSpeed = 500;
+	testing = false;
 	constructor(graphics: Graphics) {
 		super(graphics);
 		this.main.x = 0;
@@ -29,6 +31,8 @@ export class Editor extends World {
 		this.main.addChild(this.drag);
 
 		window.addEventListener("mousedown", (ev) => {
+			if (this.testing) return;
+
 			if (this.startDragPos || this.currDragPos) return;
 			this.startDragPos = this.getGridPosAtPos(
 				new Vec2(ev.x + this.main.pivot.x, ev.y + this.main.pivot.y),
@@ -37,13 +41,15 @@ export class Editor extends World {
 			this.lastDragPos = this.startDragPos;
 		});
 		window.addEventListener("mousemove", (ev) => {
-			if (this.startDragPos) {
-				this.currDragPos = this.getGridPosAtPos(
-					new Vec2(ev.x + this.main.pivot.x, ev.y + this.main.pivot.y),
-				);
-			}
+			if (this.testing) return;
+			if (!this.startDragPos) return;
+
+			this.currDragPos = this.getGridPosAtPos(
+				new Vec2(ev.x + this.main.pivot.x, ev.y + this.main.pivot.y),
+			);
 		});
 		window.addEventListener("mouseup", (ev) => {
+			if (this.testing) return;
 			if (!this.startDragPos || !this.currDragPos) return;
 
 			const w = (this.currDragPos.x - this.startDragPos.x) * this.gridSize;
@@ -61,21 +67,30 @@ export class Editor extends World {
 			physicsSize.y /= 2;
 			physicsPos.x += physicsSize.x;
 			physicsPos.y += physicsSize.y;
+			physicsSize.x = Math.abs(physicsSize.x);
+			physicsSize.y = Math.abs(physicsSize.y);
 			const ground = new Ground({
-				friction: 10,
+				friction: 0.5,
 				shape: new Box(physicsSize.x, physicsSize.y),
 				initPos: physicsPos,
-				density: 20,
+				density: 0,
 				bodyType: "static",
 				fixedRotation: true,
 			});
-			ground.create(this);
+			this.addEntity(ground);
 			this.currDragPos = undefined;
 			this.startDragPos = undefined;
 			this.drag.clear();
 		});
 	}
 	update(ticker: Ticker): void {
+		if (Actions.click("test")) {
+			this.setTesting(!this.testing);
+		}
+		if (this.testing) {
+			super.update(ticker);
+			return;
+		}
 		this.drawGrid();
 		if (Actions.click("back") && this.startDragPos) {
 			this.startDragPos = undefined;
@@ -171,8 +186,32 @@ export class Editor extends World {
 	getPosAtGrid(pos: Vec2) {
 		return new Vec2(pos.x * this.gridSize, pos.y * this.gridSize);
 	}
+	setTesting(yes: boolean) {
+		if (yes) {
+			this.gridDraw.clear();
+			const player = new Player(new Vec2(0, 0));
+			this.addEntity(player);
+		} else {
+			const p = this.entities.find((v) => v instanceof Player);
+			if (p) {
+				this.p.destroyBody(p.body);
+				this.main.removeChild(p.sprite);
+				this.entities = this.entities.filter((v) => !(v instanceof Player));
+			}
+		}
+		this.testing = yes;
+		this.recenter(this.screen);
+	}
 	recenter(screen: Rectangle): void {
 		this.screen = screen;
+
+		if (this.testing) {
+			super.recenter(screen);
+			return;
+		} else {
+			this.main.x = 0;
+			this.main.y = 0;
+		}
 		this.didDrawOnece = false;
 		this.drawGrid();
 	}

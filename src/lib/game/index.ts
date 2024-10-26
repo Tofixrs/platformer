@@ -45,9 +45,6 @@ export class Game {
 		const player = new Player(new Vec2(0, 0));
 		world.addEntity(player);
 
-		const sprite = new Draw();
-		sprite.rect(0, 0, 20 * 128, 128);
-		sprite.fill({ color: 0x000000 });
 		const box = new Ground({
 			initPos: new Vec2(-200, 50),
 			shape: new Box(500, 0.5),
