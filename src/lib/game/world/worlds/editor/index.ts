@@ -10,7 +10,7 @@ import { Player } from "@lib/game/gameObjects/player";
 export class Editor extends World {
 	gridDraw = new Draw();
 	screen: Rectangle = new Rectangle(0, 0);
-	gridSize = 24;
+	gridSize = 32;
 	startDragPos?: Vec2;
 	currDragPos?: Vec2;
 	lastDragPos?: Vec2;
