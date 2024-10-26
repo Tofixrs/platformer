@@ -3,17 +3,17 @@ import { World } from "..";
 import { FancyButton, ScrollBox } from "@pixi/ui";
 import { Button } from "@ui/button";
 import { Vec2 } from "planck-js";
-import { WorldManager } from "../manager";
 import { Actions } from "@lib/input";
 import { Graphics } from "graphics";
 import { Layout } from "@pixi/layout";
+import { ViewController } from "view/controller";
 
 export class Settings extends World {
 	public tabs: Map<string, Tab> = new Map();
 	public currentTab = "";
 	layout: Layout;
 	tabContainer: Container = new Container();
-	constructor(graphics: Graphics, worldManager: WorldManager) {
+	constructor(graphics: Graphics, viewController: ViewController) {
 		super(graphics);
 		this.main.x = 0;
 		this.main.y = 0;
@@ -38,7 +38,7 @@ export class Settings extends World {
 		});
 
 		close.onPress.connect(() => {
-			worldManager.changeWorld("mainMenu");
+			viewController.set("mainMenu");
 		});
 
 		const tabBtns = [audio, bindBtn];

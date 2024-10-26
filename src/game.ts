@@ -2,18 +2,22 @@ import { Graphics } from "./graphics";
 import { World } from "./world";
 import { Actions } from "@lib/input";
 import { Box, Vec2 } from "planck-js";
-import { WorldManager } from "./world/manager";
-import { MainMenu } from "./world/worlds/mainMenu";
-import { Settings } from "./world/worlds/settings";
+import { MainMenu } from "@worlds/mainMenu";
+import { Settings } from "@worlds/settings";
 import { Player } from "@gameObjs/player";
 import { Ground } from "@gameObjs/ground";
 import { Editor } from "./world/worlds/editor";
+import { Loop } from "@lib/loop";
+import { ViewController } from "view/controller";
 
 export class Game {
 	static debug = false;
 	graphics = new Graphics();
-	worldManager!: WorldManager;
-	lastTime: number = 0;
+	viewController!: ViewController;
+	loop: Loop = new Loop({
+		update: (dt) => this.update(dt),
+		fixedUpdate: () => this.fixedUpdate(),
+	});
 	constructor() {
 		Actions.debug = Game.debug;
 	}
@@ -22,22 +26,22 @@ export class Game {
 		await this.graphics.preload();
 		Actions.init();
 
-		this.worldManager = new WorldManager(
+		this.viewController = new ViewController(
 			this.graphics.stage,
 			this.graphics.debugDraw,
 		);
-		const mainMenu = new MainMenu(this.graphics, this.worldManager);
-		this.worldManager.addWorld("mainMenu", mainMenu);
+		const mainMenu = new MainMenu(this.graphics, this.viewController);
+		this.viewController.add("mainMenu", mainMenu);
 
-		const settings = new Settings(this.graphics, this.worldManager);
-		this.worldManager.addWorld("settings", settings);
+		const settings = new Settings(this.graphics, this.viewController);
+		this.viewController.add("settings", settings);
 
 		const world = new World(this.graphics);
-		this.worldManager.addWorld("game", world);
+		this.viewController.add("game", world);
 
 		const editor = new Editor(this.graphics);
-		this.worldManager.addWorld("editor", editor);
-		this.worldManager.changeWorld("mainMenu");
+		this.viewController.add("editor", editor);
+		this.viewController.set("mainMenu");
 
 		const player = new Player(new Vec2(0, 0));
 		world.addEntity(player);
@@ -53,16 +57,11 @@ export class Game {
 		world.addEntity(box);
 		// world.addEntity(new Dummy(new Vec2(0, 0), world));
 
-		requestAnimationFrame((time) => {
-			this.loop(time);
-		});
+		this.loop.run();
 	}
-	loop(time: number) {
-		const dt = (time - this.lastTime) / 1000;
-		this.lastTime = time;
-
-		if (Game.debug) {
-			this.graphics.debugRender(this.worldManager.world!, dt);
+	update(dt: number) {
+		if (Game.debug && this.viewController.view instanceof World) {
+			this.graphics.debugRender(this.viewController.view!, dt);
 		}
 
 		if (Actions.click("debug")) {
@@ -71,8 +70,10 @@ export class Game {
 			this.graphics.debugDraw.clear();
 		}
 
-		this.worldManager.world?.update(dt);
+		this.viewController.view?.update(dt);
 		this.graphics.render();
-		requestAnimationFrame((time) => this.loop(time));
+	}
+	fixedUpdate() {
+		this.viewController.view?.fixedUpdate();
 	}
 }
