@@ -6,6 +6,7 @@ import { Sprite } from "pixi.js";
 export class EditorUi extends Screen {
 	topPinned: GameObjectID[] = [GameObjectID.Player, GameObjectID.Ground];
 	selected?: GameObjectID;
+	dontPlace = false;
 	constructor() {
 		super("Editor");
 		this.addTopPins();
@@ -37,6 +38,7 @@ export class EditorUi extends Screen {
 			});
 			btn.onPress.connect(() => {
 				this.selected = this.topPinned[i];
+				this.dontPlace = true;
 			});
 			pins.push(btn);
 		}

@@ -6,6 +6,7 @@ import { getClassFromID } from "gameObject/utils";
 import { Player } from "@gameObjs/player";
 import { World } from "world";
 import { Ground } from "@gameObjs/ground";
+import { Editor } from ".";
 
 export class ObjectPlacer {
 	selected?: GameObjectID;
@@ -15,7 +16,7 @@ export class ObjectPlacer {
 	constructor(world: World) {
 		this.worldRef = world;
 	}
-	update(pivot: Vec2) {
+	update(pivot: Vec2, world: Editor) {
 		if (this.selected) {
 			this.mouseHandler.shouldDrag = getClassFromID(this.selected).draggable;
 		} else {
@@ -23,9 +24,14 @@ export class ObjectPlacer {
 		}
 		this.mouseHandler.testing = this.testing;
 		this.mouseHandler.update(pivot);
-		this.create();
+		if (world.ui.dontPlace) {
+			this.mouseHandler.reset();
+			world.ui.dontPlace = false;
+			return;
+		}
+		this.create(world);
 	}
-	create() {
+	create(world: Editor) {
 		if (this.testing) return;
 		if (
 			!this.mouseHandler.finishedPos ||
@@ -55,8 +61,7 @@ export class ObjectPlacer {
 				break;
 			}
 		}
-		this.mouseHandler.finishedSize = undefined;
-		this.mouseHandler.finishedPos = undefined;
+		this.mouseHandler.reset();
 		this.worldRef.addEntity(go);
 	}
 }

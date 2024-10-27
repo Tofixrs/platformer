@@ -34,7 +34,7 @@ export class Player extends Entity {
 			initPos: pos,
 			friction: 0.2,
 			density: 2,
-			shape: new Box(0.25, 0.5),
+			shape: new Box(0.23, 0.5),
 			sprite: Sprite.from("player_normal"),
 			bodyType: "dynamic",
 			fixedRotation: true,

@@ -18,9 +18,9 @@ export class MouseHandler {
 	constructor(pivot: Vec2) {
 		this.pivot = pivot;
 
-		window.addEventListener("mousedown", (ev) => this.startDrag(ev));
-		window.addEventListener("mousemove", (ev) => this.updateDrag(ev));
-		window.addEventListener("mouseup", () => {
+		window.addEventListener("pointerdown", (ev) => this.startDrag(ev));
+		window.addEventListener("pointermove", (ev) => this.updateDrag(ev));
+		window.addEventListener("pointerup", () => {
 			if (this.testing) return;
 			if (!this.startPos || !this.currPos) return;
 
@@ -105,6 +105,8 @@ export class MouseHandler {
 		this.startPos = undefined;
 		this.currPos = undefined;
 		this.lastPos = undefined;
+		this.finishedSize = undefined;
+		this.finishedPos = undefined;
 		this.dragDraw.clear();
 	}
 }

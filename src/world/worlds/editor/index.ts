@@ -41,7 +41,7 @@ export class Editor extends World {
 			super.update(dt);
 			return;
 		}
-		this.objectPlacer.update(pivot);
+		this.objectPlacer.update(pivot, this);
 		this.moveViewBox(dt);
 		this.objectPlacer.selected = this.ui.selected;
 		if (this.rerender) {
@@ -81,6 +81,7 @@ export class Editor extends World {
 		}
 		this.testing = yes;
 		this.objectPlacer.testing = yes;
+		this.ui.visible = !yes;
 		this.recenter(this.screen);
 	}
 	recenter(screen: Rectangle): void {
