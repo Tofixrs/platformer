@@ -6,10 +6,11 @@ import { Actions } from "@lib/input";
 import { EditorUi } from "./ui";
 import { Grid } from "./grid";
 import { ObjectPlacer } from "./objectPlacer";
+import { meter } from "@lib/math/units";
 
 export class Editor extends World {
 	screen: Rectangle = new Rectangle(0, 0);
-	static gridSize = 32;
+	static gridSize = meter * 0.25;
 	lastTime = 0;
 	moveSpeed = 500;
 	testing = false;

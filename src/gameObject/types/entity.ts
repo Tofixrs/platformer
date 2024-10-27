@@ -1,6 +1,6 @@
 import { World } from "world";
 import { lerp, lerp2D } from "@lib/math/lerp";
-import { planckToPixi } from "@lib/math/units";
+import { meter, planckToPixi } from "@lib/math/units";
 import { Sprite } from "pixi.js";
 import { Vec2 } from "planck-js";
 import { PhysicsObject, PhysicsObjectOptions } from "./physicsObject";
@@ -20,7 +20,7 @@ export class Entity extends PhysicsObject {
 
 		const spritePos = planckToPixi(options.initPos);
 		this.sprite.x = spritePos.x;
-		this.sprite.y = spritePos.y;
+		this.sprite.y = spritePos.y - 0.5 * meter;
 	}
 
 	update(dt: number, _world: World): void {
