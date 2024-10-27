@@ -7,12 +7,12 @@ import { Actions } from "@lib/input";
 
 export class Player extends Entity {
 	maxJumpVel = -20;
-	moveForce = 5000;
+	moveForce = 1500;
 	rollForce = 1000;
 	longJumpVertForce = 1500;
 	jumpForce = -40000;
-	diveForce = 500000;
-	maxDiveSpeed = 40;
+	diveForce = 50000;
+	maxDiveSpeed = 30;
 	maxMoveSpeed = 15;
 	maxRollSpeed = 25;
 	maxLongJumpSpeed = 30;
@@ -33,7 +33,7 @@ export class Player extends Entity {
 		super({
 			initPos: pos,
 			friction: 0.2,
-			density: 5,
+			density: 2,
 			shape: new Box(0.25, 0.5),
 			sprite: Sprite.from("player_normal"),
 			bodyType: "dynamic",

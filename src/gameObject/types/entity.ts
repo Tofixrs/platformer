@@ -1,6 +1,6 @@
 import { World } from "world";
 import { lerp, lerp2D } from "@lib/math/lerp";
-import { planckToPixiPos } from "@lib/math/units";
+import { planckToPixi } from "@lib/math/units";
 import { Sprite } from "pixi.js";
 import { Vec2 } from "planck-js";
 import { PhysicsObject, PhysicsObjectOptions } from "./physicsObject";
@@ -18,7 +18,7 @@ export class Entity extends PhysicsObject {
 		this.sprite = options.sprite;
 		this.sprite.anchor.set(0.5, 0);
 
-		const spritePos = planckToPixiPos(options.initPos);
+		const spritePos = planckToPixi(options.initPos);
 		this.sprite.x = spritePos.x;
 		this.sprite.y = spritePos.y;
 	}
@@ -33,7 +33,7 @@ export class Entity extends PhysicsObject {
 
 		const lerpedPos = lerp2D(
 			this.lastState?.pos,
-			planckToPixiPos(this.body!.getPosition()),
+			planckToPixi(this.body!.getPosition()),
 			(dt / World.physicsStepTime) * 0.58,
 		);
 		const lerpedAngle = lerp(this.lastState.angle, this.body!.getAngle(), 1);

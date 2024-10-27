@@ -10,7 +10,7 @@ import { CircleShape, PolygonShape } from "planck-js/lib/shape";
 import { World } from "../world";
 import { Body, Vec2 } from "planck-js";
 import { rotate } from "@lib/math/rotateVec2";
-import { planckToPixiPos } from "@lib/math/units";
+import { planckToPixi } from "@lib/math/units";
 import { Game } from "game";
 
 export class Graphics<R extends Renderer = Renderer> {
@@ -41,8 +41,13 @@ export class Graphics<R extends Renderer = Renderer> {
 				alias: "bindBtn",
 				src: "./assets/ui/bind.png",
 			},
+			{
+				alias: "ground_pin",
+				src: "./assets/ground_pin.png",
+			},
 		];
 		await Assets.load("./assets/char/meta.json");
+		await Assets.load("./assets/ui/editor.json");
 		await Assets.load(assets);
 	}
 	async setup() {
@@ -93,21 +98,21 @@ export class Graphics<R extends Renderer = Renderer> {
 		}
 	}
 	renderCircle(shape: CircleShape, body: Body) {
-		const pos = planckToPixiPos(body.getPosition());
+		const pos = planckToPixi(body.getPosition());
 		this.debugDraw.circle(pos.x, pos.y, shape.m_radius);
 	}
 	renderPolyglon(shape: PolygonShape, body: Body) {
-		const pivot = planckToPixiPos(
+		const pivot = planckToPixi(
 			new Vec2(body.getPosition().x, body.getPosition().y),
 		);
 
-		const startPos = planckToPixiPos(
+		const startPos = planckToPixi(
 			new Vec2(shape.m_vertices[0].x, shape.m_vertices[0].y),
 		);
 		const rotatedPos = rotate(startPos, pivot, body.getAngle());
 		this.debugDraw.moveTo(rotatedPos.x, rotatedPos.y);
 		for (const vert of shape.m_vertices) {
-			const point = planckToPixiPos(new Vec2(vert.x, vert.y));
+			const point = planckToPixi(new Vec2(vert.x, vert.y));
 			const rotatedPoint = rotate(point, pivot, body.getAngle());
 			this.debugDraw.lineTo(rotatedPoint.x, rotatedPoint.y);
 		}

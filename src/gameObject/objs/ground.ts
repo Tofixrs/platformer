@@ -2,10 +2,11 @@ import { World } from "world";
 import { PhysicsObject, PhysicsObjectOptions } from "../types/physicsObject";
 import { Graphics } from "pixi.js";
 import { PolygonShape } from "planck-js/lib/shape";
-import { planckToPixiPos } from "@lib/math/units";
+import { planckToPixi } from "@lib/math/units";
 import { Vec2 } from "planck-js";
 
 export class Ground extends PhysicsObject {
+	static draggable: boolean = true;
 	constructor(opt: PhysicsObjectOptions) {
 		super(opt);
 		this.shape = opt.shape;
@@ -25,10 +26,10 @@ export class Ground extends PhysicsObject {
 		});
 		const shape = this.shape as PolygonShape;
 
-		const pos = planckToPixiPos(this.body.getPosition());
+		const pos = planckToPixi(this.body.getPosition());
 		const w = Math.abs(shape.m_vertices[2].x) + Math.abs(shape.m_vertices[0].x);
 		const h = Math.abs(shape.m_vertices[0].y) + Math.abs(shape.m_vertices[1].y);
-		const size = planckToPixiPos(new Vec2(w, h));
+		const size = planckToPixi(new Vec2(w, h));
 		const graphics = new Graphics()
 			.rect(pos.x - size.x / 2, pos.y - size.y / 2, size.x, size.y)
 			.fill({ color: "black" });
