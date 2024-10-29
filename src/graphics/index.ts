@@ -20,36 +20,12 @@ export class Graphics<R extends Renderer = Renderer> {
 	fpsElem: Text = new Text({ text: "0" });
 
 	async preload() {
-		const assets = [
-			{
-				alias: "playBtn",
-				src: "./assets/ui/play.png",
-			},
-			{
-				alias: "settingsBtn",
-				src: "./assets/ui/settings.png",
-			},
-			{
-				alias: "closeBtn",
-				src: "./assets/ui/close.png",
-			},
-			{
-				alias: "audioBtn",
-				src: "./assets/ui/audio.png",
-			},
-			{
-				alias: "bindBtn",
-				src: "./assets/ui/bind.png",
-			},
-			{
-				alias: "ground_pin",
-				src: "./assets/ground_pin.png",
-			},
-		];
+		await Assets.load([
+			{ alias: "ground_pin", src: "./assets/ground_pin.png" },
+		]);
 		await Assets.load("./assets/char/meta.json");
-		await Assets.load("./assets/ui/editor.json");
 		await Assets.load("./assets/ground/grass.json");
-		await Assets.load(assets);
+		await Assets.load("./assets/ui/meta.json");
 	}
 	async setup() {
 		this.renderer = (await autoDetectRenderer({ background: "white" })) as R;

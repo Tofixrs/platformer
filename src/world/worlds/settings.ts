@@ -1,4 +1,4 @@
-import { Container, Rectangle, Text } from "pixi.js";
+import { Container, Rectangle, Text, TextStyle } from "pixi.js";
 import { World } from "..";
 import { FancyButton, ScrollBox } from "@pixi/ui";
 import { Button } from "@ui/button";
@@ -7,6 +7,8 @@ import { Actions } from "@lib/input";
 import { Graphics } from "graphics";
 import { Layout } from "@pixi/layout";
 import { ViewController } from "view/controller";
+import { BigButton } from "@lib/ui/big_button";
+import { SmallButton } from "@lib/ui/small_button";
 
 export class Settings extends World {
 	public tabs: Map<string, Tab> = new Map();
@@ -17,30 +19,9 @@ export class Settings extends World {
 		super(graphics);
 		this.main.x = 0;
 		this.main.y = 0;
-		const audio = new FancyButton({
-			defaultView: "audioBtn",
-		});
-
-		audio.onPress.connect(() => {
-			this.changeTab("audio");
-		});
-
-		const bindBtn = new FancyButton({
-			defaultView: "bindBtn",
-		});
-
-		bindBtn.onPress.connect(() => {
-			this.changeTab("bind");
-		});
-
-		const close = new FancyButton({
-			defaultView: "closeBtn",
-		});
-
-		close.onPress.connect(() => {
-			viewController.set("mainMenu");
-		});
-
+		const audio = new BigButton("Audio", () => this.changeTab("audio"));
+		const bindBtn = new BigButton("binds", () => this.changeTab("bind"));
+		const close = new SmallButton("❌", () => viewController.set("mainMenu"));
 		const tabBtns = [audio, bindBtn];
 
 		this.layout = new Layout({

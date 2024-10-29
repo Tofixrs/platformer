@@ -1,0 +1,21 @@
+{
+	"frames": {
+		"editor_pin": {
+			"frame": { "x": 0, "y": 256, "w": 256, "h": 200 }
+		},
+		"small_button": {
+			"frame": { "x": 0, "y": 0, "w": 256, "h": 256 }
+		},
+		"big_button": {
+			"frame": { "x": 256, "y": 0, "w": 512, "h": 256 }
+		}
+	},
+	"meta": {
+		"image": "ui.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 768,
+			"h": 768
+		}
+	}
+}

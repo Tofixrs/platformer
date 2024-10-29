@@ -32,7 +32,7 @@ export class EditorUi extends Screen {
 				? Sprite.from(this.topPinned[i] + "_pin")
 				: undefined;
 			const btn = new FancyButton({
-				defaultView: "pin",
+				defaultView: "editor_pin",
 				icon,
 				defaultIconScale: 5,
 			});

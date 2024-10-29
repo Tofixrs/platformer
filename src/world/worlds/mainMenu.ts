@@ -1,27 +1,20 @@
-import { Rectangle } from "pixi.js";
+import { Rectangle, Text, TextStyle } from "pixi.js";
 import { World } from "..";
 import { FancyButton } from "@pixi/ui";
 import { Graphics } from "graphics";
 import { Layout } from "@pixi/layout";
 import { ViewController } from "view/controller";
+import { BigButton } from "@lib/ui/big_button";
+import { SmallButton } from "@lib/ui/small_button";
 
 export class MainMenu extends World {
 	layout: Layout;
 	constructor(graphics: Graphics, viewController: ViewController) {
 		super(graphics);
-		const settings = new FancyButton({
-			defaultView: "settingsBtn",
-		});
-		settings.onPress.connect(() => {
-			viewController.set("settings");
-		});
-
-		const play = new FancyButton({
-			defaultView: "playBtn",
-		});
-		play.onPress.connect(() => {
-			viewController.set("game");
-		});
+		const settings = new SmallButton("⚙️", () =>
+			viewController.set("settings"),
+		);
+		const play = new BigButton("Play", () => viewController.set("game"));
 
 		this.layout = new Layout({
 			content: [
