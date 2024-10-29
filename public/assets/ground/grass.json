@@ -8,6 +8,16 @@
 		},
 		"grass_center": {
 			"frame": { "x": 512, "y": 0, "w": 256, "h": 256 }
+		},
+		"grass_corner_both": {
+			"frame": { "x": 0, "y": 256, "w": 256, "h": 256 }
+		},
+		"grass_side_both": {
+			"frame": { "x": 256, "y": 256, "w": 256, "h": 256 }
+		},
+
+		"grass_one_block": {
+			"frame": { "x": 512, "y": 256, "w": 256, "h": 256 }
 		}
 	},
 	"meta": {
@@ -16,7 +26,7 @@
 		"scale": 16,
 		"size": {
 			"w": 768,
-			"h": 256
+			"h": 512
 		}
 	}
 }

@@ -59,55 +59,83 @@ export class Ground extends PhysicsObject {
 			drawStartPos.y = drawEndPos.y;
 			size.y = Math.abs(size.y);
 		}
-		const leftCorner = Sprite.from("grass_corner");
-		leftCorner.x = size.x;
-		leftCorner.scale.x = -1;
+		if (size.x > Editor.gridSize && size.y > Editor.gridSize) {
+			const leftCorner = Sprite.from("grass_corner");
+			leftCorner.x = size.x;
+			leftCorner.scale.x = -1;
 
-		const bottomLeftCorner = Sprite.from("grass_corner");
-		bottomLeftCorner.x = size.x;
-		bottomLeftCorner.y = size.y;
-		bottomLeftCorner.scale.x = -1;
-		bottomLeftCorner.scale.y = -1;
+			const bottomLeftCorner = Sprite.from("grass_corner");
+			bottomLeftCorner.x = size.x;
+			bottomLeftCorner.y = size.y;
+			bottomLeftCorner.scale.x = -1;
+			bottomLeftCorner.scale.y = -1;
 
-		const bottomRightCorner = Sprite.from("grass_corner");
-		bottomRightCorner.y = size.y;
-		bottomRightCorner.scale.y = -1;
+			const bottomRightCorner = Sprite.from("grass_corner");
+			bottomRightCorner.y = size.y;
+			bottomRightCorner.scale.y = -1;
 
-		const center = Sprite.from("grass_center");
-		center.x = Editor.gridSize;
-		center.y = Editor.gridSize;
-		center.width = size.x - Editor.gridSize * 2;
-		center.height = size.y - Editor.gridSize * 2;
+			const center = Sprite.from("grass_center");
+			center.x = Editor.gridSize;
+			center.y = Editor.gridSize;
+			center.width = size.x - Editor.gridSize * 2;
+			center.height = size.y - Editor.gridSize * 2;
 
-		const topSide = Sprite.from("grass_side");
-		topSide.x = Editor.gridSize;
-		topSide.width = size.x - Editor.gridSize * 2;
+			const topSide = Sprite.from("grass_side");
+			topSide.x = Editor.gridSize;
+			topSide.width = size.x - Editor.gridSize * 2;
 
-		const bottomSide = Sprite.from("grass_side");
-		bottomSide.x = size.x - Editor.gridSize;
-		bottomSide.y = size.y;
-		bottomSide.width = size.x - Editor.gridSize * 2;
-		bottomSide.angle = -180;
-		const leftSide = Sprite.from("grass_side");
-		leftSide.width = size.y - Editor.gridSize * 2;
-		leftSide.angle = -90;
-		leftSide.y = size.y - Editor.gridSize;
-		const rightSide = Sprite.from("grass_side");
-		rightSide.width = size.y - Editor.gridSize * 2;
-		rightSide.angle = 90;
-		rightSide.x = size.x;
-		rightSide.y = Editor.gridSize;
+			const bottomSide = Sprite.from("grass_side");
+			bottomSide.x = size.x - Editor.gridSize;
+			bottomSide.y = size.y;
+			bottomSide.width = size.x - Editor.gridSize * 2;
+			bottomSide.angle = -180;
+			const leftSide = Sprite.from("grass_side");
+			leftSide.width = size.y - Editor.gridSize * 2;
+			leftSide.angle = -90;
+			leftSide.y = size.y - Editor.gridSize;
+			const rightSide = Sprite.from("grass_side");
+			rightSide.width = size.y - Editor.gridSize * 2;
+			rightSide.angle = 90;
+			rightSide.x = size.x;
+			rightSide.y = Editor.gridSize;
 
-		container.addChild(
-			Sprite.from("grass_corner"),
-			leftCorner,
-			bottomLeftCorner,
-			bottomRightCorner,
-			center,
-			topSide,
-			bottomSide,
-			leftSide,
-			rightSide,
-		);
+			container.addChild(
+				Sprite.from("grass_corner"),
+				leftCorner,
+				bottomLeftCorner,
+				bottomRightCorner,
+				center,
+				topSide,
+				bottomSide,
+				leftSide,
+				rightSide,
+			);
+		} else if (size.y > Editor.gridSize && size.x == Editor.gridSize) {
+			const side = Sprite.from("grass_side_both");
+			side.y = Editor.gridSize;
+			side.x = Editor.gridSize;
+			side.width = size.y - Editor.gridSize * 2;
+			side.angle = 90;
+			const bottomCorner = Sprite.from("grass_corner_both");
+			bottomCorner.scale.y = -1;
+			bottomCorner.y = size.y;
+
+			container.addChild(Sprite.from("grass_corner_both"), side, bottomCorner);
+		} else if (size.y == Editor.gridSize && size.x > Editor.gridSize) {
+			const leftSide = Sprite.from("grass_corner_both");
+			leftSide.angle = -90;
+			leftSide.y = Editor.gridSize;
+
+			const rightSide = Sprite.from("grass_corner_both");
+			rightSide.angle = 90;
+			rightSide.x = size.x;
+			const center = Sprite.from("grass_side_both");
+			center.x = Editor.gridSize;
+			center.width = size.x - Editor.gridSize * 2;
+
+			container.addChild(leftSide, rightSide, center);
+		} else if (size.y == Editor.gridSize && size.x == Editor.gridSize) {
+			container.addChild(Sprite.from("grass_one_block"));
+		}
 	}
 }
