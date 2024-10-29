@@ -42,6 +42,12 @@ export class ObjectPlacer {
 		const physPos = pixiToPlanck(this.mouseHandler.finishedPos);
 		const physSize = pixiToPlanck(this.mouseHandler.finishedSize);
 		const selectedClass = getClassFromID(this.selected);
+		if (selectedClass.maxInstances) {
+			const amount = world.entities.filter(
+				(v) => v instanceof selectedClass,
+			).length;
+			if (amount >= selectedClass.maxInstances) return;
+		}
 		let go!: GameObject;
 
 		switch (selectedClass) {

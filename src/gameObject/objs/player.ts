@@ -29,6 +29,7 @@ export class Player extends Entity {
 	divingDelayCounter = 0;
 	divingDelay = 0.5; // in ms
 	lockedMovement = false;
+	static maxInstances = 1;
 	constructor(pos: Vec2) {
 		super({
 			initPos: pos,

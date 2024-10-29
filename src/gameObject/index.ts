@@ -5,6 +5,7 @@ export interface GameObjectOptions {}
 
 export class GameObject {
 	static draggable = false;
+	static maxInstances?: number;
 	constructor({}: GameObjectOptions) {}
 	update(_dt: number, _world: World) {}
 	fixedUpdate() {}
