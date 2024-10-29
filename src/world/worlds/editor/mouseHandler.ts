@@ -1,11 +1,12 @@
-import { Sprite, Graphics as Draw } from "pixi.js";
+import { Sprite, Container } from "pixi.js";
 import { Vec2 } from "planck-js";
 import { Editor, getGridPosAtPos, getPosAtGrid } from ".";
 import { Actions } from "@lib/input";
+import { GameObject } from "gameObject";
 
 export class MouseHandler {
 	fakeSprtie?: Sprite;
-	dragDraw = new Draw();
+	dragContainer = new Container();
 	startPos?: Vec2;
 	currPos?: Vec2;
 	lastPos?: Vec2;
@@ -14,6 +15,7 @@ export class MouseHandler {
 	pivot: Vec2;
 	shouldDrag = false;
 	testing = false;
+	selectedClass?: typeof GameObject;
 
 	constructor(pivot: Vec2) {
 		this.pivot = pivot;
@@ -33,7 +35,6 @@ export class MouseHandler {
 			if (this.shouldDrag && (w == 0 || h == 0)) {
 				this.currPos = undefined;
 				this.startPos = undefined;
-				this.dragDraw.clear();
 				return;
 			}
 			this.finishedPos = pos;
@@ -41,7 +42,6 @@ export class MouseHandler {
 
 			this.currPos = undefined;
 			this.startPos = undefined;
-			this.dragDraw.clear();
 		});
 	}
 
@@ -52,30 +52,21 @@ export class MouseHandler {
 		if (this.currPos.x == this.lastPos.x && this.currPos.y == this.lastPos.x)
 			return;
 		this.lastPos = this.currPos;
-
-		this.lastPos = this.currPos;
 		if (!this.shouldDrag) return;
 
 		const drawStartPos = getPosAtGrid(this.startPos);
-		const drawEndPos = getPosAtGrid(this.currPos);
 
-		const size = new Vec2(
-			drawEndPos.x - drawStartPos.x,
-			drawEndPos.y - drawStartPos.y,
+		this.clearRender();
+		this.dragContainer.x = drawStartPos.x;
+		this.dragContainer.y = drawStartPos.y;
+		this.selectedClass?.renderDrag(
+			this.startPos,
+			this.currPos,
+			this.dragContainer,
 		);
-
-		if (size.x < 0) {
-			drawStartPos.x = drawEndPos.x;
-			size.x = Math.abs(size.x);
-		}
-		if (size.y < 0) {
-			drawStartPos.y = drawEndPos.y;
-			size.y = Math.abs(size.y);
-		}
-		this.dragDraw.clear();
-
-		this.dragDraw.rect(drawStartPos.x, drawStartPos.y, size.x, size.y);
-		this.dragDraw.fill({ color: "black" });
+	}
+	clearRender() {
+		this.dragContainer.removeChildren();
 	}
 	startDrag(ev: MouseEvent) {
 		if (this.testing) return;
@@ -107,6 +98,6 @@ export class MouseHandler {
 		this.lastPos = undefined;
 		this.finishedSize = undefined;
 		this.finishedPos = undefined;
-		this.dragDraw.clear();
+		this.clearRender();
 	}
 }

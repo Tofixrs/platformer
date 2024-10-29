@@ -29,7 +29,6 @@ export class Editor extends World {
 
 		this.top.addChild(this.ui);
 		this.main.addChild(this.grid.draw);
-		this.main.addChild(this.objectPlacer.mouseHandler.dragDraw);
 		this.recenter(graphics.renderer.screen);
 	}
 	update(dt: number): void {

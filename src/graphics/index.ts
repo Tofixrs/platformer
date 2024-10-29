@@ -48,6 +48,7 @@ export class Graphics<R extends Renderer = Renderer> {
 		];
 		await Assets.load("./assets/char/meta.json");
 		await Assets.load("./assets/ui/editor.json");
+		await Assets.load("./assets/ground/grass.json");
 		await Assets.load(assets);
 	}
 	async setup() {

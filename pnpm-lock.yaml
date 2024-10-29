@@ -11,6 +11,9 @@ importers:
       '@pixi/layout':
         specifier: ^2.0.1
         version: 2.0.1(pixi.js@8.5.0)
+      '@pixi/tilemap':
+        specifier: ^5.0.1
+        version: 5.0.1(pixi.js@8.5.0)
       '@pixi/ui':
         specifier: ^2.1.5
         version: 2.1.5(pixi.js@8.5.0)
@@ -202,6 +205,11 @@ packages:
     resolution: {integrity: sha512-xQj/w44FKLaRn71iEQACxRTYgEVU4c8SXTJKcSIDm/uXgKm3JKRylEOpQ9u6x3gWIFeV5d3gx/oHBJHdZhqAoQ==}
     peerDependencies:
       pixi.js: ^8.0.4
+
+  '@pixi/tilemap@5.0.1':
+    resolution: {integrity: sha512-ePdtS7WXF0FfQM6WajIynDLKC7+57ErOxXfB1cTKG7jN0WIbZFSEoU/MSJS02kIKDWOyRRoe+R5im+3LXU5BBw==}
+    peerDependencies:
+      pixi.js: '>=8.0.2'
 
   '@pixi/ui@2.1.5':
     resolution: {integrity: sha512-hdraQYreymjYjWiUu/L4uQIl6VaPcREyvjB64mZpTB44SQ0WmcpiZtw4HyGvM48JRMlkQb12CiFyvxFKI8uC1Q==}
@@ -562,6 +570,10 @@ snapshots:
   '@pixi/colord@2.9.6': {}
 
   '@pixi/layout@2.0.1(pixi.js@8.5.0)':
+    dependencies:
+      pixi.js: 8.5.0
+
+  '@pixi/tilemap@5.0.1(pixi.js@8.5.0)':
     dependencies:
       pixi.js: 8.5.0
 

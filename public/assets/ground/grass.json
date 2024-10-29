@@ -1,0 +1,22 @@
+{
+	"frames": {
+		"grass_corner": {
+			"frame": { "x": 0, "y": 0, "w": 256, "h": 256 }
+		},
+		"grass_side": {
+			"frame": { "x": 256, "y": 0, "w": 256, "h": 256 }
+		},
+		"grass_center": {
+			"frame": { "x": 512, "y": 0, "w": 256, "h": 256 }
+		}
+	},
+	"meta": {
+		"image": "grass.png",
+		"format": "RGBA8888",
+		"scale": 16,
+		"size": {
+			"w": 768,
+			"h": 256
+		}
+	}
+}

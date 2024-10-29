@@ -15,12 +15,16 @@ export class ObjectPlacer {
 	testing = false;
 	constructor(world: World) {
 		this.worldRef = world;
+		world.main.addChild(this.mouseHandler.dragContainer);
 	}
 	update(pivot: Vec2, world: Editor) {
 		if (this.selected) {
 			this.mouseHandler.shouldDrag = getClassFromID(this.selected).draggable;
+
+			this.mouseHandler.selectedClass = getClassFromID(this.selected);
 		} else {
 			this.mouseHandler.shouldDrag = false;
+			this.mouseHandler.selectedClass = undefined;
 		}
 		this.mouseHandler.testing = this.testing;
 		this.mouseHandler.update(pivot);

@@ -1,3 +1,4 @@
+import { Container } from "pixi.js";
 import { Vec2 } from "planck-js";
 import { World } from "world";
 
@@ -10,7 +11,7 @@ export class GameObject {
 	update(_dt: number, _world: World) {}
 	fixedUpdate() {}
 	create(_world: World) {}
-	static renderDrag(startPos: Vec2, currPos: Vec2) {}
+	static renderDrag(_startPos: Vec2, _currPos: Vec2, _container: Container) {}
 }
 
 export enum GameObjectID {
