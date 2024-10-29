@@ -55,8 +55,15 @@ export class MouseHandler {
 		if (!this.shouldDrag) return;
 
 		const drawStartPos = getPosAtGrid(this.startPos);
+		const drawEndPos = getPosAtGrid(this.currPos);
 
 		this.clearRender();
+		if (drawEndPos.x < drawStartPos.x) {
+			drawStartPos.x = drawEndPos.x;
+		}
+		if (drawEndPos.y < drawStartPos.y) {
+			drawStartPos.y = drawEndPos.y;
+		}
 		this.dragContainer.x = drawStartPos.x;
 		this.dragContainer.y = drawStartPos.y;
 		this.selectedClass?.renderDrag(

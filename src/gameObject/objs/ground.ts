@@ -1,6 +1,6 @@
 import { World } from "world";
 import { PhysicsObject, PhysicsObjectOptions } from "../types/physicsObject";
-import { Container, Graphics, Sprite } from "pixi.js";
+import { Container, Sprite } from "pixi.js";
 import { PolygonShape } from "planck-js/lib/shape";
 import { planckToPixi } from "@lib/math/units";
 import { Vec2 } from "planck-js";
@@ -46,19 +46,12 @@ export class Ground extends PhysicsObject {
 		const drawStartPos = getPosAtGrid(startPos);
 		const drawEndPos = getPosAtGrid(currPos);
 
-		const size = new Vec2(
-			drawEndPos.x - drawStartPos.x,
-			drawEndPos.y - drawStartPos.y,
-		);
+		const w = drawEndPos.x - drawStartPos.x;
+		const h = drawEndPos.y - drawStartPos.y;
+		const size = new Vec2(w, h);
 
-		if (size.x < 0) {
-			drawStartPos.x = drawEndPos.x;
-			size.x = Math.abs(size.x);
-		}
-		if (size.y < 0) {
-			drawStartPos.y = drawEndPos.y;
-			size.y = Math.abs(size.y);
-		}
+		size.x = Math.abs(size.x);
+		size.y = Math.abs(size.y);
 		if (size.x > Editor.gridSize && size.y > Editor.gridSize) {
 			const leftCorner = Sprite.from("grass_corner");
 			leftCorner.x = size.x;
