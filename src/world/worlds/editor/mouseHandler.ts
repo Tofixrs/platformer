@@ -2,7 +2,8 @@ import { Sprite, Container } from "pixi.js";
 import { Vec2 } from "planck-js";
 import { Editor, getGridPosAtPos, getPosAtGrid } from ".";
 import { Actions } from "@lib/input";
-import { GameObject } from "gameObject";
+import { GameObjectID } from "gameObject";
+import { getClassFromID } from "gameObject/utils";
 
 export class MouseHandler {
 	fakeSprtie?: Sprite;
@@ -15,38 +16,19 @@ export class MouseHandler {
 	pivot: Vec2;
 	shouldDrag = false;
 	testing = false;
-	selectedClass?: typeof GameObject;
-
+	erase = false;
 	constructor(pivot: Vec2) {
 		this.pivot = pivot;
 
 		window.addEventListener("pointerdown", (ev) => this.startDrag(ev));
 		window.addEventListener("pointermove", (ev) => this.updateDrag(ev));
-		window.addEventListener("pointerup", () => {
-			if (this.testing) return;
-			if (!this.startPos || !this.currPos) return;
-
-			const w = ((this.currPos.x - this.startPos.x) * Editor.gridSize) / 2;
-			const h = ((this.currPos.y - this.startPos.y) * Editor.gridSize) / 2;
-			const size = new Vec2(Math.abs(w), Math.abs(h));
-			const pos = getPosAtGrid(this.startPos);
-			pos.x += w;
-			pos.y += h;
-			if (this.shouldDrag && (w == 0 || h == 0)) {
-				this.currPos = undefined;
-				this.startPos = undefined;
-				return;
-			}
-			this.finishedPos = pos;
-			this.finishedSize = size;
-
-			this.currPos = undefined;
-			this.startPos = undefined;
-		});
+		window.addEventListener("pointerup", (ev) => this.finishDrag(ev));
 	}
 
-	render() {
+	render(selected?: GameObjectID) {
 		if (this.testing) return;
+		if (this.erase) return;
+		if (!selected) return;
 
 		if (!this.currPos || !this.startPos || !this.lastPos) return;
 		if (this.currPos.x == this.lastPos.x && this.currPos.y == this.lastPos.x)
@@ -66,11 +48,8 @@ export class MouseHandler {
 		}
 		this.dragContainer.x = drawStartPos.x;
 		this.dragContainer.y = drawStartPos.y;
-		this.selectedClass?.renderDrag(
-			this.startPos,
-			this.currPos,
-			this.dragContainer,
-		);
+		const selectedClass = getClassFromID(selected);
+		selectedClass.renderDrag(this.startPos, this.currPos, this.dragContainer);
 	}
 	clearRender() {
 		this.dragContainer.removeChildren();
@@ -92,12 +71,45 @@ export class MouseHandler {
 			new Vec2(ev.x + this.pivot.x, ev.y + this.pivot.y),
 		);
 	}
-	update(pivot: Vec2) {
+	finishDrag(_ev: MouseEvent) {
+		if (this.testing) return;
+		if (this.erase) {
+			this.reset();
+			return;
+		}
+		if (!this.startPos || !this.currPos) return;
+
+		const w = ((this.currPos.x - this.startPos.x) * Editor.gridSize) / 2;
+		const h = ((this.currPos.y - this.startPos.y) * Editor.gridSize) / 2;
+		const size = new Vec2(Math.abs(w), Math.abs(h));
+		const pos = getPosAtGrid(this.startPos);
+		pos.x += w;
+		pos.y += h;
+		if (this.shouldDrag && (w == 0 || h == 0)) {
+			this.currPos = undefined;
+			this.startPos = undefined;
+			return;
+		}
+		this.finishedPos = pos;
+		this.finishedSize = size;
+
+		this.currPos = undefined;
+		this.startPos = undefined;
+	}
+	update(
+		pivot: Vec2,
+		testing: boolean,
+		erase: boolean,
+		selected?: GameObjectID,
+	) {
+		this.testing = testing;
 		this.pivot = pivot;
+		this.shouldDrag = selected ? getClassFromID(selected).draggable : false;
+		this.erase = erase;
 		if (Actions.click("back")) {
 			this.reset();
 		}
-		this.render();
+		this.render(selected);
 	}
 	reset() {
 		this.startPos = undefined;

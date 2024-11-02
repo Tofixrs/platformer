@@ -30,6 +30,10 @@ export class World extends View {
 		entity.create(this);
 		this.entities.push(entity);
 	}
+	removeEntity<T extends GameObject>(entity: T, i: number) {
+		entity.remove(this);
+		this.entities.splice(i, 1);
+	}
 
 	update(dt: number) {
 		this.entities.forEach((e) => e.update(dt, this));

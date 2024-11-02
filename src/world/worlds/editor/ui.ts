@@ -1,3 +1,4 @@
+import { SmallButton } from "@lib/ui/small_button";
 import { FancyButton } from "@pixi/ui";
 import { Screen } from "@ui/screen";
 import { GameObjectID } from "gameObject";
@@ -7,6 +8,7 @@ export class EditorUi extends Screen {
 	topPinned: GameObjectID[] = [GameObjectID.Player, GameObjectID.Ground];
 	selected?: GameObjectID;
 	dontPlace = false;
+	erase = false;
 	constructor() {
 		super("Editor");
 		this.addTopPins();
@@ -22,7 +24,19 @@ export class EditorUi extends Screen {
 					marginTop: 5,
 				},
 			},
+			eraser: {
+				content: new SmallButton("🗑️", () => this.switchErase()),
+				styles: {
+					position: "topRight",
+					margin: 5,
+					maxHeight: "10%",
+				},
+			},
 		});
+	}
+	switchErase() {
+		this.erase = !this.erase;
+		this.dontPlace = true;
 	}
 	get pins() {
 		const pins: FancyButton[] = [];

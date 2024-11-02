@@ -42,7 +42,6 @@ export class Editor extends World {
 		}
 		this.objectPlacer.update(pivot, this);
 		this.moveViewBox(dt);
-		this.objectPlacer.selected = this.ui.selected;
 		if (this.rerender) {
 			this.grid.render(
 				new Vec2(this.main.pivot.x, this.main.pivot.y),

@@ -18,7 +18,7 @@ export class Entity extends PhysicsObject {
 		this.sprite = options.sprite;
 		this.sprite.anchor.set(0.5, 0);
 
-		const spritePos = planckToPixi(options.initPos);
+		const spritePos = planckToPixi(options.pos);
 		this.sprite.x = spritePos.x;
 		this.sprite.y = spritePos.y - 0.5 * meter;
 	}
@@ -33,7 +33,7 @@ export class Entity extends PhysicsObject {
 
 		const lerpedPos = lerp2D(
 			this.lastState?.pos,
-			planckToPixi(this.body!.getPosition()),
+			planckToPixi(this.pos),
 			(dt / World.physicsStepTime) * 0.58,
 		);
 		const lerpedAngle = lerp(this.lastState.angle, this.body!.getAngle(), 1);
@@ -49,6 +49,10 @@ export class Entity extends PhysicsObject {
 		super.create(world);
 
 		world.main.addChild(this.sprite);
+	}
+	remove(world: World): void {
+		super.remove(world);
+		world.main.removeChild(this.sprite);
 	}
 }
 

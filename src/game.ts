@@ -47,7 +47,7 @@ export class Game {
 		world.addEntity(player);
 
 		const box = new Ground({
-			initPos: new Vec2(-200, 50),
+			pos: new Vec2(-200, 50),
 			shape: new Box(500, 0.5),
 			bodyType: "static",
 			friction: 0.5,

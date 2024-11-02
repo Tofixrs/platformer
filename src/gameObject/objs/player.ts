@@ -11,8 +11,8 @@ export class Player extends Entity {
 	rollForce = 1000;
 	longJumpVertForce = 1500;
 	jumpForce = -40000;
-	diveForce = 50000;
-	maxDiveSpeed = 30;
+	diveForce = 100000;
+	maxDiveSpeed = 20;
 	maxMoveSpeed = 15;
 	maxRollSpeed = 25;
 	maxLongJumpSpeed = 30;
@@ -32,7 +32,7 @@ export class Player extends Entity {
 	static maxInstances = 1;
 	constructor(pos: Vec2) {
 		super({
-			initPos: pos,
+			pos,
 			friction: 0.2,
 			density: 2,
 			shape: new Box(0.23, 0.5),

@@ -8,13 +8,14 @@ import { Editor, getGridPosAtPos, getPosAtGrid } from "@worlds/editor";
 
 export class Ground extends PhysicsObject {
 	static draggable: boolean = true;
+	cont = new Container();
 	constructor(opt: PhysicsObjectOptions) {
 		super(opt);
 		this.shape = opt.shape;
 	}
 	create(world: World): void {
 		this.body = world.p.createBody({
-			position: this.initPos,
+			position: this.pos,
 			fixedRotation: this.fixedRotation,
 			type: this.bodyType,
 		});
@@ -31,16 +32,15 @@ export class Ground extends PhysicsObject {
 		const w = Math.abs(shape.m_vertices[2].x) + Math.abs(shape.m_vertices[0].x);
 		const h = Math.abs(shape.m_vertices[0].y) + Math.abs(shape.m_vertices[1].y);
 		const size = planckToPixi(new Vec2(w, h));
-		const cont = new Container();
-		cont.x = pos.x - size.x / 2;
-		cont.y = pos.y - size.y / 2;
-		const gridPos = getGridPosAtPos(new Vec2(cont.x, cont.y));
+		this.cont.x = pos.x - size.x / 2;
+		this.cont.y = pos.y - size.y / 2;
+		const gridPos = getGridPosAtPos(new Vec2(this.cont.x, this.cont.y));
 		const gridEndPos = getGridPosAtPos(
-			new Vec2(cont.x + size.x, cont.y + size.y),
+			new Vec2(this.cont.x + size.x, this.cont.y + size.y),
 		);
-		Ground.renderDrag(gridPos, gridEndPos, cont);
+		Ground.renderDrag(gridPos, gridEndPos, this.cont);
 
-		world.main.addChild(cont);
+		world.main.addChild(this.cont);
 	}
 	static renderDrag(startPos: Vec2, currPos: Vec2, container: Container): void {
 		const drawStartPos = getPosAtGrid(startPos);
@@ -130,5 +130,9 @@ export class Ground extends PhysicsObject {
 		} else if (size.y == Editor.gridSize && size.x == Editor.gridSize) {
 			container.addChild(Sprite.from("grass_one_block"));
 		}
+	}
+	remove(world: World): void {
+		super.remove(world);
+		world.main.removeChild(this.cont);
 	}
 }

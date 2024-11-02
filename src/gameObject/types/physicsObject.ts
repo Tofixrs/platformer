@@ -6,7 +6,6 @@ export interface PhysicsObjectOptions extends GameObjectOptions {
 	friction: number;
 	shape: Shape;
 	density: number;
-	initPos: Vec2;
 	bodyType: "dynamic" | "static";
 	fixedRotation: boolean;
 }
@@ -15,7 +14,6 @@ export class PhysicsObject extends GameObject {
 	friction: number;
 	shape: Shape;
 	density: number;
-	initPos: Vec2;
 	bodyType: "dynamic" | "static";
 	body!: Body;
 	fixedRotation: boolean;
@@ -27,13 +25,15 @@ export class PhysicsObject extends GameObject {
 		this.friction = opts.friction;
 		this.density = opts.density;
 		this.shape = opts.shape;
-		this.initPos = opts.initPos;
 		this.fixedRotation = opts.fixedRotation;
+	}
+	fixedUpdate(): void {
+		this.pos = this.body.getPosition();
 	}
 
 	create(world: World): void {
 		this.body = world.p.createBody({
-			position: this.initPos,
+			position: this.pos,
 			fixedRotation: this.fixedRotation,
 			type: this.bodyType,
 		});
@@ -43,5 +43,8 @@ export class PhysicsObject extends GameObject {
 			shape: this.shape,
 			friction: this.friction,
 		});
+	}
+	remove(world: World): void {
+		world.p.destroyBody(this.body);
 	}
 }
