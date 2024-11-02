@@ -46,15 +46,14 @@ function sGround(v: Ground): SerializedGO {
 }
 
 function dGround(v: SerializedGO): Ground {
+	const verts = v.data.shapeVerts.map((v: any) => new Vec2(v.x, v.y));
+	const shape = new Polygon(verts);
 	return new Ground({
 		friction: v.data.friction,
 		pos: new Vec2(v.data.pos.x, v.data.pos.y),
 		density: 0,
 		fixedRotation: true,
-		shape: new Box(
-			(v.data.shapeVerts[3].x - v.data.shapeVerts[0].x) / 2,
-			(v.data.shapeVerts[2].y - v.data.shapeVerts[0].y) / 2,
-		),
+		shape,
 		bodyType: "static",
 	});
 }
