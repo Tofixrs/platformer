@@ -15,7 +15,7 @@ export class Editor extends World {
 	lastTime = 0;
 	moveSpeed = 500;
 	testing = false;
-	ui: EditorUi = new EditorUi();
+	ui: EditorUi = new EditorUi(this);
 	rerender = false;
 	grid: Grid;
 	objectPlacer: ObjectPlacer = new ObjectPlacer(this);

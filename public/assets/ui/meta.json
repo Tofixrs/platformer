@@ -1,7 +1,7 @@
 {
 	"frames": {
 		"editor_pin": {
-			"frame": { "x": 0, "y": 256, "w": 256, "h": 200 }
+			"frame": { "x": 0, "y": 256, "w": 256, "h": 256 }
 		},
 		"small_button": {
 			"frame": { "x": 0, "y": 0, "w": 256, "h": 256 }

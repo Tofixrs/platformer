@@ -10,25 +10,45 @@ export class MainMenu extends World {
 	layout: Layout;
 	constructor(graphics: Graphics, worldController: WorldController) {
 		super(graphics);
-		const settings = new SmallButton("⚙️", () =>
-			worldController.set("settings"),
-		);
-		const play = new BigButton("Play", () => worldController.set("game"));
-
 		this.layout = new Layout({
 			content: [
 				{
 					id: "play",
-					content: play,
+					content: new BigButton("Play", () => worldController.set("game")),
 					styles: {
 						position: "center",
 					},
 				},
 				{
-					id: "settings",
-					content: settings,
+					content: [
+						{
+							content: new SmallButton("⚙️", () =>
+								worldController.set("settings"),
+							),
+							styles: {
+								marginRight: 5,
+							},
+						},
+						{
+							content: new SmallButton("▶️", () =>
+								worldController.set("level"),
+							),
+							styles: {
+								marginRight: 5,
+							},
+						},
+						{
+							content: new SmallButton("🔧", () =>
+								worldController.set("editor"),
+							),
+							styles: {
+								marginRight: 5,
+							},
+						},
+					],
 					styles: {
-						position: "topRight",
+						width: "100%",
+						position: "top",
 						margin: 10,
 					},
 				},

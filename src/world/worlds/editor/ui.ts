@@ -1,17 +1,21 @@
 import { SmallButton } from "@lib/ui/small_button";
+import { Content } from "@pixi/layout";
 import { FancyButton } from "@pixi/ui";
 import { Screen } from "@ui/screen";
 import { GameObjectID, GOID } from "gameObject";
-import { Sprite } from "pixi.js";
+import { Sprite, Text } from "pixi.js";
+import { Editor } from ".";
 
 export class EditorUi extends Screen {
 	topPinned: GameObjectID[] = [GOID.Player, GOID.Ground];
 	selected?: GameObjectID;
 	dontPlace = false;
 	erase = false;
-	constructor() {
+	worldRef: Editor;
+	constructor(editor: Editor) {
 		super("Editor");
 		this.addTopPins();
+		this.worldRef = editor;
 	}
 	public addTopPins() {
 		this.addContent({
@@ -25,7 +29,20 @@ export class EditorUi extends Screen {
 				},
 			},
 			eraser: {
-				content: new SmallButton("🗑️", () => this.switchErase()),
+				content: [
+					{
+						content: new SmallButton("📋", () => this.copy()),
+						styles: {
+							paddingLeft: 5,
+						},
+					},
+					{
+						content: new SmallButton("🗑️", () => this.switchErase()),
+						styles: {
+							paddingLeft: 5,
+						},
+					},
+				],
 				styles: {
 					position: "topRight",
 					margin: 5,
@@ -38,8 +55,13 @@ export class EditorUi extends Screen {
 		this.erase = !this.erase;
 		this.dontPlace = true;
 	}
+	copy() {
+		this.worldRef.save();
+		window.navigator.clipboard.writeText(this.worldRef.data);
+		this.dontPlace = true;
+	}
 	get pins() {
-		const pins: FancyButton[] = [];
+		const pins: Content = [];
 		const amt = 10;
 		for (let i = 0; i < amt; i++) {
 			const icon = this.topPinned[i]
@@ -54,7 +76,12 @@ export class EditorUi extends Screen {
 				this.selected = this.topPinned[i];
 				this.dontPlace = true;
 			});
-			pins.push(btn);
+			pins.push({
+				content: btn,
+				styles: {
+					paddingRight: 15,
+				},
+			});
 		}
 		return pins;
 	}

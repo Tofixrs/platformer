@@ -9,6 +9,7 @@ import { Ground } from "@gameObjs/ground";
 import { Editor } from "./world/worlds/editor";
 import { Loop } from "@lib/loop";
 import { WorldController } from "./world/controller";
+import { Level } from "@worlds/level";
 
 export class Game {
 	static debug = false;
@@ -41,6 +42,9 @@ export class Game {
 
 		const editor = new Editor(this.graphics);
 		this.worldController.add("editor", editor);
+
+		const level = new Level(this.graphics);
+		this.worldController.add("level", level);
 		this.worldController.set("mainMenu");
 
 		const player = new Player(new Vec2(0, 0));
