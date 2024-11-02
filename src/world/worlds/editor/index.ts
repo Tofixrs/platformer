@@ -18,6 +18,7 @@ export class Editor extends World {
 	rerender = false;
 	grid: Grid;
 	objectPlacer: ObjectPlacer = new ObjectPlacer(this);
+	editorCamPos = new Vec2();
 	constructor(graphics: Graphics) {
 		super(graphics);
 		this.main.x = 0;
@@ -32,7 +33,6 @@ export class Editor extends World {
 		this.recenter(graphics.renderer.screen);
 	}
 	update(dt: number): void {
-		const pivot = new Vec2(this.main.pivot.x, this.main.pivot.y);
 		if (Actions.click("test")) {
 			this.setTesting(!this.testing);
 		}
@@ -40,13 +40,12 @@ export class Editor extends World {
 			super.update(dt);
 			return;
 		}
-		this.objectPlacer.update(pivot, this);
+
+		this.editorCamPos = new Vec2(this.main.pivot.x, this.main.pivot.y);
+		this.objectPlacer.update(this.editorCamPos, this);
 		this.moveViewBox(dt);
 		if (this.rerender) {
-			this.grid.render(
-				new Vec2(this.main.pivot.x, this.main.pivot.y),
-				this.screen,
-			);
+			this.grid.render(this.editorCamPos, this.screen);
 			this.rerender = false;
 		}
 	}
@@ -80,6 +79,9 @@ export class Editor extends World {
 		this.testing = yes;
 		this.objectPlacer.testing = yes;
 		this.ui.visible = !yes;
+		if (!yes /*no*/) {
+			this.main.pivot.set(this.editorCamPos.x, this.editorCamPos.y);
+		}
 		this.recenter(this.screen);
 	}
 	recenter(screen: Rectangle): void {
@@ -91,7 +93,6 @@ export class Editor extends World {
 		} else {
 			this.main.x = 0;
 			this.main.y = 0;
-			this.main.pivot.set(0, 0);
 		}
 		this.rerender = true;
 		this.ui.resize(screen.width, screen.height);
