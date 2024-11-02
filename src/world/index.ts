@@ -1,17 +1,18 @@
-import { Rectangle } from "pixi.js";
+import { Container, Rectangle } from "pixi.js";
 import { World as PhysicsWorld, Vec2 } from "planck-js";
 import { Graphics } from "graphics";
 import { GameObject } from "gameObject";
-import { View } from "view";
 
-export class World extends View {
+export class World {
 	p = new PhysicsWorld({
 		gravity: new Vec2(0.0, 50.0),
 	});
+	top = new Container();
+	main = new Container();
+	c = new Container();
 	entities: GameObject[] = [];
 	static physicsStepTime = 1 / 60;
 	constructor(graphics: Graphics) {
-		super();
 		this.main.x = graphics.renderer.screen.width / 2;
 		this.main.y = graphics.renderer.screen.height / 2;
 

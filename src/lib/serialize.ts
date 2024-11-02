@@ -1,7 +1,7 @@
 import { Ground } from "@gameObjs/ground";
 import { Player } from "@gameObjs/player";
 import { GameObject, GameObjectID, GOID } from "gameObject";
-import { Box, Polygon, Vec2 } from "planck-js";
+import { Polygon, Vec2 } from "planck-js";
 import { World } from "world";
 
 export interface SerializedGO {

@@ -1,8 +1,8 @@
 import { Container, Graphics as Draw } from "pixi.js";
-import { View } from ".";
+import { World } from ".";
 
-export class ViewController {
-	worlds: Map<string, View> = new Map();
+export class WorldController {
+	worlds: Map<string, World> = new Map();
 	currentWorld: string = "";
 	worldContainer = new Container();
 	debug: Draw;
@@ -10,8 +10,8 @@ export class ViewController {
 		stage.addChild(this.worldContainer);
 		this.debug = debug;
 	}
-	add(name: string, view: View) {
-		this.worlds.set(name, view);
+	add(name: string, world: World) {
+		this.worlds.set(name, world);
 	}
 	set(name: string) {
 		if (this.view) {

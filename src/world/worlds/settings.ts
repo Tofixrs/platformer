@@ -1,27 +1,27 @@
-import { Container, Rectangle, Text, TextStyle } from "pixi.js";
+import { Container, Rectangle, Text } from "pixi.js";
 import { World } from "..";
-import { FancyButton, ScrollBox } from "@pixi/ui";
+import { ScrollBox } from "@pixi/ui";
 import { Button } from "@ui/button";
 import { Vec2 } from "planck-js";
 import { Actions } from "@lib/input";
 import { Graphics } from "graphics";
 import { Layout } from "@pixi/layout";
-import { ViewController } from "view/controller";
 import { BigButton } from "@lib/ui/big_button";
 import { SmallButton } from "@lib/ui/small_button";
+import { WorldController } from "world/controller";
 
 export class Settings extends World {
 	public tabs: Map<string, Tab> = new Map();
 	public currentTab = "";
 	layout: Layout;
 	tabContainer: Container = new Container();
-	constructor(graphics: Graphics, viewController: ViewController) {
+	constructor(graphics: Graphics, worldController: WorldController) {
 		super(graphics);
 		this.main.x = 0;
 		this.main.y = 0;
 		const audio = new BigButton("Audio", () => this.changeTab("audio"));
 		const bindBtn = new BigButton("binds", () => this.changeTab("bind"));
-		const close = new SmallButton("❌", () => viewController.set("mainMenu"));
+		const close = new SmallButton("❌", () => worldController.set("mainMenu"));
 		const tabBtns = [audio, bindBtn];
 
 		this.layout = new Layout({
