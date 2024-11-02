@@ -87,6 +87,8 @@ export class Ground extends PhysicsObject {
 				texture: Texture.from("grass_center"),
 				width: size.x - Editor.gridSize * 2 + 5,
 				height: size.y - Editor.gridSize * 2 + 5,
+				x: Editor.gridSize,
+				y: Editor.gridSize,
 			});
 
 			const topSide = new TilingSprite({
