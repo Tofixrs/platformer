@@ -14,17 +14,17 @@ export class WorldController {
 		this.worlds.set(name, world);
 	}
 	set(name: string) {
-		if (this.view) {
-			this.worldContainer.removeChild(this.view.c);
-			this.view.main.removeChild(this.debug);
+		if (this.world) {
+			this.worldContainer.removeChild(this.world.c);
+			this.world.main.removeChild(this.debug);
 		}
 		this.currentWorld = name;
-		if (this.view) {
-			this.worldContainer.addChild(this.view.c);
-			this.view.main.addChild(this.debug);
+		if (this.world) {
+			this.worldContainer.addChild(this.world.c);
+			this.world.main.addChild(this.debug);
 		}
 	}
-	get view() {
+	get world() {
 		return this.worlds.get(this.currentWorld);
 	}
 }

@@ -60,8 +60,8 @@ export class Game {
 		this.loop.run();
 	}
 	update(dt: number) {
-		if (Game.debug && this.worldController.view instanceof World) {
-			this.graphics.debugRender(this.worldController.view!, dt);
+		if (Game.debug && this.worldController.world instanceof World) {
+			this.graphics.debugRender(this.worldController.world!, dt);
 		}
 
 		if (Actions.click("debug")) {
@@ -70,10 +70,10 @@ export class Game {
 			this.graphics.debugDraw.clear();
 		}
 
-		this.worldController.view?.update(dt);
+		this.worldController.world?.update(dt);
 		this.graphics.render();
 	}
 	fixedUpdate() {
-		this.worldController.view?.fixedUpdate();
+		this.worldController.world?.fixedUpdate();
 	}
 }
