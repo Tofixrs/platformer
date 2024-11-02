@@ -11,6 +11,8 @@ import { Loop } from "@lib/loop";
 import { WorldController } from "./world/controller";
 import { Level } from "@worlds/level";
 
+const levelData = await (await fetch("./levels/test.json")).text();
+
 export class Game {
 	static debug = false;
 	graphics = new Graphics();
@@ -37,7 +39,7 @@ export class Game {
 		const settings = new Settings(this.graphics, this.worldController);
 		this.worldController.add("settings", settings);
 
-		const world = new World(this.graphics);
+		const world = new Level(this.graphics, levelData);
 		this.worldController.add("game", world);
 
 		const editor = new Editor(this.graphics);
@@ -46,20 +48,6 @@ export class Game {
 		const level = new Level(this.graphics);
 		this.worldController.add("level", level);
 		this.worldController.set("mainMenu");
-
-		const player = new Player(new Vec2(0, 0));
-		world.addEntity(player);
-
-		const box = new Ground({
-			pos: new Vec2(-200, 50),
-			shape: new Box(500, 0.5),
-			bodyType: "static",
-			friction: 0.5,
-			density: 0,
-			fixedRotation: true,
-		});
-		world.addEntity(box);
-		// world.addEntity(new Dummy(new Vec2(0, 0), world));
 
 		this.loop.run();
 	}

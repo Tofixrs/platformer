@@ -11,6 +11,7 @@ export class Level extends World {
 		super(graphics);
 		if (data) {
 			this.load(data);
+			this.ui.visible = false;
 		}
 		this.top.addChild(this.ui);
 		this.recenter(graphics.renderer.screen);
@@ -32,6 +33,7 @@ export class Level extends World {
 		ent.forEach((v) => this.addEntity(v));
 	}
 	recenter(screen: Rectangle): void {
+		super.recenter(screen);
 		this.ui.resize(screen.width, screen.height);
 	}
 }
