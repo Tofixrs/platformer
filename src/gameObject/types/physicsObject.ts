@@ -1,12 +1,12 @@
-import { GameObject, GameObjectOptions } from "gameObject";
+import { GameObject, GameObjectID, GameObjectOptions } from "gameObject";
 import { World } from "world";
-import { Body, Shape } from "planck-js";
+import { Body, BodyType, Shape } from "planck-js";
 
 export interface PhysicsObjectOptions extends GameObjectOptions {
 	friction: number;
 	shape: Shape;
 	density: number;
-	bodyType: "dynamic" | "static";
+	bodyType: BodyType;
 	fixedRotation: boolean;
 }
 
@@ -14,7 +14,7 @@ export class PhysicsObject extends GameObject {
 	friction: number;
 	shape: Shape;
 	density: number;
-	bodyType: "dynamic" | "static";
+	bodyType: BodyType;
 	body!: Body;
 	fixedRotation: boolean;
 	lastDebugRender?: Shape;
@@ -42,9 +42,18 @@ export class PhysicsObject extends GameObject {
 			density: this.density,
 			shape: this.shape,
 			friction: this.friction,
+			userData: {
+				goid: this.id,
+				id: window.crypto.randomUUID(),
+			},
 		});
 	}
 	remove(world: World): void {
 		world.p.destroyBody(this.body);
 	}
+}
+
+export interface PhysObjUserData {
+	goid: GameObjectID;
+	id: string;
 }

@@ -4,6 +4,8 @@ import { Entity } from "../types/entity";
 import { World } from "world";
 import { lerp2D } from "@lib/math/lerp";
 import { Actions } from "@lib/input";
+import { meter } from "@lib/math/units";
+import { GOID } from "gameObject";
 
 export class Player extends Entity {
 	maxJumpVel = -20;
@@ -39,7 +41,9 @@ export class Player extends Entity {
 			sprite: Sprite.from("player_normal"),
 			bodyType: "dynamic",
 			fixedRotation: true,
+			id: GOID.Player,
 		});
+		this.sprite.y -= 0.5 * meter;
 	}
 	create(world: World): void {
 		super.create(world);

@@ -23,7 +23,8 @@ export class Graphics<R extends Renderer = Renderer> {
 		await Assets.load([
 			{ alias: "ground_pin", src: "./assets/ground_pin.png" },
 		]);
-		await Assets.load("./assets/char/meta.json");
+		await Assets.load("./assets/entities/char/meta.json");
+		await Assets.load("./assets/entities/goomba/meta.json");
 		await Assets.load("./assets/ground/grass.json");
 		await Assets.load("./assets/ui/meta.json");
 	}

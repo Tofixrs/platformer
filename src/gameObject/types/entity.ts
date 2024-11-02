@@ -20,7 +20,7 @@ export class Entity extends PhysicsObject {
 
 		const spritePos = planckToPixi(options.pos);
 		this.sprite.x = spritePos.x;
-		this.sprite.y = spritePos.y - 0.5 * meter;
+		this.sprite.y = spritePos.y;
 	}
 
 	update(dt: number, _world: World): void {

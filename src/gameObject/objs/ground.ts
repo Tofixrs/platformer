@@ -5,12 +5,24 @@ import { PolygonShape } from "planck-js/lib/shape";
 import { planckToPixi } from "@lib/math/units";
 import { Vec2 } from "planck-js";
 import { Editor, getGridPosAtPos, getPosAtGrid } from "@worlds/editor";
+import { GOID } from "gameObject";
+
+type GroundOpts = Omit<
+	PhysicsObjectOptions,
+	"fixedRotation" | "density" | "bodyType" | "id"
+>;
 
 export class Ground extends PhysicsObject {
 	static draggable: boolean = true;
 	cont = new Container();
-	constructor(opt: PhysicsObjectOptions) {
-		super(opt);
+	constructor(opt: GroundOpts) {
+		super({
+			fixedRotation: true,
+			density: 0,
+			bodyType: "static",
+			id: GOID.Ground,
+			...opt,
+		});
 		this.shape = opt.shape;
 	}
 	create(world: World): void {
@@ -25,6 +37,10 @@ export class Ground extends PhysicsObject {
 			shape: this.shape,
 			friction: this.friction,
 			filterCategoryBits: 10,
+			userData: {
+				goid: this.id,
+				id: window.crypto.randomUUID(),
+			},
 		});
 		const shape = this.shape as PolygonShape;
 

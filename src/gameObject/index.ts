@@ -5,6 +5,7 @@ import { World } from "world";
 export interface GameObjectOptions {
 	pos: Vec2;
 	shape: Shape;
+	id: GameObjectID;
 }
 
 export abstract class GameObject {
@@ -12,9 +13,11 @@ export abstract class GameObject {
 	static maxInstances?: number;
 	pos: Vec2;
 	shape: Shape;
-	constructor({ pos, shape }: GameObjectOptions) {
+	id: GameObjectID;
+	constructor({ pos, shape, id }: GameObjectOptions) {
 		this.pos = pos;
 		this.shape = shape;
+		this.id = id;
 	}
 	update(_dt: number, _world: World) {}
 	fixedUpdate() {}
@@ -26,6 +29,7 @@ export abstract class GameObject {
 export const GOID = {
 	Player: "player",
 	Ground: "ground",
+	Goomba: "goomba",
 } as const;
 
 type GOIOKeys = keyof typeof GOID;

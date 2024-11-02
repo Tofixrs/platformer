@@ -6,6 +6,7 @@ import { getClassFromID } from "gameObject/utils";
 import { Player } from "@gameObjs/player";
 import { Ground } from "@gameObjs/ground";
 import { Editor, getPosAtGrid } from ".";
+import { Goomba } from "@gameObjs/goomba";
 
 export class ObjectPlacer {
 	mouseHandler = new MouseHandler(new Vec2(0, 0));
@@ -71,15 +72,18 @@ export class ObjectPlacer {
 				go = new Player(physPos);
 				break;
 			}
+			//@ts-expect-error
 			case Ground: {
 				go = new Ground({
-					bodyType: "static",
-					density: 0,
 					friction: 0.5,
-					fixedRotation: true,
 					shape: new Box(physSize.x, physSize.y),
 					pos: physPos,
 				});
+				break;
+			}
+			//@ts-expect-error TS stop being stuped
+			case Goomba: {
+				go = new Goomba(physPos);
 				break;
 			}
 		}

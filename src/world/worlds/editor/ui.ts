@@ -3,11 +3,11 @@ import { Content } from "@pixi/layout";
 import { FancyButton } from "@pixi/ui";
 import { Screen } from "@ui/screen";
 import { GameObjectID, GOID } from "gameObject";
-import { Sprite, Text } from "pixi.js";
+import { Sprite } from "pixi.js";
 import { Editor } from ".";
 
 export class EditorUi extends Screen {
-	topPinned: GameObjectID[] = [GOID.Player, GOID.Ground];
+	topPinned: GameObjectID[] = [GOID.Player, GOID.Ground, GOID.Goomba];
 	selected?: GameObjectID;
 	dontPlace = false;
 	erase = false;

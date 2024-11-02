@@ -1,3 +1,4 @@
+import { Goomba } from "@gameObjs/goomba";
 import { Ground } from "@gameObjs/ground";
 import { Player } from "@gameObjs/player";
 import { GameObject, GameObjectID, GOID } from "gameObject";
@@ -21,6 +22,7 @@ export function deserializeWorld(s: string) {
 export function serialize(v: GameObject): SerializedGO {
 	if (v instanceof Player) return sPlayer(v);
 	if (v instanceof Ground) return sGround(v);
+	if (v instanceof Goomba) return sGoomba(v);
 }
 
 function sPlayer(v: Player): SerializedGO {
@@ -32,6 +34,17 @@ function sPlayer(v: Player): SerializedGO {
 
 function dPlayer(v: SerializedGO): Player {
 	return new Player(new Vec2(v.data.x, v.data.y));
+}
+
+function sGoomba(v: Goomba): SerializedGO {
+	return {
+		_type: GOID.Goomba,
+		data: v.pos,
+	};
+}
+
+function dGoomba(v: SerializedGO): Goomba {
+	return new Goomba(new Vec2(v.data.x, v.data.y));
 }
 
 function sGround(v: Ground): SerializedGO {
@@ -65,6 +78,9 @@ export function deserialize(v: SerializedGO): GameObject {
 		}
 		case GOID.Ground: {
 			return dGround(v);
+		}
+		case GOID.Goomba: {
+			return dGoomba(v);
 		}
 	}
 }
