@@ -3,10 +3,11 @@ import { World } from "../..";
 import { Graphics } from "graphics";
 import { Vec2 } from "planck-js";
 import { Actions } from "@lib/input";
-import { EditorUi } from "./ui";
 import { Grid } from "./grid";
 import { ObjectPlacer } from "./objectPlacer";
 import { meter } from "@lib/math/units";
+import { EditorUi } from "./ui";
+import { deserializeWorld, serializeWorld } from "@lib/serialize";
 
 export class Editor extends World {
 	screen: Rectangle = new Rectangle(0, 0);
@@ -19,6 +20,7 @@ export class Editor extends World {
 	grid: Grid;
 	objectPlacer: ObjectPlacer = new ObjectPlacer(this);
 	editorCamPos = new Vec2();
+	data = "";
 	constructor(graphics: Graphics) {
 		super(graphics);
 		this.main.x = 0;
@@ -75,12 +77,14 @@ export class Editor extends World {
 	setTesting(yes: boolean) {
 		if (yes) {
 			this.grid.draw.clear();
+			this.save();
 		}
 		this.testing = yes;
 		this.objectPlacer.testing = yes;
 		this.ui.visible = !yes;
 		if (!yes /*no*/) {
 			this.main.pivot.set(this.editorCamPos.x, this.editorCamPos.y);
+			this.load();
 		}
 		this.recenter(this.screen);
 	}
@@ -96,6 +100,16 @@ export class Editor extends World {
 		}
 		this.rerender = true;
 		this.ui.resize(screen.width, screen.height);
+	}
+	save() {
+		this.data = serializeWorld(this);
+	}
+	load() {
+		for (let i = this.entities.length - 1; i != -1; i--) {
+			this.removeEntity(this.entities[i], i);
+		}
+		const ent = deserializeWorld(this.data);
+		ent.forEach((v) => this.addEntity(v));
 	}
 }
 

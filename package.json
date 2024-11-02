@@ -19,6 +19,8 @@
 		"@pixi/tilemap": "^5.0.1",
 		"@pixi/ui": "^2.1.5",
 		"pixi.js": "^8.5.0",
-		"planck-js": "^0.3.31"
+		"planck-js": "^0.3.31",
+		"rm": "^0.1.8",
+		"ts-serializable": "^3.3.0"
 	}
 }

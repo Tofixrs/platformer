@@ -23,7 +23,10 @@ export abstract class GameObject {
 	static renderDrag(_startPos: Vec2, _currPos: Vec2, _container: Container) {}
 }
 
-export enum GameObjectID {
-	Player = "player",
-	Ground = "ground",
-}
+export const GOID = {
+	Player: "player",
+	Ground: "ground",
+} as const;
+
+type GOIOKeys = keyof typeof GOID;
+export type GameObjectID = (typeof GOID)[GOIOKeys];

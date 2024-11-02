@@ -1,11 +1,11 @@
 import { SmallButton } from "@lib/ui/small_button";
 import { FancyButton } from "@pixi/ui";
 import { Screen } from "@ui/screen";
-import { GameObjectID } from "gameObject";
+import { GameObjectID, GOID } from "gameObject";
 import { Sprite } from "pixi.js";
 
 export class EditorUi extends Screen {
-	topPinned: GameObjectID[] = [GameObjectID.Player, GameObjectID.Ground];
+	topPinned: GameObjectID[] = [GOID.Player, GOID.Ground];
 	selected?: GameObjectID;
 	dontPlace = false;
 	erase = false;
