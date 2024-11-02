@@ -64,10 +64,7 @@ function dGround(v: SerializedGO): Ground {
 	return new Ground({
 		friction: v.data.friction,
 		pos: new Vec2(v.data.pos.x, v.data.pos.y),
-		density: 0,
-		fixedRotation: true,
 		shape,
-		bodyType: "static",
 	});
 }
 

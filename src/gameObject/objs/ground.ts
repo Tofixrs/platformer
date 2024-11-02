@@ -1,6 +1,6 @@
 import { World } from "world";
 import { PhysicsObject, PhysicsObjectOptions } from "../types/physicsObject";
-import { Container, Sprite } from "pixi.js";
+import { Container, Sprite, Texture, TilingSprite } from "pixi.js";
 import { PolygonShape } from "planck-js/lib/shape";
 import { planckToPixi } from "@lib/math/units";
 import { Vec2 } from "planck-js";
@@ -83,30 +83,40 @@ export class Ground extends PhysicsObject {
 			bottomRightCorner.y = size.y;
 			bottomRightCorner.scale.y = -1;
 
-			const center = Sprite.from("grass_center");
-			center.x = Editor.gridSize;
-			center.y = Editor.gridSize;
-			center.width = size.x - Editor.gridSize * 2;
-			center.height = size.y - Editor.gridSize * 2;
+			const center = new TilingSprite({
+				texture: Texture.from("grass_center"),
+				width: size.x - Editor.gridSize * 2 + 5,
+				height: size.y - Editor.gridSize * 2 + 5,
+			});
 
-			const topSide = Sprite.from("grass_side");
-			topSide.x = Editor.gridSize;
-			topSide.width = size.x - Editor.gridSize * 2;
+			const topSide = new TilingSprite({
+				texture: Texture.from("grass_side"),
+				x: Editor.gridSize,
+				width: size.x - Editor.gridSize * 2,
+				height: Editor.gridSize,
+			});
+			const bottomSide = new TilingSprite({
+				texture: Texture.from("grass_side"),
+				x: size.x - Editor.gridSize,
+				y: size.y,
+				width: size.x - Editor.gridSize * 2,
+				height: Editor.gridSize,
+				angle: -180,
+			});
 
-			const bottomSide = Sprite.from("grass_side");
-			bottomSide.x = size.x - Editor.gridSize;
-			bottomSide.y = size.y;
-			bottomSide.width = size.x - Editor.gridSize * 2;
-			bottomSide.angle = -180;
-			const leftSide = Sprite.from("grass_side");
-			leftSide.width = size.y - Editor.gridSize * 2;
-			leftSide.angle = -90;
-			leftSide.y = size.y - Editor.gridSize;
-			const rightSide = Sprite.from("grass_side");
-			rightSide.width = size.y - Editor.gridSize * 2;
-			rightSide.angle = 90;
-			rightSide.x = size.x;
-			rightSide.y = Editor.gridSize;
+			const leftSide = new TilingSprite({
+				texture: Texture.from("grass_side"),
+				width: size.y - Editor.gridSize * 2,
+				angle: -90,
+				y: size.y - Editor.gridSize,
+			});
+			const rightSide = new TilingSprite({
+				texture: Texture.from("grass_side"),
+				width: size.y - Editor.gridSize * 2,
+				angle: 90,
+				x: size.x,
+				y: Editor.gridSize,
+			});
 
 			container.addChild(
 				Sprite.from("grass_corner"),
@@ -120,11 +130,13 @@ export class Ground extends PhysicsObject {
 				rightSide,
 			);
 		} else if (size.y > Editor.gridSize && size.x == Editor.gridSize) {
-			const side = Sprite.from("grass_side_both");
-			side.y = Editor.gridSize;
-			side.x = Editor.gridSize;
-			side.width = size.y - Editor.gridSize * 2;
-			side.angle = 90;
+			const side = new TilingSprite({
+				texture: Texture.from("grass_side_both"),
+				y: Editor.gridSize,
+				x: Editor.gridSize,
+				width: size.y - Editor.gridSize * 2,
+				angle: 90,
+			});
 			const bottomCorner = Sprite.from("grass_corner_both");
 			bottomCorner.scale.y = -1;
 			bottomCorner.y = size.y;
@@ -138,9 +150,11 @@ export class Ground extends PhysicsObject {
 			const rightSide = Sprite.from("grass_corner_both");
 			rightSide.angle = 90;
 			rightSide.x = size.x;
-			const center = Sprite.from("grass_side_both");
-			center.x = Editor.gridSize;
-			center.width = size.x - Editor.gridSize * 2;
+			const center = new TilingSprite({
+				texture: Texture.from("grass_side_both"),
+				width: size.x - Editor.gridSize * 2,
+				x: Editor.gridSize,
+			});
 
 			container.addChild(leftSide, rightSide, center);
 		} else if (size.y == Editor.gridSize && size.x == Editor.gridSize) {
