@@ -33,7 +33,7 @@ export class Goomba extends Entity {
 	update(dt: number, world: World): void {
 		super.update(dt, world);
 		this.body.setLinearVelocity(
-			new Vec2(500 * dt * this.directon, this.body.getLinearVelocity().y),
+			new Vec2(5 * this.directon, this.body.getLinearVelocity().y),
 		);
 		if (!this.killId) return;
 		world.entities.forEach((v, i) => {
