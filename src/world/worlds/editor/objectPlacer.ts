@@ -7,6 +7,7 @@ import { Player } from "@gameObjs/player";
 import { Ground } from "@gameObjs/ground";
 import { Editor, getPosAtGrid } from ".";
 import { Goomba } from "@gameObjs/goomba";
+import { Koopa } from "@gameObjs/koopa";
 
 export class ObjectPlacer {
 	mouseHandler = new MouseHandler(new Vec2(0, 0));
@@ -84,6 +85,11 @@ export class ObjectPlacer {
 			//@ts-expect-error TS stop being stuped
 			case Goomba: {
 				go = new Goomba(physPos);
+				break;
+			}
+			//@ts-expect-error TS stop being stuped
+			case Koopa: {
+				go = new Koopa(physPos);
 				break;
 			}
 		}

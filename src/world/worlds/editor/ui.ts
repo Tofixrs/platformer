@@ -7,7 +7,12 @@ import { Sprite } from "pixi.js";
 import { Editor } from ".";
 
 export class EditorUi extends Screen {
-	topPinned: GameObjectID[] = [GOID.Player, GOID.Ground, GOID.Goomba];
+	topPinned: GameObjectID[] = [
+		GOID.Player,
+		GOID.Ground,
+		GOID.Goomba,
+		GOID.Koopa,
+	];
 	selected?: GameObjectID;
 	dontPlace = false;
 	erase = false;

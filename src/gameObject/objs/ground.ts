@@ -9,7 +9,7 @@ import { GOID } from "gameObject";
 
 type GroundOpts = Omit<
 	PhysicsObjectOptions,
-	"fixedRotation" | "density" | "bodyType" | "id"
+	"fixedRotation" | "density" | "bodyType" | "goid"
 >;
 
 export class Ground extends PhysicsObject {
@@ -20,7 +20,7 @@ export class Ground extends PhysicsObject {
 			fixedRotation: true,
 			density: 0,
 			bodyType: "static",
-			id: GOID.Ground,
+			goid: GOID.Ground,
 			...opt,
 		});
 		this.shape = opt.shape;
@@ -38,7 +38,7 @@ export class Ground extends PhysicsObject {
 			friction: this.friction,
 			filterCategoryBits: 10,
 			userData: {
-				goid: this.id,
+				goid: this.goid,
 				id: window.crypto.randomUUID(),
 			},
 		});

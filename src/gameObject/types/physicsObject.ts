@@ -43,8 +43,8 @@ export class PhysicsObject extends GameObject {
 			shape: this.shape,
 			friction: this.friction,
 			userData: {
-				goid: this.id,
-				id: window.crypto.randomUUID(),
+				goid: this.goid,
+				id: this.id,
 			},
 		});
 	}

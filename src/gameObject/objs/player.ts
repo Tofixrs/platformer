@@ -41,7 +41,7 @@ export class Player extends Entity {
 			sprite: Sprite.from("player_normal"),
 			bodyType: "dynamic",
 			fixedRotation: true,
-			id: GOID.Player,
+			goid: GOID.Player,
 		});
 		this.sprite.y -= 0.5 * meter;
 	}

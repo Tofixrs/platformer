@@ -1,5 +1,6 @@
 import { Goomba } from "@gameObjs/goomba";
 import { Ground } from "@gameObjs/ground";
+import { Koopa } from "@gameObjs/koopa";
 import { Player } from "@gameObjs/player";
 import { GameObject, GameObjectID, GOID } from "gameObject";
 import { Polygon, Vec2 } from "planck-js";
@@ -23,6 +24,7 @@ export function serialize(v: GameObject): SerializedGO {
 	if (v instanceof Player) return sPlayer(v);
 	if (v instanceof Ground) return sGround(v);
 	if (v instanceof Goomba) return sGoomba(v);
+	if (v instanceof Koopa) return sKoopa(v);
 }
 
 function sPlayer(v: Player): SerializedGO {
@@ -45,6 +47,17 @@ function sGoomba(v: Goomba): SerializedGO {
 
 function dGoomba(v: SerializedGO): Goomba {
 	return new Goomba(new Vec2(v.data.x, v.data.y));
+}
+
+function dKoopa(v: SerializedGO): Koopa {
+	return new Koopa(new Vec2(v.data.x, v.data.y));
+}
+
+function sKoopa(v: Koopa): SerializedGO {
+	return {
+		_type: GOID.Koopa,
+		data: v.pos,
+	};
 }
 
 function sGround(v: Ground): SerializedGO {
@@ -78,6 +91,9 @@ export function deserialize(v: SerializedGO): GameObject {
 		}
 		case GOID.Goomba: {
 			return dGoomba(v);
+		}
+		case GOID.Koopa: {
+			return dKoopa(v);
 		}
 	}
 }

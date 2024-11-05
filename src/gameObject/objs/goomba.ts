@@ -25,7 +25,7 @@ export class Goomba extends Entity {
 			fixedRotation: true,
 			bodyType: "dynamic",
 			friction: 1,
-			id: GOID.Goomba,
+			goid: GOID.Goomba,
 		});
 		this.sprite.anchor.set(0.5, 0.5);
 		this.directon = directon || this.directon;
