@@ -86,10 +86,10 @@ export class Enemy extends Entity {
 				return;
 
 			const worldManifold = contact.getWorldManifold(undefined);
-			this.stomp = worldManifold?.normal.y != 0;
+			const fix = classA == Player ? fixA : fixB;
+			this.stomp = fix.getBody().m_linearVelocity.y > 0;
 			if (this.stomp) {
 				this.stompID = classA == Player ? userA.id : userB.id;
-				const fix = classA == Player ? fixA : fixB;
 				fix.getBody().applyForceToCenter(new Vec2(0, -1000), true);
 				return;
 			}

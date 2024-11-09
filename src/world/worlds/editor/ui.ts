@@ -81,6 +81,7 @@ export class EditorUi extends Screen {
 			btn.onPress.connect(() => {
 				this.selected = this.topPinned[i];
 				this.dontPlace = true;
+				this.erase = false;
 			});
 			pins.push({
 				content: btn,
