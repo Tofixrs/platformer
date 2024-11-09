@@ -96,7 +96,8 @@ export class Enemy extends Entity {
 			this.sideTouch = worldManifold?.normal.x != 0;
 			if (this.sideTouch) {
 				this.sideTouchID = classA == Player ? userA.id : userB.id;
-				this.sideTouched = -worldManifold!.normal.x;
+				const fix = classA == Player ? fixA : fixB;
+				this.sideTouched = fix.getBody().getLinearVelocity().x < 0 ? -1 : 1;
 			}
 		});
 	}
