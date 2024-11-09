@@ -1,11 +1,13 @@
-import { Shape, Vec2 } from "planck-js";
+import { Box, Fixture, Polygon, Shape, Vec2, WorldManifold } from "planck-js";
 import { Entity } from "./entity";
-import { GameObjectID } from "gameObject";
+import { GameObject, GameObjectID } from "gameObject";
 import { Sprite } from "pixi.js";
 import { World } from "world";
 import { PhysObjUserData } from "./physicsObject";
 import { getClassFromID } from "gameObject/utils";
 import { Player } from "@gameObjs/player";
+import { Game } from "game";
+import { Ground } from "./ground";
 
 export interface EnemyOptions {
 	sprite: Sprite;
@@ -23,6 +25,7 @@ export class Enemy extends Entity {
 	stompID?: string;
 	sideTouch = false;
 	sideTouchID?: string;
+	sideTouchGOID?: GameObjectID;
 	sideTouched?: number;
 	constructor({
 		pos,
@@ -68,38 +71,81 @@ export class Enemy extends Entity {
 			const fixB = contact.getFixtureB();
 			const userA = fixA.getUserData() as PhysObjUserData;
 			const userB = fixB.getUserData() as PhysObjUserData;
+			const worldManifold = contact.getWorldManifold(undefined)!;
+
 			if (userA == null || userB == null) return;
-			if (userA.id != this.id && userB.id != this.id) return;
+
 			const classA = getClassFromID(userA.goid);
 			const classB = getClassFromID(userB.goid);
-			if (
-				//@ts-expect-error
-				classA != Player &&
-				//@ts-expect-error
-				classB != Player
-			)
-				return;
-			if (
-				!(classA.prototype instanceof Enemy) &&
-				!(classB.prototype instanceof Enemy)
-			)
-				return;
 
-			const worldManifold = contact.getWorldManifold(undefined);
-			const fix = classA == Player ? fixA : fixB;
-			this.stomp = fix.getBody().m_linearVelocity.y > 0;
-			if (this.stomp) {
-				this.stompID = classA == Player ? userA.id : userB.id;
-				fix.getBody().applyForceToCenter(new Vec2(0, -1000), true);
-				return;
-			}
-			this.sideTouch = worldManifold?.normal.x != 0;
-			if (this.sideTouch) {
-				this.sideTouchID = classA == Player ? userA.id : userB.id;
-				const fix = classA == Player ? fixA : fixB;
-				this.sideTouched = fix.getBody().getLinearVelocity().x < 0 ? -1 : 1;
-			}
+			if (userA.id != this.id && userB.id != this.id) return;
+
+			this.checkStomp(fixA, fixB, userA, userB, classA, classB);
+			this.checkSideTouch(
+				fixA,
+				fixB,
+				userA,
+				userB,
+				classA,
+				classB,
+				worldManifold,
+			);
 		});
+	}
+	checkStomp(
+		fixA: Fixture,
+		fixB: Fixture,
+		userA: PhysObjUserData,
+		userB: PhysObjUserData,
+		classA: typeof GameObject,
+		classB: typeof GameObject,
+	) {
+		if (
+			//@ts-expect-error
+			classA != Player &&
+			//@ts-expect-error
+			classB != Player
+		)
+			return;
+		if (
+			!(classA.prototype instanceof Enemy) &&
+			!(classB.prototype instanceof Enemy)
+		)
+			return;
+
+		const fix = classA == Player ? fixA : fixB;
+		this.stomp = fix.getBody().m_linearVelocity.y > 0;
+		if (this.stomp) {
+			this.stompID = classA == Player ? userA.id : userB.id;
+			fix.getBody().applyForceToCenter(new Vec2(0, -1000), true);
+			return;
+		}
+	}
+	checkSideTouch(
+		fixA: Fixture,
+		fixB: Fixture,
+		userA: PhysObjUserData,
+		userB: PhysObjUserData,
+		classA: typeof GameObject,
+		classB: typeof GameObject,
+		worldManifold: WorldManifold,
+	) {
+		if (this.stomp) return;
+		if (
+			!(classA.prototype instanceof Enemy) &&
+			!(classB.prototype instanceof Enemy)
+		)
+			return;
+		if (classA.prototype instanceof Ground) return;
+		if (classB.prototype instanceof Ground) return;
+
+		this.sideTouch = worldManifold?.normal.x != 0;
+		const fix = this.id != userA.id ? fixA : fixB;
+		if (this.sideTouch) {
+			this.sideTouchID = this.id != userA.id ? userA.id : userB.id;
+			this.sideTouchGOID = this.id != userA.id ? userA.goid : userB.goid;
+			this.sideTouched = fix.getBody().getLinearVelocity().x < 0 ? -1 : 1;
+		}
 	}
 	onSideTouch(world: World) {
 		world.removeEntity(this.sideTouchID!);

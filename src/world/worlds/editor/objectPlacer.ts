@@ -19,6 +19,7 @@ export class ObjectPlacer {
 		world.main.addChild(this.mouseHandler.dragContainer);
 	}
 	update(pivot: Vec2, world: Editor) {
+		if (this.testing) this.mouseHandler.reset();
 		this.uiHack();
 		this.mouseHandler.update(
 			pivot,

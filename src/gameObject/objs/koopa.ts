@@ -10,7 +10,7 @@ export class Koopa extends Enemy {
 	leftEdgeSensor!: Fixture;
 	rightWallSensor!: Fixture;
 	leftWallSensor!: Fixture;
-	speed = 2;
+	speed = 4;
 	shellSpeed = 10;
 	shelled = false;
 	moving = true;
@@ -51,14 +51,28 @@ export class Koopa extends Enemy {
 		}
 	}
 	onSideTouch(world: World): void {
-		if (this.shelled && !this.moving) {
-			this.moving = true;
-			this.sideKillTimer.reset();
-			this.direction = this.sideTouched!;
-		} else if (this.shelled && this.moving && this.sideKillTimer.done()) {
-			world.removeEntity(this.sideTouchID!);
-		} else if (!this.shelled) {
-			world.removeEntity(this.sideTouchID!);
+		switch (this.sideTouchGOID) {
+			case GOID.Player: {
+				if (this.shelled && !this.moving) {
+					this.moving = true;
+					this.sideKillTimer.reset();
+					this.direction = this.sideTouched!;
+				} else if (this.shelled && this.moving && this.sideKillTimer.done()) {
+					world.removeEntity(this.sideTouchID!);
+				} else if (!this.shelled) {
+					world.removeEntity(this.sideTouchID!);
+				}
+				break;
+			}
+			case GOID.Koopa:
+			case GOID.Goomba: {
+				if (this.shelled && this.moving) {
+					world.removeEntity(this.sideTouchID!);
+				} else {
+					this.direction = 1;
+				}
+				break;
+			}
 		}
 	}
 	setShelled(yes: boolean) {
@@ -75,25 +89,25 @@ export class Koopa extends Enemy {
 	create(world: World): void {
 		super.create(world);
 		this.rightEdgeSensor = this.body.createFixture({
-			shape: new Box(0.07, 0.1, new Vec2(0.3, 0.25)),
+			shape: new Box(0.07, 0.1, new Vec2(0.18, 0.25)),
 			isSensor: true,
 			filterMaskBits: 10,
 		});
 
 		this.leftEdgeSensor = this.body.createFixture({
-			shape: new Box(0.07, 0.1, new Vec2(-0.3, 0.25)),
+			shape: new Box(0.07, 0.1, new Vec2(-0.18, 0.25)),
 			isSensor: true,
 			filterMaskBits: 10,
 		});
 
 		this.rightWallSensor = this.body.createFixture({
-			shape: new Box(0.1, 0.1, new Vec2(0.35, 0)),
+			shape: new Box(0.1, 0.1, new Vec2(0.25, 0)),
 			isSensor: true,
 			filterMaskBits: 10,
 		});
 
 		this.leftWallSensor = this.body.createFixture({
-			shape: new Box(0.1, 0.1, new Vec2(-0.35, 0)),
+			shape: new Box(0.1, 0.1, new Vec2(-0.25, 0)),
 			isSensor: true,
 			filterMaskBits: 10,
 		});

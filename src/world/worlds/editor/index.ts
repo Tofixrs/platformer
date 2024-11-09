@@ -81,6 +81,7 @@ export class Editor extends World {
 		}
 		this.testing = yes;
 		this.objectPlacer.testing = yes;
+		this.objectPlacer.mouseHandler.reset();
 		this.ui.visible = !yes;
 		if (!yes /*no*/) {
 			this.main.pivot.set(this.editorCamPos.x, this.editorCamPos.y);
