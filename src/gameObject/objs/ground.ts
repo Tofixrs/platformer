@@ -163,8 +163,9 @@ export class Ground extends PhysicsObject {
 			container.addChild(Sprite.from("grass_one_block"));
 		}
 	}
-	remove(world: World): void {
+	remove(world: World): boolean {
 		super.remove(world);
 		world.main.removeChild(this.cont);
+		return true;
 	}
 }

@@ -31,9 +31,18 @@ export class World {
 		entity.create(this);
 		this.entities.push(entity);
 	}
-	removeEntity<T extends GameObject>(entity: T, i: number) {
-		entity.remove(this);
-		this.entities.splice(i, 1);
+	removeEntity(id: string) {
+		const foundIndex = this.entities.findIndex((v) => {
+			return v.id == id;
+		});
+		if (!this.entities[foundIndex]) return;
+		this.entities[foundIndex].remove(this);
+		this.entities.splice(foundIndex, 1);
+	}
+	removeEntityIndex(index: number) {
+		if (!this.entities[index]) return;
+		this.entities[index].remove(this);
+		this.entities.splice(index, 1);
 	}
 
 	update(dt: number) {

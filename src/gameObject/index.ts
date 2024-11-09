@@ -24,7 +24,9 @@ export abstract class GameObject {
 	update(_dt: number, _world: World) {}
 	fixedUpdate() {}
 	create(_world: World) {}
-	remove(_world: World) {}
+	remove(_world: World): boolean {
+		return true;
+	}
 	static renderDrag(_startPos: Vec2, _currPos: Vec2, _container: Container) {}
 }
 
@@ -32,7 +34,7 @@ export const GOID = {
 	Player: "player",
 	Ground: "ground",
 	Goomba: "goomba",
-	Koopa: "Koopa",
+	Koopa: "koopa",
 } as const;
 
 type GOIOKeys = keyof typeof GOID;

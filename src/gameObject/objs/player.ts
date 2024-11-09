@@ -6,6 +6,9 @@ import { lerp2D } from "@lib/math/lerp";
 import { Actions } from "@lib/input";
 import { meter } from "@lib/math/units";
 import { GOID } from "gameObject";
+import { PhysObjUserData } from "gameObject/types/physicsObject";
+import { getClassFromID } from "gameObject/utils";
+import { Enemy } from "gameObject/types/enemy";
 
 export class Player extends Entity {
 	maxJumpVel = -20;
@@ -54,15 +57,14 @@ export class Player extends Entity {
 		});
 
 		world.p.on("begin-contact", (contact) => {
-			this.checkSensorContact(contact);
+			this.checkGround(contact);
 		});
 
 		world.p.on("end-contact", (contact) => {
-			this.checkSensorContact(contact);
+			this.checkGround(contact);
 		});
 	}
-
-	checkSensorContact(contact: Contact) {
+	checkGround(contact: Contact) {
 		const fixA = contact.getFixtureA();
 		const fixB = contact.getFixtureB();
 

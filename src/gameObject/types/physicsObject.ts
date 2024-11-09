@@ -48,8 +48,9 @@ export class PhysicsObject extends GameObject {
 			},
 		});
 	}
-	remove(world: World): void {
+	remove(world: World): boolean {
 		world.p.destroyBody(this.body);
+		return true;
 	}
 }
 

@@ -50,9 +50,10 @@ export class Entity extends PhysicsObject {
 
 		world.main.addChild(this.sprite);
 	}
-	remove(world: World): void {
+	remove(world: World): boolean {
 		super.remove(world);
 		world.main.removeChild(this.sprite);
+		return true;
 	}
 }
 

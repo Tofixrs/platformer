@@ -25,6 +25,7 @@ export class Graphics<R extends Renderer = Renderer> {
 		]);
 		await Assets.load("./assets/entities/char/meta.json");
 		await Assets.load("./assets/entities/goomba/meta.json");
+		await Assets.load("./assets/entities/koopa/meta.json");
 		await Assets.load("./assets/ground/grass.json");
 		await Assets.load("./assets/ui/meta.json");
 	}

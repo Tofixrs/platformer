@@ -41,11 +41,11 @@ export class ObjectPlacer {
 		if (!this.mouseHandler.currPos) return;
 
 		const pos = pixiToPlanck(getPosAtGrid(this.mouseHandler.currPos));
-		this.worldRef.entities.forEach((v, i) => {
+		const foundEnt = this.worldRef.entities.findIndex((v) => {
 			const transform = new Transform(v.pos, 0);
-			if (!v.shape.testPoint(transform, pos)) return;
-			this.worldRef.removeEntity(v, i);
+			return v.shape.testPoint(transform, pos);
 		});
+		this.worldRef.removeEntityIndex(foundEnt);
 	}
 	checkCreate(world: Editor) {
 		if (this.testing) return;
