@@ -24,7 +24,7 @@ export abstract class GameObject {
 	update(_dt: number, _world: World) {}
 	fixedUpdate() {}
 	create(_world: World) {}
-	remove(_world: World): boolean {
+	remove(_world: World, force: boolean = false): boolean {
 		return true;
 	}
 	static renderDrag(_startPos: Vec2, _currPos: Vec2, _container: Container) {}

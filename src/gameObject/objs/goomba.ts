@@ -9,7 +9,7 @@ export class Goomba extends Enemy {
 	leftEdgeSensor!: Fixture;
 	rightWallSensor!: Fixture;
 	leftWallSensor!: Fixture;
-	speed = 2;
+	speed = 4;
 	constructor(pos: Vec2, direction?: number) {
 		const anim = new AnimatedSprite([
 			Texture.from("goomba_1"),
@@ -37,25 +37,25 @@ export class Goomba extends Enemy {
 	create(world: World): void {
 		super.create(world);
 		this.rightEdgeSensor = this.body.createFixture({
-			shape: new Box(0.07, 0.1, new Vec2(0.3, 0.25)),
+			shape: new Box(0.07, 0.1, new Vec2(0.18, 0.25)),
 			isSensor: true,
 			filterMaskBits: 10,
 		});
 
 		this.leftEdgeSensor = this.body.createFixture({
-			shape: new Box(0.07, 0.1, new Vec2(-0.3, 0.25)),
+			shape: new Box(0.07, 0.1, new Vec2(-0.18, 0.25)),
 			isSensor: true,
 			filterMaskBits: 10,
 		});
 
 		this.rightWallSensor = this.body.createFixture({
-			shape: new Box(0.1, 0.1, new Vec2(0.35, 0)),
+			shape: new Box(0.1, 0.1, new Vec2(0.3, 0)),
 			isSensor: true,
 			filterMaskBits: 10,
 		});
 
 		this.leftWallSensor = this.body.createFixture({
-			shape: new Box(0.1, 0.1, new Vec2(-0.35, 0)),
+			shape: new Box(0.1, 0.1, new Vec2(-0.3, 0)),
 			isSensor: true,
 			filterMaskBits: 10,
 		});
@@ -102,5 +102,18 @@ export class Goomba extends Enemy {
 		if (!contact.isTouching()) return;
 
 		this.direction = -this.direction;
+	}
+
+	onSideTouch(world: World): void {
+		switch (this.sideTouchGOID) {
+			case GOID.Player: {
+				world.removeEntity(this.sideTouchID!);
+			}
+			case GOID.Koopa:
+			case GOID.Goomba: {
+				this.direction = 1;
+				break;
+			}
+		}
 	}
 }

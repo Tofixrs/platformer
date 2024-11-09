@@ -50,6 +50,11 @@ export class Editor extends World {
 			this.grid.render(this.editorCamPos, this.screen);
 			this.rerender = false;
 		}
+		if (this.ui.levelData) {
+			this.data = this.ui.levelData;
+			this.load();
+			this.ui.switchLoad();
+		}
 	}
 	fixedUpdate(): void {
 		if (!this.testing) return;

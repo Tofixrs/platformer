@@ -1,6 +1,6 @@
 import { SmallButton } from "@lib/ui/small_button";
 import { Content } from "@pixi/layout";
-import { FancyButton } from "@pixi/ui";
+import { FancyButton, Input } from "@pixi/ui";
 import { Screen } from "@ui/screen";
 import { GameObjectID, GOID } from "gameObject";
 import { Sprite } from "pixi.js";
@@ -18,10 +18,18 @@ export class EditorUi extends Screen {
 	dontPlace = false;
 	erase = false;
 	worldRef: Editor;
+	input!: Input;
+	levelData?: string;
 	constructor(editor: Editor) {
 		super("Editor");
 		this.addTopPins();
+		this.addLoad();
 		this.worldRef = editor;
+
+		window.addEventListener("paste", (ev) => {
+			ev.preventDefault();
+			this.input.value = ev.clipboardData?.getData("text")!;
+		});
 	}
 	public addTopPins() {
 		this.addContent({
@@ -36,6 +44,12 @@ export class EditorUi extends Screen {
 			},
 			eraser: {
 				content: [
+					{
+						content: new SmallButton("🔄", () => this.switchLoad()),
+						styles: {
+							paddingLeft: 5,
+						},
+					},
 					{
 						content: new SmallButton("📋", () => this.copy()),
 						styles: {
@@ -57,8 +71,34 @@ export class EditorUi extends Screen {
 			},
 		});
 	}
+	public addLoad() {
+		this.input = new Input({
+			bg: Sprite.from("big_button"),
+			textStyle: {
+				fill: "white",
+			},
+			placeholder: "Input level data",
+		});
+		this.input.onEnter.connect((t) => (this.levelData = t));
+
+		this.addContent({
+			input: {
+				content: this.input,
+				styles: {
+					position: "center",
+					visible: false,
+				},
+			},
+		});
+	}
 	switchErase() {
 		this.erase = !this.erase;
+		this.dontPlace = true;
+	}
+	switchLoad() {
+		this.input.value = "";
+		const child = this.getChildByID("input");
+		child!.visible = !child!.visible;
 		this.dontPlace = true;
 	}
 	copy() {

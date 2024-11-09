@@ -69,7 +69,8 @@ export class Koopa extends Enemy {
 				if (this.shelled && this.moving) {
 					world.removeEntity(this.sideTouchID!);
 				} else {
-					this.direction = 1;
+					this.direction = -1;
+					this.sprite.scale.x = this.direction;
 				}
 				break;
 			}
@@ -101,13 +102,13 @@ export class Koopa extends Enemy {
 		});
 
 		this.rightWallSensor = this.body.createFixture({
-			shape: new Box(0.1, 0.1, new Vec2(0.25, 0)),
+			shape: new Box(0.1, 0.1, new Vec2(0.3, 0)),
 			isSensor: true,
 			filterMaskBits: 10,
 		});
 
 		this.leftWallSensor = this.body.createFixture({
-			shape: new Box(0.1, 0.1, new Vec2(-0.25, 0)),
+			shape: new Box(0.1, 0.1, new Vec2(-0.3, 0)),
 			isSensor: true,
 			filterMaskBits: 10,
 		});

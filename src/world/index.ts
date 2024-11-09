@@ -31,13 +31,14 @@ export class World {
 		entity.create(this);
 		this.entities.push(entity);
 	}
-	removeEntity(id: string) {
+	removeEntity(id: string, force: boolean = false) {
 		const foundIndex = this.entities.findIndex((v) => {
 			return v.id == id;
 		});
 		if (!this.entities[foundIndex]) return;
-		this.entities[foundIndex].remove(this);
-		this.entities.splice(foundIndex, 1);
+		if (this.entities[foundIndex].remove(this) || force) {
+			this.entities.splice(foundIndex, 1);
+		}
 	}
 	removeEntityIndex(index: number) {
 		if (!this.entities[index]) return;
