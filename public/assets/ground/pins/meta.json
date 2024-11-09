@@ -1,0 +1,19 @@
+{
+	"frames": {
+		"grass_pin": {
+			"frame": { "x": 0, "y": 0, "w": 256, "h": 256 }
+		},
+		"ice_pin": {
+			"frame": { "x": 256, "y": 0, "w": 256, "h": 256 }
+		}
+	},
+	"meta": {
+		"image": "pins.png",
+		"format": "RGBA8888",
+		"scale": 8,
+		"size": {
+			"w": 512,
+			"h": 512
+		}
+	}
+}

@@ -20,13 +20,12 @@ export class Graphics<R extends Renderer = Renderer> {
 	fpsElem: Text = new Text({ text: "0" });
 
 	async preload() {
-		await Assets.load([
-			{ alias: "ground_pin", src: "./assets/ground_pin.png" },
-		]);
+		await Assets.load("./assets/ground/pins/meta.json");
+		await Assets.load("./assets/ground/ice/meta.json");
 		await Assets.load("./assets/entities/char/meta.json");
 		await Assets.load("./assets/entities/goomba/meta.json");
 		await Assets.load("./assets/entities/koopa/meta.json");
-		await Assets.load("./assets/ground/grass.json");
+		await Assets.load("./assets/ground/grass/meta.json");
 		await Assets.load("./assets/ui/meta.json");
 	}
 	async setup() {

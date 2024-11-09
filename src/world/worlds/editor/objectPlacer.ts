@@ -4,10 +4,11 @@ import { Box, Transform, Vec2 } from "planck-js";
 import { pixiToPlanck } from "@lib/math/units";
 import { getClassFromID } from "gameObject/utils";
 import { Player } from "@gameObjs/player";
-import { Ground } from "@gameObjs/ground";
 import { Editor, getPosAtGrid } from ".";
 import { Goomba } from "@gameObjs/goomba";
 import { Koopa } from "@gameObjs/koopa";
+import { Grass } from "@gameObjs/grass";
+import { Ice } from "@gameObjs/ice";
 
 export class ObjectPlacer {
 	mouseHandler = new MouseHandler(new Vec2(0, 0));
@@ -73,13 +74,14 @@ export class ObjectPlacer {
 				go = new Player(physPos);
 				break;
 			}
-			//@ts-expect-error
-			case Ground: {
-				go = new Ground({
-					friction: 0.5,
-					shape: new Box(physSize.x, physSize.y),
-					pos: physPos,
-				});
+			//@ts-expect-error TS stop being stuped
+			case Grass: {
+				go = new Grass(physPos, new Box(physSize.x, physSize.y));
+				break;
+			}
+			//@ts-expect-error TS stop being stuped
+			case Ice: {
+				go = new Ice(physPos, new Box(physSize.x, physSize.y));
 				break;
 			}
 			//@ts-expect-error TS stop being stuped

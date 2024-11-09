@@ -9,9 +9,10 @@ import { Editor } from ".";
 export class EditorUi extends Screen {
 	topPinned: GameObjectID[] = [
 		GOID.Player,
-		GOID.Ground,
+		GOID.Grass,
 		GOID.Goomba,
 		GOID.Koopa,
+		GOID.Ice,
 	];
 	selected?: GameObjectID;
 	dontPlace = false;

@@ -1,5 +1,6 @@
 import { Goomba } from "@gameObjs/goomba";
-import { Ground } from "@gameObjs/ground";
+import { Grass } from "@gameObjs/grass";
+import { Ice } from "@gameObjs/ice";
 import { Koopa } from "@gameObjs/koopa";
 import { Player } from "@gameObjs/player";
 import { GameObject, GameObjectID, GOID } from "gameObject";
@@ -22,9 +23,10 @@ export function deserializeWorld(s: string) {
 //@ts-expect-error
 export function serialize(v: GameObject): SerializedGO {
 	if (v instanceof Player) return sPlayer(v);
-	if (v instanceof Ground) return sGround(v);
+	if (v instanceof Grass) return sGrass(v);
 	if (v instanceof Goomba) return sGoomba(v);
 	if (v instanceof Koopa) return sKoopa(v);
+	if (v instanceof Ice) return sIce(v);
 }
 
 function sPlayer(v: Player): SerializedGO {
@@ -60,9 +62,9 @@ function sKoopa(v: Koopa): SerializedGO {
 	};
 }
 
-function sGround(v: Ground): SerializedGO {
+function sGrass(v: Grass): SerializedGO {
 	return {
-		_type: GOID.Ground,
+		_type: GOID.Grass,
 		data: {
 			pos: v.pos,
 			shapeVerts: (v.shape as Polygon).m_vertices,
@@ -71,14 +73,27 @@ function sGround(v: Ground): SerializedGO {
 	};
 }
 
-function dGround(v: SerializedGO): Ground {
+function dGrass(v: SerializedGO): Grass {
 	const verts = v.data.shapeVerts.map((v: any) => new Vec2(v.x, v.y));
 	const shape = new Polygon(verts);
-	return new Ground({
-		friction: v.data.friction,
-		pos: new Vec2(v.data.pos.x, v.data.pos.y),
-		shape,
-	});
+	return new Grass(new Vec2(v.data.pos.x, v.data.pos.y), shape);
+}
+
+function sIce(v: Ice): SerializedGO {
+	return {
+		_type: GOID.Ice,
+		data: {
+			pos: v.pos,
+			shapeVerts: (v.shape as Polygon).m_vertices,
+			friction: v.friction,
+		},
+	};
+}
+
+function dIce(v: SerializedGO): Grass {
+	const verts = v.data.shapeVerts.map((v: any) => new Vec2(v.x, v.y));
+	const shape = new Polygon(verts);
+	return new Ice(new Vec2(v.data.pos.x, v.data.pos.y), shape);
 }
 
 export function deserialize(v: SerializedGO): GameObject {
@@ -86,8 +101,11 @@ export function deserialize(v: SerializedGO): GameObject {
 		case GOID.Player: {
 			return dPlayer(v);
 		}
-		case GOID.Ground: {
-			return dGround(v);
+		case GOID.Grass: {
+			return dGrass(v);
+		}
+		case GOID.Ice: {
+			return dIce(v);
 		}
 		case GOID.Goomba: {
 			return dGoomba(v);

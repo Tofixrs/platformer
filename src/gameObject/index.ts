@@ -32,7 +32,8 @@ export abstract class GameObject {
 
 export const GOID = {
 	Player: "player",
-	Ground: "ground",
+	Grass: "grass",
+	Ice: "ice",
 	Goomba: "goomba",
 	Koopa: "koopa",
 } as const;

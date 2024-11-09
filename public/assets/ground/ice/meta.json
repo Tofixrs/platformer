@@ -1,0 +1,16 @@
+{
+	"frames": {
+		"ice": {
+			"frame": { "x": 0, "y": 0, "w": 256, "h": 256 }
+		}
+	},
+	"meta": {
+		"image": "ice.png",
+		"format": "RGBA8888",
+		"scale": 16,
+		"size": {
+			"w": 256,
+			"h": 256
+		}
+	}
+}

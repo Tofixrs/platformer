@@ -5,22 +5,37 @@ import { PolygonShape } from "planck-js/lib/shape";
 import { planckToPixi } from "@lib/math/units";
 import { Vec2 } from "planck-js";
 import { Editor, getGridPosAtPos, getPosAtGrid } from "@worlds/editor";
-import { GOID } from "gameObject";
+import { getClassFromID } from "gameObject/utils";
 
-type GroundOpts = Omit<
+export type GroundOpts = Omit<
 	PhysicsObjectOptions,
-	"fixedRotation" | "density" | "bodyType" | "goid"
+	"fixedRotation" | "density" | "bodyType"
 >;
+export interface GroundAtlas {
+	side: string;
+	corner: string;
+	corner_both: string;
+	center: string;
+	side_both: string;
+	one_block: string;
+}
 
 export class Ground extends PhysicsObject {
 	static draggable: boolean = true;
 	cont = new Container();
+	static atlas: GroundAtlas = {
+		corner: "grass_corner",
+		corner_both: "grass_corner_both",
+		side: "grass_side",
+		one_block: "grass_one_block",
+		center: "grass_center",
+		side_both: "grass_side_both",
+	};
 	constructor(opt: GroundOpts) {
 		super({
 			fixedRotation: true,
 			density: 0,
 			bodyType: "static",
-			goid: GOID.Ground,
 			...opt,
 		});
 		this.shape = opt.shape;
@@ -54,7 +69,7 @@ export class Ground extends PhysicsObject {
 		const gridEndPos = getGridPosAtPos(
 			new Vec2(this.cont.x + size.x, this.cont.y + size.y),
 		);
-		Ground.renderDrag(gridPos, gridEndPos, this.cont);
+		getClassFromID(this.goid).renderDrag(gridPos, gridEndPos, this.cont);
 
 		world.main.addChild(this.cont);
 	}
@@ -69,22 +84,22 @@ export class Ground extends PhysicsObject {
 		size.x = Math.abs(size.x);
 		size.y = Math.abs(size.y);
 		if (size.x > Editor.gridSize && size.y > Editor.gridSize) {
-			const leftCorner = Sprite.from("grass_corner");
+			const leftCorner = Sprite.from(this.atlas.corner);
 			leftCorner.x = size.x;
 			leftCorner.scale.x = -1;
 
-			const bottomLeftCorner = Sprite.from("grass_corner");
+			const bottomLeftCorner = Sprite.from(this.atlas.corner);
 			bottomLeftCorner.x = size.x;
 			bottomLeftCorner.y = size.y;
 			bottomLeftCorner.scale.x = -1;
 			bottomLeftCorner.scale.y = -1;
 
-			const bottomRightCorner = Sprite.from("grass_corner");
+			const bottomRightCorner = Sprite.from(this.atlas.corner);
 			bottomRightCorner.y = size.y;
 			bottomRightCorner.scale.y = -1;
 
 			const center = new TilingSprite({
-				texture: Texture.from("grass_center"),
+				texture: Texture.from(this.atlas.center),
 				width: size.x - Editor.gridSize * 2 + 5,
 				height: size.y - Editor.gridSize * 2 + 5,
 				x: Editor.gridSize,
@@ -92,13 +107,13 @@ export class Ground extends PhysicsObject {
 			});
 
 			const topSide = new TilingSprite({
-				texture: Texture.from("grass_side"),
+				texture: Texture.from(this.atlas.side),
 				x: Editor.gridSize,
 				width: size.x - Editor.gridSize * 2,
 				height: Editor.gridSize,
 			});
 			const bottomSide = new TilingSprite({
-				texture: Texture.from("grass_side"),
+				texture: Texture.from(this.atlas.side),
 				x: size.x - Editor.gridSize,
 				y: size.y,
 				width: size.x - Editor.gridSize * 2,
@@ -107,13 +122,13 @@ export class Ground extends PhysicsObject {
 			});
 
 			const leftSide = new TilingSprite({
-				texture: Texture.from("grass_side"),
+				texture: Texture.from(this.atlas.side),
 				width: size.y - Editor.gridSize * 2,
 				angle: -90,
 				y: size.y - Editor.gridSize,
 			});
 			const rightSide = new TilingSprite({
-				texture: Texture.from("grass_side"),
+				texture: Texture.from(this.atlas.side),
 				width: size.y - Editor.gridSize * 2,
 				angle: 90,
 				x: size.x,
@@ -121,7 +136,7 @@ export class Ground extends PhysicsObject {
 			});
 
 			container.addChild(
-				Sprite.from("grass_corner"),
+				Sprite.from(this.atlas.corner),
 				leftCorner,
 				bottomLeftCorner,
 				bottomRightCorner,
@@ -133,34 +148,38 @@ export class Ground extends PhysicsObject {
 			);
 		} else if (size.y > Editor.gridSize && size.x == Editor.gridSize) {
 			const side = new TilingSprite({
-				texture: Texture.from("grass_side_both"),
+				texture: Texture.from(this.atlas.side_both),
 				y: Editor.gridSize,
 				x: Editor.gridSize,
 				width: size.y - Editor.gridSize * 2,
 				angle: 90,
 			});
-			const bottomCorner = Sprite.from("grass_corner_both");
+			const bottomCorner = Sprite.from(this.atlas.corner_both);
 			bottomCorner.scale.y = -1;
 			bottomCorner.y = size.y;
 
-			container.addChild(Sprite.from("grass_corner_both"), side, bottomCorner);
+			container.addChild(
+				Sprite.from(this.atlas.corner_both),
+				side,
+				bottomCorner,
+			);
 		} else if (size.y == Editor.gridSize && size.x > Editor.gridSize) {
-			const leftSide = Sprite.from("grass_corner_both");
+			const leftSide = Sprite.from(this.atlas.corner_both);
 			leftSide.angle = -90;
 			leftSide.y = Editor.gridSize;
 
-			const rightSide = Sprite.from("grass_corner_both");
+			const rightSide = Sprite.from(this.atlas.corner_both);
 			rightSide.angle = 90;
 			rightSide.x = size.x;
 			const center = new TilingSprite({
-				texture: Texture.from("grass_side_both"),
+				texture: Texture.from(this.atlas.side_both),
 				width: size.x - Editor.gridSize * 2,
 				x: Editor.gridSize,
 			});
 
 			container.addChild(leftSide, rightSide, center);
 		} else if (size.y == Editor.gridSize && size.x == Editor.gridSize) {
-			container.addChild(Sprite.from("grass_one_block"));
+			container.addChild(Sprite.from(this.atlas.one_block));
 		}
 	}
 	remove(world: World): boolean {

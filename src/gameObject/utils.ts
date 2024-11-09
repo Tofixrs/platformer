@@ -1,5 +1,6 @@
 import { Goomba } from "@gameObjs/goomba";
-import { Ground } from "@gameObjs/ground";
+import { Grass } from "@gameObjs/grass";
+import { Ice } from "@gameObjs/ice";
 import { Koopa } from "@gameObjs/koopa";
 import { Player } from "@gameObjs/player";
 import { GameObject, GameObjectID, GOID } from "gameObject";
@@ -10,9 +11,9 @@ export function getClassFromID(id: GameObjectID): typeof GameObject {
 			//@ts-expect-error
 			return Player;
 		}
-		case GOID.Ground: {
+		case GOID.Grass: {
 			//@ts-expect-error
-			return Ground;
+			return Grass;
 		}
 		case GOID.Goomba: {
 			//@ts-expect-error
@@ -21,6 +22,10 @@ export function getClassFromID(id: GameObjectID): typeof GameObject {
 		case GOID.Koopa: {
 			//@ts-expect-error
 			return Koopa;
+		}
+		case GOID.Ice: {
+			//@ts-expect-error
+			return Ice;
 		}
 	}
 }

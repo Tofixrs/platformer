@@ -15,7 +15,6 @@
 		"grass_side_both": {
 			"frame": { "x": 256, "y": 256, "w": 256, "h": 256 }
 		},
-
 		"grass_one_block": {
 			"frame": { "x": 512, "y": 256, "w": 256, "h": 256 }
 		}
