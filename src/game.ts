@@ -1,11 +1,8 @@
 import { Graphics } from "./graphics";
 import { World } from "./world";
 import { Actions } from "@lib/input";
-import { Box, Vec2 } from "planck-js";
 import { MainMenu } from "@worlds/mainMenu";
 import { Settings } from "@worlds/settings";
-import { Player } from "@gameObjs/player";
-import { Ground } from "@gameObjs/ground";
 import { Editor } from "./world/worlds/editor";
 import { Loop } from "@lib/loop";
 import { WorldController } from "./world/controller";

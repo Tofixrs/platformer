@@ -6,9 +6,7 @@ import { lerp2D } from "@lib/math/lerp";
 import { Actions } from "@lib/input";
 import { meter } from "@lib/math/units";
 import { GOID } from "gameObject";
-import { PhysObjUserData } from "gameObject/types/physicsObject";
-import { getClassFromID } from "gameObject/utils";
-import { Enemy } from "gameObject/types/enemy";
+import { Howler } from "howler";
 
 export class Player extends Entity {
 	maxJumpVel = -20;
@@ -35,6 +33,10 @@ export class Player extends Entity {
 	divingDelay = 0.5; // in ms
 	lockedMovement = false;
 	static maxInstances = 1;
+	jumpSound = new Howl({
+		src: ["./jump.mp3"],
+		volume: 0.25,
+	});
 	constructor(pos: Vec2) {
 		super({
 			pos,
@@ -84,6 +86,7 @@ export class Player extends Entity {
 			20 * dt,
 		);
 		world.main.pivot.set(pos.x, pos.y);
+		Howler.pos(this.pos.x, this.pos.y);
 	}
 	handleMove(dt: number) {
 		if (Actions.hold("left")) {
@@ -101,14 +104,16 @@ export class Player extends Entity {
 		this.handleWalk(dt);
 		this.handleLongJump(dt);
 		this.handleDive(dt);
+		this.jumpSound.pos(this.pos.x, this.pos.y);
 	}
 	handleJump(dt: number) {
 		if (this.lockedMovement) return;
-		if (Actions.actions.get("jump") && this.onGround) {
+		if (Actions.actions.get("jump") && this.onGround && !this.jumping) {
 			this.jumping = true;
+			this.jumpSound.play();
 		}
 
-		if (!Actions.actions.get("jump")) {
+		if (!Actions.actions.get("jump") && this.jumping) {
 			this.jumping = false;
 		}
 
