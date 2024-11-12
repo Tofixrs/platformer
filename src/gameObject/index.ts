@@ -22,6 +22,7 @@ export abstract class GameObject {
 		this.id = window.crypto.randomUUID();
 	}
 	update(_dt: number, _world: World) {}
+	pausedUpdate(_dt: number, _world: World) {}
 	fixedUpdate() {}
 	create(_world: World) {}
 	remove(_world: World, force: boolean = false): boolean {

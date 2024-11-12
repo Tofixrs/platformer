@@ -91,6 +91,7 @@ export class Editor extends World {
 		if (!yes /*no*/) {
 			this.main.pivot.set(this.editorCamPos.x, this.editorCamPos.y);
 			this.load();
+			this.pause = false;
 		}
 		this.recenter(this.screen);
 	}

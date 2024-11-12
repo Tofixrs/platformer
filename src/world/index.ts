@@ -12,6 +12,7 @@ export class World {
 	c = new Container();
 	entities: GameObject[] = [];
 	static physicsStepTime = 1 / 60;
+	pause: boolean = false;
 	constructor(graphics: Graphics) {
 		this.main.x = graphics.renderer.screen.width / 2;
 		this.main.y = graphics.renderer.screen.height / 2;
@@ -47,9 +48,14 @@ export class World {
 	}
 
 	update(dt: number) {
+		if (this.pause) {
+			this.entities.forEach((e) => e.pausedUpdate(dt, this));
+			return;
+		}
 		this.entities.forEach((e) => e.update(dt, this));
 	}
 	fixedUpdate(): void {
+		if (this.pause) return;
 		this.p.step(World.physicsStepTime, 6, 2);
 		this.entities.forEach((e) => e.fixedUpdate());
 	}

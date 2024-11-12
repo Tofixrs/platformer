@@ -1,13 +1,13 @@
-import { Box, Contact, Fixture, Polygon, Vec2 } from "planck-js";
+import { Box, Contact, Fixture, Vec2 } from "planck-js";
 import { AnimatedSprite, Sprite, Texture } from "pixi.js";
 import { Entity } from "../types/entity";
 import { World } from "world";
 import { lerp2D } from "@lib/math/lerp";
 import { Actions } from "@lib/input";
-import { meter, planckToPixi } from "@lib/math/units";
 import { GOID } from "gameObject";
 import { Howler } from "howler";
 import { Timer } from "@lib/ticker";
+import { meter, pixiToPlanck } from "@lib/math/units";
 
 export const PowerState = {
 	Small: 1,
@@ -47,6 +47,7 @@ export class Player extends Entity {
 		volume: 0.25,
 	});
 	powerState: PState = PowerState.Small;
+	invTimer = new Timer(0.5);
 	anims = {
 		small_walk: new AnimatedSprite([
 			Texture.from("player_small_stand"),
@@ -59,6 +60,26 @@ export class Player extends Entity {
 		small_jump: Sprite.from("player_small_jump"),
 		big_jump: Sprite.from("player_big_jump"),
 		roll: Sprite.from("player_roll"),
+		grow_anim: new AnimatedSprite([
+			Texture.from("player_small_stand"),
+			Texture.from("player_small_stand"),
+			Texture.from("player_big_stand"),
+			Texture.from("player_small_stand"),
+			Texture.from("player_big_stand"),
+			Texture.from("player_small_stand"),
+			Texture.from("player_big_stand"),
+			Texture.from("player_big_stand"),
+		]),
+		shrink_anim: new AnimatedSprite([
+			Texture.from("player_big_stand"),
+			Texture.from("player_big_stand"),
+			Texture.from("player_small_stand"),
+			Texture.from("player_big_stand"),
+			Texture.from("player_small_stand"),
+			Texture.from("player_big_stand"),
+			Texture.from("player_small_stand"),
+			Texture.from("player_small_stand"),
+		]),
 	} as const;
 	currentAnim: PlayerAnims = "small_walk";
 	lastAnim: PlayerAnims = "small_walk";
@@ -88,8 +109,13 @@ export class Player extends Entity {
 		this.anims.big_walk.animationSpeed = 0;
 		this.anims.big_walk.play();
 		this.anims.big_jump.anchor.set(0.5, 0.5);
+		this.anims.grow_anim.animationSpeed = 0.1;
+		this.anims.grow_anim.loop = false;
+		this.anims.grow_anim.anchor.set(0.5, 0.5);
 
-		this.setPState(PowerState.Big);
+		this.anims.shrink_anim.animationSpeed = 0.1;
+		this.anims.shrink_anim.loop = false;
+		this.anims.shrink_anim.anchor.set(0.5, 0.5);
 	}
 	create(world: World): void {
 		super.create(world);
@@ -122,15 +148,31 @@ export class Player extends Entity {
 		this.sprite = this.anims[anim];
 		this.sprite.visible = true;
 	}
-	setPState(state: PState) {
-		this.powerState = state;
+	setPState(state: PState, world?: World) {
 		this.setBigHitbox(state >= PowerState.Big);
+		if (world) {
+			world.pause = true;
+			if (this.powerState > PowerState.Small && state < PowerState.Big) {
+				this.setAnim("shrink_anim");
+				this.anims.shrink_anim.play();
+			}
+			if (this.powerState < PowerState.Big && state > PowerState.Small) {
+				this.setAnim("grow_anim");
+				this.anims.grow_anim.play();
+			}
+			this.anims[this.currentAnim].scale.x = this.direction;
+		}
+		this.powerState = state;
 	}
-	setBigHitbox(yes?: boolean) {
+	setBigHitbox(yes: boolean) {
 		this.density = yes ? 1 : 2;
 		if (this.mainFix) this.mainFix.m_density = this.density;
-		this.shape = yes ? this.bigShape : this.smallShape;
+		this.mainFix.m_shape = yes ? this.bigShape : this.smallShape;
+		this.shape = this.mainFix.m_shape;
 		this.sensorShape.m_vertices.forEach((v) => (v.y -= yes ? -0.25 : 0.25));
+		const pos = this.body.getPosition();
+		this.body.setPosition(new Vec2(pos.x, pos.y - (yes ? 0.25 : -0.25)));
+		this.body.setAwake(true);
 	}
 	checkGround(contact: Contact) {
 		const fixA = contact.getFixtureA();
@@ -145,6 +187,26 @@ export class Player extends Entity {
 		this.followCam(world, dt);
 		this.handleMove(dt);
 		this.handleAnim();
+
+		if (Actions.click("dive"))
+			this.setPState(
+				this.powerState == PowerState.Big ? PowerState.Small : PowerState.Big,
+				world,
+			);
+		this.invTimer.tick(dt);
+	}
+	pausedUpdate(_dt: number, world: World): void {
+		if (this.currentAnim != "grow_anim" && this.currentAnim != "shrink_anim")
+			return;
+		if (!this.anims[this.currentAnim].playing) {
+			world.pause = false;
+			this.anims[this.currentAnim].currentFrame = 0;
+			if (this.powerState > PowerState.Small) {
+				this.setAnim("big_walk");
+			} else {
+				this.setAnim("small_walk");
+			}
+		}
 	}
 	followCam(world: World, dt: number) {
 		const pos = lerp2D(
@@ -234,6 +296,7 @@ export class Player extends Entity {
 			);
 			return;
 		}
+		if (this.onGround) this.jumpSound.play();
 
 		this.body?.applyForce(
 			new Vec2(0, this.jumpForce * dt),
@@ -279,6 +342,21 @@ export class Player extends Entity {
 			this.actionStates = this.actionStates.filter(
 				(v) => v != ActionState.Jump,
 			);
+		}
+	}
+	remove(world: World, force?: boolean): boolean {
+		if (force) {
+			super.remove(world, force);
+			return true;
+		}
+		if (!this.invTimer.done()) return false;
+		if (this.powerState > PowerState.Small) {
+			this.setPState(PowerState.Small, world);
+			this.invTimer.reset();
+			return false;
+		} else {
+			super.remove(world, force);
+			return true;
 		}
 	}
 }
