@@ -81,6 +81,7 @@ export class Player extends Entity {
 			Texture.from("player_small_stand"),
 		]),
 		crouch: Sprite.from("player_big_crouch"),
+		dive: Sprite.from("player_dive"),
 	} as const;
 	currentAnim: PlayerAnims = "small_walk";
 	lastAnim: PlayerAnims = "small_walk";
@@ -264,13 +265,11 @@ export class Player extends Entity {
 		const shouldRoll =
 			Actions.hold("roll") && this.actionStates.includes(ActionState.Crouch);
 		if (this.actionStates.includes(ActionState.Roll) && !shouldRoll) {
-			this.mainFix.m_shape = this.bigShape;
 			this.body.setFixedRotation(true);
 			this.body.setAngle(0);
 			this.body.setAwake(true);
 		}
 		if (!this.actionStates.includes(ActionState.Roll) && shouldRoll) {
-			this.mainFix.m_shape = this.smallShape;
 			this.body.setAwake(true);
 			this.body.setFixedRotation(false);
 		}
