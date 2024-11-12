@@ -140,60 +140,20 @@ export class Player extends Entity {
 			this.checkGround(contact);
 		});
 	}
-	setAnim(anim: PlayerAnims) {
-		this.anims[this.currentAnim].visible = false;
-		this.currentAnim = anim;
-		this.anims[anim].x = this.sprite.x;
-		this.anims[anim].y = this.sprite.y;
-		this.sprite = this.anims[anim];
-		this.sprite.visible = true;
-	}
-	setPState(state: PState, world?: World) {
-		this.setBigHitbox(state >= PowerState.Big);
-		if (world) {
-			world.pause = true;
-			if (this.powerState > PowerState.Small && state < PowerState.Big) {
-				this.setAnim("shrink_anim");
-				this.anims.shrink_anim.play();
-			}
-			if (this.powerState < PowerState.Big && state > PowerState.Small) {
-				this.setAnim("grow_anim");
-				this.anims.grow_anim.play();
-			}
-			this.anims[this.currentAnim].scale.x = this.direction;
+	remove(world: World, force?: boolean): boolean {
+		if (force) {
+			super.remove(world, force);
+			return true;
 		}
-		this.powerState = state;
-	}
-	setBigHitbox(yes: boolean) {
-		this.density = yes ? 1 : 2;
-		if (this.mainFix) this.mainFix.m_density = this.density;
-		this.mainFix.m_shape = yes ? this.bigShape : this.smallShape;
-		this.shape = this.mainFix.m_shape;
-		this.sensorShape.m_vertices.forEach((v) => (v.y -= yes ? -0.25 : 0.25));
-		const pos = this.body.getPosition();
-		this.body.setPosition(new Vec2(pos.x, pos.y - (yes ? 0.25 : -0.25)));
-		this.body.setAwake(true);
-	}
-	checkGround(contact: Contact) {
-		const fixA = contact.getFixtureA();
-		const fixB = contact.getFixtureB();
-
-		if (fixA != this.sensor && fixB != this.sensor) return;
-
-		this.onGround = contact.isTouching();
-	}
-	update(dt: number, world: World): void {
-		super.update(dt, world);
-		this.followCam(world, dt);
-		this.handleMove(dt);
-		this.handleAnim();
-
-		if (Actions.click("dive"))
-			this.setPState(
-				this.powerState == PowerState.Big ? PowerState.Small : PowerState.Big,
-				world,
-			);
-		this.invTimer.tick(dt);
+		if (!this.invTimer.done()) return false;
+		if (this.powerState > PowerState.Small) {
+			this.setPState(PowerState.Small, world);
+			this.invTimer.reset();
+			return false;
+		} else {
+			super.remove(world, force);
+			return true;
+		}
 	}
 	pausedUpdate(_dt: number, world: World): void {
 		if (this.currentAnim != "grow_anim" && this.currentAnim != "shrink_anim")
@@ -208,6 +168,14 @@ export class Player extends Entity {
 			}
 		}
 	}
+	update(dt: number, world: World): void {
+		super.update(dt, world);
+		this.followCam(world, dt);
+		this.handleMove(dt);
+		this.handleAnim();
+
+		this.invTimer.tick(dt);
+	}
 	followCam(world: World, dt: number) {
 		const pos = lerp2D(
 			new Vec2(world.main.pivot.x, world.main.pivot.y),
@@ -216,43 +184,6 @@ export class Player extends Entity {
 		);
 		world.main.pivot.set(pos.x, pos.y);
 		Howler.pos(this.pos.x, this.pos.y);
-	}
-	handleAnim() {
-		const vel = this.body.getLinearVelocity();
-		this.anims.small_walk.animationSpeed = 0.02 * vel.x;
-		this.anims.big_walk.animationSpeed = 0.02 * vel.x;
-		if (vel.x == 0) {
-			this.anims.small_walk.currentFrame = 0;
-			this.anims.big_walk.currentFrame = 0;
-		}
-		if (this.powerState < PowerState.Big) {
-			if (
-				this.actionStates.includes(ActionState.Jump) &&
-				this.currentAnim != "small_jump"
-			) {
-				this.setAnim("small_jump");
-			} else if (
-				!this.actionStates.includes(ActionState.Jump) &&
-				this.currentAnim != "small_walk" &&
-				this.onGround
-			) {
-				this.setAnim("small_walk");
-			}
-		} else {
-			if (this.currentAnim.startsWith("small")) this.setAnim("big_walk");
-			if (
-				this.actionStates.includes(ActionState.Jump) &&
-				this.currentAnim != "big_jump"
-			) {
-				this.setAnim("big_jump");
-			} else if (
-				!this.actionStates.includes(ActionState.Jump) &&
-				this.currentAnim != "big_walk" &&
-				this.onGround
-			) {
-				this.setAnim("big_walk");
-			}
-		}
 	}
 	handleMove(dt: number) {
 		if (Actions.hold("left")) {
@@ -304,19 +235,6 @@ export class Player extends Entity {
 			true,
 		);
 	}
-	checkActionState(actionState: AState, should: boolean): boolean {
-		if (!should && this.actionStates.includes(actionState)) {
-			this.actionStates = this.actionStates.filter((v) => v != actionState);
-			return true;
-		}
-		if (should && !this.actionStates.includes(actionState)) {
-			this.actionStates.push(actionState);
-			return false;
-		}
-		if (!should && !this.actionStates.includes(actionState)) return true;
-		if (should && this.actionStates.includes(actionState)) return false;
-		return false;
-	}
 	checkMaxVel() {
 		const maxVel = this.actionStates.map((v) => {
 			if (v == ActionState.Roll) return new Vec2(25, -15);
@@ -344,19 +262,96 @@ export class Player extends Entity {
 			);
 		}
 	}
-	remove(world: World, force?: boolean): boolean {
-		if (force) {
-			super.remove(world, force);
-			return true;
+	handleAnim() {
+		const vel = this.body.getLinearVelocity();
+		this.anims.small_walk.animationSpeed = 0.02 * vel.x;
+		this.anims.big_walk.animationSpeed = 0.02 * vel.x;
+		if (vel.x == 0) {
+			this.anims.small_walk.currentFrame = 0;
+			this.anims.big_walk.currentFrame = 0;
 		}
-		if (!this.invTimer.done()) return false;
-		if (this.powerState > PowerState.Small) {
-			this.setPState(PowerState.Small, world);
-			this.invTimer.reset();
-			return false;
+		if (this.powerState < PowerState.Big) {
+			if (
+				this.actionStates.includes(ActionState.Jump) &&
+				this.currentAnim != "small_jump"
+			) {
+				this.setAnim("small_jump");
+			} else if (
+				!this.actionStates.includes(ActionState.Jump) &&
+				this.currentAnim != "small_walk" &&
+				this.onGround
+			) {
+				this.setAnim("small_walk");
+			}
 		} else {
-			super.remove(world, force);
+			if (this.currentAnim.startsWith("small")) this.setAnim("big_walk");
+			if (
+				this.actionStates.includes(ActionState.Jump) &&
+				this.currentAnim != "big_jump"
+			) {
+				this.setAnim("big_jump");
+			} else if (
+				!this.actionStates.includes(ActionState.Jump) &&
+				this.currentAnim != "big_walk" &&
+				this.onGround
+			) {
+				this.setAnim("big_walk");
+			}
+		}
+	}
+	checkActionState(actionState: AState, should: boolean): boolean {
+		if (!should && this.actionStates.includes(actionState)) {
+			this.actionStates = this.actionStates.filter((v) => v != actionState);
 			return true;
 		}
+		if (should && !this.actionStates.includes(actionState)) {
+			this.actionStates.push(actionState);
+			return false;
+		}
+		if (!should && !this.actionStates.includes(actionState)) return true;
+		if (should && this.actionStates.includes(actionState)) return false;
+		return false;
+	}
+	setAnim(anim: PlayerAnims) {
+		this.anims[this.currentAnim].visible = false;
+		this.currentAnim = anim;
+		this.anims[anim].x = this.sprite.x;
+		this.anims[anim].y = this.sprite.y;
+		this.sprite = this.anims[anim];
+		this.sprite.visible = true;
+	}
+	setPState(state: PState, world?: World) {
+		this.setBigHitbox(state >= PowerState.Big);
+		if (world) {
+			world.pause = true;
+			if (this.powerState > PowerState.Small && state < PowerState.Big) {
+				this.setAnim("shrink_anim");
+				this.anims.shrink_anim.play();
+			}
+			if (this.powerState < PowerState.Big && state > PowerState.Small) {
+				this.setAnim("grow_anim");
+				this.anims.grow_anim.play();
+			}
+			this.anims[this.currentAnim].scale.x = this.direction;
+		}
+		this.powerState = state;
+	}
+	setBigHitbox(yes: boolean) {
+		this.density = yes ? 1 : 2;
+		if (this.mainFix) this.mainFix.m_density = this.density;
+		this.mainFix.m_shape = yes ? this.bigShape : this.smallShape;
+		this.shape = this.mainFix.m_shape;
+		this.sensorShape.m_vertices.forEach((v) => (v.y -= yes ? -0.25 : 0.25));
+		const pos = this.body.getPosition();
+		this.body.setPosition(new Vec2(pos.x, pos.y - (yes ? 0.25 : -0.25)));
+		this.body.setAwake(true);
+	}
+	checkGround(contact: Contact) {
+		const fixA = contact.getFixtureA();
+		const fixB = contact.getFixtureB();
+
+		if (fixA != this.sensor && fixB != this.sensor) return;
+
+		this.onGround = contact.isTouching();
 	}
 }
