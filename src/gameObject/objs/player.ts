@@ -34,12 +34,12 @@ export class Player extends Entity {
 	rollForce = 1000;
 	longJumpVertForce = 1500;
 	jumpForce = -10000;
-	diveForce = 100000;
+	diveForce = 350;
 	groundpoundSpeed = 25;
 	sensor!: Fixture;
 	onGround = false;
 	direction = 1;
-	divingDelay = new Timer(0.5);
+	divingDelay = new Timer(0.2);
 	actionStates: AState[] = [];
 	static maxInstances = 1;
 	jumpSound = new Howl({
@@ -86,7 +86,7 @@ export class Player extends Entity {
 	currentAnim: PlayerAnims = "small_walk";
 	lastAnim: PlayerAnims = "small_walk";
 	maxVel = new Vec2(15, -20);
-	bigShape = new Box(0.23, 0.5);
+	bigShape = new Box(0.23, 0.45);
 	smallShape = new Box(0.23, 0.23);
 	sensorShape = new Box(0.2, 0.05, new Vec2(0, 0.2));
 	constructor(pos: Vec2) {
@@ -203,9 +203,11 @@ export class Player extends Entity {
 		this.handleJump(dt);
 		this.handleCrouch();
 		this.handleRoll(dt);
+		this.handleDive(dt);
 		this.jumpSound.pos(this.pos.x, this.pos.y);
 	}
 	handleWalk(dt: number) {
+		if (this.actionStates.includes(ActionState.Locked)) return;
 		const shouldWalk = Actions.hold("left") || Actions.hold("right");
 		const shouldRun = shouldWalk && Actions.hold("run");
 		this.checkActionState(ActionState.Run, shouldRun);
@@ -282,6 +284,39 @@ export class Player extends Entity {
 			true,
 		);
 	}
+	handleDive(dt: number) {
+		if (this.powerState < PowerState.Big) return;
+		if (this.actionStates.includes(ActionState.GroundPound)) return;
+		if (this.actionStates.includes(ActionState.Roll)) return;
+		if (this.actionStates.includes(ActionState.Crouch)) return;
+
+		const shouldDive =
+			(Actions.hold("dive") && !this.onGround) ||
+			(!this.divingDelay.done() &&
+				this.actionStates.includes(ActionState.Dive));
+
+		if (!this.actionStates.includes(ActionState.Dive) && shouldDive) {
+			this.body.applyForceToCenter(
+				new Vec2(this.diveForce * this.direction, 0),
+			);
+			this.actionStates.push(ActionState.Locked);
+			this.divingDelay.reset();
+			this.mainFix.m_friction *= 2;
+		}
+		if (this.actionStates.includes(ActionState.Dive) && !shouldDive) {
+			this.mainFix.m_friction /= 2;
+			this.body.applyForceToCenter(new Vec2(0, -250), true);
+		}
+
+		if (this.checkActionState(ActionState.Dive, shouldDive)) return;
+		if (!this.onGround) return;
+
+		this.divingDelay.tick(dt);
+		if (!this.divingDelay.done()) return;
+		this.actionStates = this.actionStates.filter(
+			(v) => v != ActionState.Locked,
+		);
+	}
 	checkMaxVel() {
 		const maxVel = this.actionStates.map((v) => {
 			if (v == ActionState.Roll) return new Vec2(12.5, -15);
@@ -316,6 +351,15 @@ export class Player extends Entity {
 		if (vel.x == 0) {
 			this.anims.small_walk.currentFrame = 0;
 			this.anims.big_walk.currentFrame = 0;
+		}
+		if (this.actionStates.includes(ActionState.Locked)) {
+			if (
+				!this.actionStates.includes(ActionState.Dive) ||
+				this.currentAnim == "dive"
+			)
+				return;
+			this.setAnim("dive");
+			return;
 		}
 		if (this.powerState < PowerState.Big) {
 			if (
