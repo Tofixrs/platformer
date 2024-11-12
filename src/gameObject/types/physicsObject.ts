@@ -1,6 +1,6 @@
 import { GameObject, GameObjectID, GameObjectOptions } from "gameObject";
 import { World } from "world";
-import { Body, BodyType, Shape } from "planck-js";
+import { Body, BodyType, Fixture, Shape } from "planck-js";
 
 export interface PhysicsObjectOptions extends GameObjectOptions {
 	friction: number;
@@ -18,6 +18,7 @@ export class PhysicsObject extends GameObject {
 	body!: Body;
 	fixedRotation: boolean;
 	lastDebugRender?: Shape;
+	mainFix!: Fixture;
 	constructor(opts: PhysicsObjectOptions) {
 		super(opts);
 
@@ -38,7 +39,7 @@ export class PhysicsObject extends GameObject {
 			type: this.bodyType,
 		});
 
-		this.body.createFixture({
+		this.mainFix = this.body.createFixture({
 			density: this.density,
 			shape: this.shape,
 			friction: this.friction,

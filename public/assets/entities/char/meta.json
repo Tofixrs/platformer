@@ -1,17 +1,28 @@
 {
 	"frames": {
-		"player_normal": {
+		"player_big_stand": {
 			"frame": { "x": 0, "y": 0, "w": 32, "h": 64 }
 		},
-		"player_crouch": {
+		"player_big_walk_1": {
+			"frame": { "x": 32, "y": 0, "w": 32, "h": 64 }
+		},
+		"player_big_jump": {
+			"frame": { "x": 64, "y": 0, "w": 32, "h": 64 }
+		},
+		"player_pin": {
 			"frame": { "x": 0, "y": 128, "w": 32, "h": 32 }
 		},
-		"player_lj": {
-			"frame": { "x": 0, "y": 64, "w": 48, "h": 64 }
+		"player_small_stand": {
+			"frame": { "x": 0, "y": 128, "w": 32, "h": 32 }
 		},
-
-		"player_pin": {
+		"player_small_walk_1": {
 			"frame": { "x": 32, "y": 128, "w": 32, "h": 32 }
+		},
+		"player_small_jump": {
+			"frame": { "x": 64, "y": 128, "w": 32, "h": 32 }
+		},
+		"player_roll": {
+			"frame": { "x": 64, "y": 128, "w": 32, "h": 32 }
 		}
 	},
 	"meta": {

@@ -69,6 +69,7 @@ export class Actions {
 			["dive", "v"],
 			["back", "escape"],
 			["test", "p"],
+			["run", "shift"],
 			["debug", "`"],
 		];
 		defaultBinds.forEach(([action, key]) => {
