@@ -46,7 +46,7 @@ export class Player extends Entity {
 		src: ["./jump.mp3"],
 		volume: 0.25,
 	});
-	powerState: PState = PowerState.Small;
+	powerState: PState = PowerState.Big;
 	invTimer = new Timer(0.5);
 	anims = {
 		small_walk: new AnimatedSprite([
@@ -80,6 +80,7 @@ export class Player extends Entity {
 			Texture.from("player_small_stand"),
 			Texture.from("player_small_stand"),
 		]),
+		crouch: Sprite.from("player_big_crouch"),
 	} as const;
 	currentAnim: PlayerAnims = "small_walk";
 	lastAnim: PlayerAnims = "small_walk";
@@ -116,6 +117,7 @@ export class Player extends Entity {
 		this.anims.shrink_anim.animationSpeed = 0.1;
 		this.anims.shrink_anim.loop = false;
 		this.anims.shrink_anim.anchor.set(0.5, 0.5);
+		this.anims.crouch.anchor.set(0.5, 0.75);
 	}
 	create(world: World): void {
 		super.create(world);
@@ -139,6 +141,7 @@ export class Player extends Entity {
 		world.p.on("end-contact", (contact) => {
 			this.checkGround(contact);
 		});
+		this.setPState(this.powerState, world, false);
 	}
 	remove(world: World, force?: boolean): boolean {
 		if (force) {
@@ -194,11 +197,12 @@ export class Player extends Entity {
 			this.direction = 1;
 		}
 		this.sprite.scale.x = this.direction;
-
+		this.checkMaxVel();
 		this.handleWalk(dt);
 		this.handleJump(dt);
+		this.handleCrouch();
+		this.handleRoll(dt);
 		this.jumpSound.pos(this.pos.x, this.pos.y);
-		this.checkMaxVel();
 	}
 	handleWalk(dt: number) {
 		const shouldWalk = Actions.hold("left") || Actions.hold("right");
@@ -221,12 +225,7 @@ export class Player extends Entity {
 		const shouldJump =
 			(Actions.hold("jump") && this.onGround) ||
 			(this.actionStates.includes(ActionState.Jump) && Actions.hold("jump"));
-		if (this.checkActionState(ActionState.Jump, shouldJump)) {
-			this.actionStates = this.actionStates.filter(
-				(v) => v != ActionState.Jump,
-			);
-			return;
-		}
+		if (this.checkActionState(ActionState.Jump, shouldJump)) return;
 		if (this.onGround) this.jumpSound.play();
 
 		this.body?.applyForce(
@@ -235,9 +234,58 @@ export class Player extends Entity {
 			true,
 		);
 	}
+	handleCrouch() {
+		if (this.powerState < PowerState.Big) return;
+		if (this.actionStates.includes(ActionState.Locked)) return;
+		if (this.actionStates.includes(ActionState.Dive)) return;
+		if (this.actionStates.includes(ActionState.GroundPound)) return;
+		const shouldCrouch = Actions.hold("crouch");
+		if (this.actionStates.includes(ActionState.Crouch) && !shouldCrouch) {
+			this.mainFix.m_shape = this.bigShape;
+			this.sensorShape.m_vertices.forEach((v) => {
+				v.y += 0.25;
+			});
+			this.body.setAwake(true);
+		}
+		if (!this.actionStates.includes(ActionState.Crouch) && shouldCrouch) {
+			this.mainFix.m_shape = this.smallShape;
+			this.sensorShape.m_vertices.forEach((v) => {
+				v.y -= 0.25;
+			});
+			this.body.setAwake(true);
+		}
+		if (this.checkActionState(ActionState.Crouch, shouldCrouch)) return;
+	}
+	handleRoll(dt: number) {
+		if (this.powerState < PowerState.Big) return;
+		if (this.actionStates.includes(ActionState.Locked)) return;
+		if (this.actionStates.includes(ActionState.Dive)) return;
+		if (this.actionStates.includes(ActionState.GroundPound)) return;
+		const shouldRoll =
+			Actions.hold("roll") && this.actionStates.includes(ActionState.Crouch);
+		if (this.actionStates.includes(ActionState.Roll) && !shouldRoll) {
+			this.mainFix.m_shape = this.bigShape;
+			this.body.setFixedRotation(true);
+			this.body.setAngle(0);
+			this.body.setAwake(true);
+		}
+		if (!this.actionStates.includes(ActionState.Roll) && shouldRoll) {
+			this.mainFix.m_shape = this.smallShape;
+			this.body.setAwake(true);
+			this.body.setFixedRotation(false);
+		}
+		if (this.checkActionState(ActionState.Roll, shouldRoll)) return;
+
+		this.body?.applyForceToCenter(new Vec2(0, 25 * dt), true);
+		this.body?.applyForce(
+			new Vec2(this.direction * this.rollForce * dt, 0),
+			new Vec2(0, -10),
+			true,
+		);
+	}
 	checkMaxVel() {
 		const maxVel = this.actionStates.map((v) => {
-			if (v == ActionState.Roll) return new Vec2(25, -15);
+			if (v == ActionState.Roll) return new Vec2(12.5, -15);
 			if (v == ActionState.LongJump) return new Vec2(30, -15);
 			if (v == ActionState.Dive) return new Vec2(20, -15);
 			if (v == ActionState.Run) return new Vec2(10, -22.5);
@@ -250,7 +298,7 @@ export class Player extends Entity {
 		this.maxVel.y = maxY;
 
 		const vel = this.body.getLinearVelocity();
-		if (Math.abs(vel.x) > this.maxVel.x)
+		if (vel.x * this.direction > this.maxVel.x)
 			this.body.setLinearVelocity(
 				new Vec2(this.maxVel.x * this.direction, vel.y),
 			);
@@ -287,11 +335,24 @@ export class Player extends Entity {
 			if (this.currentAnim.startsWith("small")) this.setAnim("big_walk");
 			if (
 				this.actionStates.includes(ActionState.Jump) &&
-				this.currentAnim != "big_jump"
+				this.currentAnim != "big_jump" &&
+				!this.actionStates.includes(ActionState.Crouch)
 			) {
 				this.setAnim("big_jump");
 			} else if (
+				this.actionStates.includes(ActionState.Crouch) &&
+				!this.actionStates.includes(ActionState.Roll) &&
+				this.currentAnim != "crouch"
+			) {
+				this.setAnim("crouch");
+			} else if (
+				this.actionStates.includes(ActionState.Roll) &&
+				this.currentAnim != "roll"
+			) {
+				this.setAnim("roll");
+			} else if (
 				!this.actionStates.includes(ActionState.Jump) &&
+				!this.actionStates.includes(ActionState.Crouch) &&
 				this.currentAnim != "big_walk" &&
 				this.onGround
 			) {
@@ -320,10 +381,10 @@ export class Player extends Entity {
 		this.sprite = this.anims[anim];
 		this.sprite.visible = true;
 	}
-	setPState(state: PState, world?: World) {
+	setPState(state: PState, world: World, pause: boolean = true) {
 		this.setBigHitbox(state >= PowerState.Big);
-		if (world) {
-			world.pause = true;
+		world.pause = pause;
+		if (pause) {
 			if (this.powerState > PowerState.Small && state < PowerState.Big) {
 				this.setAnim("shrink_anim");
 				this.anims.shrink_anim.play();
@@ -332,8 +393,8 @@ export class Player extends Entity {
 				this.setAnim("grow_anim");
 				this.anims.grow_anim.play();
 			}
-			this.anims[this.currentAnim].scale.x = this.direction;
 		}
+		this.anims[this.currentAnim].scale.x = this.direction;
 		this.powerState = state;
 	}
 	setBigHitbox(yes: boolean) {

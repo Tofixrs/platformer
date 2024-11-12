@@ -9,6 +9,9 @@
 		"player_big_jump": {
 			"frame": { "x": 64, "y": 0, "w": 32, "h": 64 }
 		},
+		"player_big_crouch": {
+			"frame": { "x": 96, "y": 0, "w": 32, "h": 64 }
+		},
 		"player_pin": {
 			"frame": { "x": 0, "y": 128, "w": 32, "h": 32 }
 		},
@@ -22,7 +25,7 @@
 			"frame": { "x": 64, "y": 128, "w": 32, "h": 32 }
 		},
 		"player_roll": {
-			"frame": { "x": 64, "y": 128, "w": 32, "h": 32 }
+			"frame": { "x": 96, "y": 128, "w": 32, "h": 32 }
 		}
 	},
 	"meta": {
