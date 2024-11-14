@@ -14,6 +14,6 @@
 	},
 	{
 		"_type": "player",
-		"data": { "pos": { "x": 79.5, "y": 0.5 }, "powerState": 2 }
+		"data": { "pos": { "x": 79.5, "y": 0.5 }, "pState": 2 }
 	}
 ]
