@@ -88,7 +88,11 @@ export class Player extends Entity {
 	maxVel = new Vec2(15, -20);
 	bigShape = new Box(0.23, 0.45);
 	smallShape = new Box(0.23, 0.23);
+	diveShape = new Box(0.45, 0.23);
 	sensorShape = new Box(0.2, 0.05, new Vec2(0, 0.2));
+	smallSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.2));
+	bigSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.45));
+	sensorDiveShape = new Box(0.4, 0.1, new Vec2(0, 0.2));
 	constructor(pos: Vec2) {
 		super({
 			pos,
@@ -302,10 +306,14 @@ export class Player extends Entity {
 			this.actionStates.push(ActionState.Locked);
 			this.divingDelay.reset();
 			this.mainFix.m_friction *= 2;
+			this.sensorShape.m_vertices = this.sensorDiveShape.m_vertices;
+			this.mainFix.m_shape = this.diveShape;
 		}
 		if (this.actionStates.includes(ActionState.Dive) && !shouldDive) {
 			this.mainFix.m_friction /= 2;
 			this.body.applyForceToCenter(new Vec2(0, -250), true);
+			this.sensorShape.m_vertices = this.bigSensorShape.m_vertices;
+			this.mainFix.m_shape = this.bigShape;
 		}
 
 		if (this.checkActionState(ActionState.Dive, shouldDive)) return;
@@ -445,7 +453,9 @@ export class Player extends Entity {
 		if (this.mainFix) this.mainFix.m_density = this.density;
 		this.mainFix.m_shape = yes ? this.bigShape : this.smallShape;
 		this.shape = this.mainFix.m_shape;
-		this.sensorShape.m_vertices.forEach((v) => (v.y -= yes ? -0.25 : 0.25));
+		this.sensorShape.m_vertices = yes
+			? this.bigSensorShape.m_vertices
+			: this.smallSensorShape.m_vertices;
 		const pos = this.body.getPosition();
 		this.body.setPosition(new Vec2(pos.x, pos.y - (yes ? 0.25 : -0.25)));
 		this.body.setAwake(true);
