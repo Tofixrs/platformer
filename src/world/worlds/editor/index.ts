@@ -54,6 +54,7 @@ export class Editor extends World {
 			this.data = this.ui.levelData;
 			this.load();
 			this.ui.switchLoad();
+			this.ui.levelData = undefined;
 		}
 	}
 	fixedUpdate(): void {
