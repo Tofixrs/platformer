@@ -12,5 +12,8 @@
 			"friction": 0.5
 		}
 	},
-	{ "_type": "player", "data": { "x": 79.5, "y": 0.5 } }
+	{
+		"_type": "player",
+		"data": { "pos": { "x": 79.5, "y": 0.5 }, "powerState": 2 }
+	}
 ]

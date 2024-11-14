@@ -32,12 +32,15 @@ export function serialize(v: GameObject): SerializedGO {
 function sPlayer(v: Player): SerializedGO {
 	return {
 		_type: GOID.Player,
-		data: v.pos,
+		data: {
+			pos: v.pos,
+			pState: v.powerState,
+		},
 	};
 }
 
 function dPlayer(v: SerializedGO): Player {
-	return new Player(new Vec2(v.data.x, v.data.y));
+	return new Player(new Vec2(v.data.pos.x, v.data.pos.y), v.data.powerState);
 }
 
 function sGoomba(v: Goomba): SerializedGO {

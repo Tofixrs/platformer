@@ -93,7 +93,7 @@ export class Player extends Entity {
 	smallSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.2));
 	bigSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.45));
 	sensorDiveShape = new Box(0.4, 0.1, new Vec2(0, 0.2));
-	constructor(pos: Vec2) {
+	constructor(pos: Vec2, powerState: PState) {
 		super({
 			pos,
 			friction: 0.2,
@@ -123,6 +123,7 @@ export class Player extends Entity {
 		this.anims.shrink_anim.loop = false;
 		this.anims.shrink_anim.anchor.set(0.5, 0.5);
 		this.anims.crouch.anchor.set(0.5, 0.75);
+		this.powerState = powerState;
 	}
 	create(world: World): void {
 		super.create(world);
