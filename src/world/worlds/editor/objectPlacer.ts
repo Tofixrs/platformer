@@ -3,7 +3,7 @@ import { MouseHandler } from "./mouseHandler";
 import { Box, Transform, Vec2 } from "planck-js";
 import { pixiToPlanck } from "@lib/math/units";
 import { getClassFromID } from "gameObject/utils";
-import { Player } from "@gameObjs/player";
+import { Player, PowerState } from "@gameObjs/player";
 import { Editor, getPosAtGrid } from ".";
 import { Goomba } from "@gameObjs/goomba";
 import { Koopa } from "@gameObjs/koopa";
@@ -72,7 +72,7 @@ export class ObjectPlacer {
 		switch (selectedClass) {
 			//@ts-expect-error TS stop being stuped
 			case Player: {
-				go = new Player(physPos);
+				go = new Player(physPos, PowerState.Small);
 				break;
 			}
 			//@ts-expect-error TS stop being stuped
