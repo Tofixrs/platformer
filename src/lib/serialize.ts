@@ -40,7 +40,7 @@ function sPlayer(v: Player): SerializedGO {
 }
 
 function dPlayer(v: SerializedGO): Player {
-	return new Player(new Vec2(v.data.pos.x, v.data.pos.y), v.data.powerState);
+	return new Player(new Vec2(v.data.pos.x, v.data.pos.y), v.data.pState);
 }
 
 function sGoomba(v: Goomba): SerializedGO {

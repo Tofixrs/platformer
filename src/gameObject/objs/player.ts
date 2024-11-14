@@ -7,7 +7,6 @@ import { Actions } from "@lib/input";
 import { GOID } from "gameObject";
 import { Howler } from "howler";
 import { Timer } from "@lib/ticker";
-import { meter, pixiToPlanck } from "@lib/math/units";
 
 export const PowerState = {
 	Small: 1,
