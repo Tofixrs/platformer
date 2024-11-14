@@ -35,7 +35,7 @@ export class Player extends Entity {
 	longJumpVertForce = 1500;
 	jumpForce = -10000;
 	diveForce = 350;
-	groundpoundSpeed = 25;
+	groundpoundSpeed = 15;
 	sensor!: Fixture;
 	onGround = false;
 	direction = 1;
@@ -208,6 +208,7 @@ export class Player extends Entity {
 		this.handleCrouch();
 		this.handleRoll(dt);
 		this.handleDive(dt);
+		this.handleGroundPound();
 		this.jumpSound.pos(this.pos.x, this.pos.y);
 	}
 	handleWalk(dt: number) {
@@ -325,6 +326,37 @@ export class Player extends Entity {
 			(v) => v != ActionState.Locked,
 		);
 	}
+	handleGroundPound() {
+		if (this.powerState < PowerState.Big) return;
+		if (this.actionStates.includes(ActionState.Roll)) return;
+		if (this.actionStates.includes(ActionState.Crouch)) return;
+		if (this.actionStates.includes(ActionState.Dive)) return;
+		const shouldGroundPound =
+			(Actions.hold("groundpound") && !this.onGround) ||
+			(this.actionStates.includes(ActionState.GroundPound) && !this.onGround);
+		if (
+			shouldGroundPound &&
+			!this.actionStates.includes(ActionState.GroundPound)
+		) {
+			this.sensorShape.m_vertices = this.smallSensorShape.m_vertices;
+			this.mainFix.m_shape = this.smallShape;
+			this.actionStates.push(ActionState.Locked);
+		}
+		if (
+			!shouldGroundPound &&
+			this.actionStates.includes(ActionState.GroundPound)
+		) {
+			this.sensorShape.m_vertices = this.bigSensorShape.m_vertices;
+			this.mainFix.m_shape = this.bigShape;
+			this.actionStates = this.actionStates.filter(
+				(v) => v != ActionState.Locked,
+			);
+		}
+		if (this.checkActionState(ActionState.GroundPound, shouldGroundPound))
+			return;
+
+		this.body.setLinearVelocity(new Vec2(0, this.groundpoundSpeed));
+	}
 	checkMaxVel() {
 		const maxVel = this.actionStates.map((v) => {
 			if (v == ActionState.Roll) return new Vec2(12.5, -15);
@@ -362,12 +394,16 @@ export class Player extends Entity {
 		}
 		if (this.actionStates.includes(ActionState.Locked)) {
 			if (
-				!this.actionStates.includes(ActionState.Dive) ||
-				this.currentAnim == "dive"
-			)
-				return;
-			this.setAnim("dive");
-			return;
+				this.actionStates.includes(ActionState.Dive) &&
+				this.currentAnim != "dive"
+			) {
+				this.setAnim("dive");
+			} else if (
+				this.actionStates.includes(ActionState.GroundPound) &&
+				this.currentAnim != "crouch"
+			) {
+				this.setAnim("crouch");
+			}
 		}
 		if (this.powerState < PowerState.Big) {
 			if (
