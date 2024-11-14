@@ -27,7 +27,7 @@ export class Level extends World {
 
 	load(data: string) {
 		for (let i = this.entities.length - 1; i != -1; i--) {
-			this.removeEntityIndex(i);
+			this.removeEntityIndex(i, true);
 		}
 		const ent = deserializeWorld(data);
 		ent.forEach((v) => this.addEntity(v));

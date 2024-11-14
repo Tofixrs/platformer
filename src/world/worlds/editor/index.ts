@@ -113,7 +113,7 @@ export class Editor extends World {
 	}
 	load() {
 		for (let i = this.entities.length - 1; i != -1; i--) {
-			this.removeEntityIndex(i);
+			this.removeEntityIndex(i, true);
 		}
 		const ent = deserializeWorld(this.data);
 		ent.forEach((v) => this.addEntity(v));

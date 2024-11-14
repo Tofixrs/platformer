@@ -47,7 +47,7 @@ export class ObjectPlacer {
 			const transform = new Transform(v.pos, 0);
 			return v.shape.testPoint(transform, pos);
 		});
-		this.worldRef.removeEntityIndex(foundEnt);
+		this.worldRef.removeEntityIndex(foundEnt, true);
 	}
 	checkCreate(world: Editor) {
 		if (this.testing) return;

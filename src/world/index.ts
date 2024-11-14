@@ -41,9 +41,9 @@ export class World {
 			this.entities.splice(foundIndex, 1);
 		}
 	}
-	removeEntityIndex(index: number) {
+	removeEntityIndex(index: number, force: boolean = false) {
 		if (!this.entities[index]) return;
-		this.entities[index].remove(this);
+		this.entities[index].remove(this, force);
 		this.entities.splice(index, 1);
 	}
 
