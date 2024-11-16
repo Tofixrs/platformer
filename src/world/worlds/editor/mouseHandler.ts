@@ -70,6 +70,12 @@ export class MouseHandler {
 		this.currPos = getGridPosAtPos(
 			new Vec2(ev.x + this.pivot.x, ev.y + this.pivot.y),
 		);
+		if (this.currPos.x > this.startPos.x) {
+			this.currPos.x += 1;
+		}
+		if (this.currPos.y > this.startPos.y) {
+			this.currPos.y += 1;
+		}
 	}
 	finishDrag(_ev: MouseEvent) {
 		if (this.testing) return;
