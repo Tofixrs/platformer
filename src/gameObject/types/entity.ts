@@ -1,6 +1,6 @@
 import { World } from "world";
 import { lerp, lerp2D } from "@lib/math/lerp";
-import { meter, planckToPixi } from "@lib/math/units";
+import { planckToPixi } from "@lib/math/units";
 import { Sprite } from "pixi.js";
 import { Vec2 } from "planck-js";
 import { PhysicsObject, PhysicsObjectOptions } from "./physicsObject";

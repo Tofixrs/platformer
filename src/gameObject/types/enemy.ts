@@ -1,4 +1,4 @@
-import { Box, Fixture, Polygon, Shape, Vec2, WorldManifold } from "planck-js";
+import { Fixture, Shape, Vec2, WorldManifold } from "planck-js";
 import { Entity } from "./entity";
 import { GameObject, GameObjectID } from "gameObject";
 import { Sprite } from "pixi.js";
@@ -6,7 +6,6 @@ import { World } from "world";
 import { PhysObjUserData } from "./physicsObject";
 import { getClassFromID } from "gameObject/utils";
 import { Player } from "@gameObjs/player";
-import { Game } from "game";
 import { Ground } from "./ground";
 
 export interface EnemyOptions {

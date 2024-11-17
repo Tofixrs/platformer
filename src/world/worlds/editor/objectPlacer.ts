@@ -1,4 +1,3 @@
-import { GameObject } from "gameObject";
 import { MouseHandler } from "./mouseHandler";
 import { Box, Transform, Vec2 } from "planck-js";
 import { pixiToPlanck } from "@lib/math/units";

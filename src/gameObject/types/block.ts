@@ -112,7 +112,7 @@ export class Block extends PhysicsObject {
 			this.sprite.y = this.defaultSpritePos.y;
 		}
 	}
-	preSolve(contact: Contact, oldManifold: Manifold) {
+	preSolve(contact: Contact, _oldManifold: Manifold) {
 		const fixA = contact.getFixtureA();
 		const fixB = contact.getFixtureB();
 		const userA = fixA.getUserData() as PhysObjUserData;
@@ -127,7 +127,7 @@ export class Block extends PhysicsObject {
 		this.hit = true;
 		this.hitID = user.id;
 	}
-	onHit(world: World): boolean {
+	onHit(_world: World): boolean {
 		return true;
 	}
 }

@@ -45,7 +45,7 @@ export class Koopa extends Enemy {
 			),
 		);
 	}
-	onStomp(world: World): void {
+	onStomp(_world: World): void {
 		if (this.shelled && this.stompPushTimer.done()) {
 			this.moving = !this.moving;
 			this.stompPushTimer.reset();

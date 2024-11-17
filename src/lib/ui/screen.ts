@@ -12,5 +12,5 @@ export class Screen extends Layout {
 		});
 	}
 
-	public onUpdate(dt: number) {}
+	public onUpdate(_dt: number) {}
 }
