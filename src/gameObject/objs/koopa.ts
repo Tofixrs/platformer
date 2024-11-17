@@ -1,6 +1,8 @@
+import { capsule } from "@lib/shape";
 import { Timer } from "@lib/ticker";
 import { GOID } from "gameObject";
 import { Enemy } from "gameObject/types/enemy";
+import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { Sprite, Texture } from "pixi.js";
 import { Box, Contact, Fixture, Vec2 } from "planck-js";
 import { World } from "world";
@@ -10,6 +12,8 @@ export class Koopa extends Enemy {
 	leftEdgeSensor!: Fixture;
 	rightWallSensor!: Fixture;
 	leftWallSensor!: Fixture;
+	touchedGroundsLeft: string[] = ["hack", "hack"];
+	touchedGroundsRight: string[] = ["hack", "hack"];
 	speed = 4;
 	shellSpeed = 10;
 	shelled = false;
@@ -19,7 +23,7 @@ export class Koopa extends Enemy {
 	constructor(pos: Vec2, direction?: number) {
 		super({
 			pos,
-			shape: new Box(0.25, 0.25),
+			shape: capsule(new Vec2(0.25, 0.25)),
 			sprite: Sprite.from("koopa"),
 			density: 0.5,
 			friction: 1,
@@ -27,6 +31,7 @@ export class Koopa extends Enemy {
 			direction,
 		});
 		this.sprite.anchor.set(0.35, 0.7);
+		this.sprite.scale.x = this.direction;
 	}
 	update(dt: number, world: World): void {
 		super.update(dt, world);
@@ -90,13 +95,13 @@ export class Koopa extends Enemy {
 	create(world: World): void {
 		super.create(world);
 		this.rightEdgeSensor = this.body.createFixture({
-			shape: new Box(0.07, 0.1, new Vec2(0.18, 0.25)),
+			shape: new Box(0.08, 0.1, new Vec2(0.18, 0.25)),
 			isSensor: true,
 			filterMaskBits: 10,
 		});
 
 		this.leftEdgeSensor = this.body.createFixture({
-			shape: new Box(0.07, 0.1, new Vec2(-0.18, 0.25)),
+			shape: new Box(0.08, 0.1, new Vec2(-0.18, 0.25)),
 			isSensor: true,
 			filterMaskBits: 10,
 		});
@@ -130,8 +135,10 @@ export class Koopa extends Enemy {
 		const fixA = contact.getFixtureA();
 		const fixB = contact.getFixtureB();
 		this.checkWallSensors(fixA, fixB, contact);
+		this.checkEdgeSensors(fixA, fixB, contact);
 	}
 	checkEdgeSensors(fixA: Fixture, fixB: Fixture, contact: Contact) {
+		if (this.shelled) return;
 		if (
 			fixA != this.leftEdgeSensor &&
 			fixB != this.leftEdgeSensor &&
@@ -139,11 +146,41 @@ export class Koopa extends Enemy {
 			fixB != this.rightEdgeSensor
 		)
 			return;
-		if (contact.isTouching()) return;
-		if (this.shelled) return;
+		const userA = fixA.getUserData();
+		const userB = fixB.getUserData();
+		const groundUser = (
+			fixA == this.leftEdgeSensor || fixA == this.rightEdgeSensor
+				? userB
+				: userA
+		) as PhysObjUserData;
+		if (contact.isTouching()) {
+			if (fixA == this.leftEdgeSensor || fixB == this.leftEdgeSensor) {
+				this.touchedGroundsLeft.push(groundUser.id);
+			} else if (fixA == this.rightEdgeSensor || fixB == this.rightEdgeSensor) {
+				this.touchedGroundsRight.push(groundUser.id);
+			}
+		} else {
+			if (fixA == this.leftEdgeSensor || fixB == this.leftEdgeSensor) {
+				this.touchedGroundsLeft = this.touchedGroundsLeft.filter(
+					(v) => v != groundUser.id,
+				);
+			} else if (fixA == this.rightEdgeSensor || fixB == this.rightEdgeSensor) {
+				this.touchedGroundsRight = this.touchedGroundsRight.filter(
+					(v) => v != groundUser.id,
+				);
+			}
+		}
 
-		this.direction = -this.direction;
-		this.sprite.scale.x = this.direction;
+		if (this.touchedGroundsLeft.length + this.touchedGroundsRight.length < 2) {
+			this.direction = -this.direction;
+			this.sprite.scale.x = this.direction;
+		}
+		this.touchedGroundsRight = this.touchedGroundsRight.filter(
+			(v) => v != "hack",
+		);
+		this.touchedGroundsLeft = this.touchedGroundsLeft.filter(
+			(v) => v != "hack",
+		);
 	}
 
 	checkWallSensors(fixA: Fixture, fixB: Fixture, contact: Contact) {

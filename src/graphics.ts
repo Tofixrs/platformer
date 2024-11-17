@@ -7,7 +7,7 @@ import {
 	Text,
 } from "pixi.js";
 import { CircleShape, PolygonShape } from "planck-js/lib/shape";
-import { World } from "../world";
+import { World } from "world";
 import { Body, Vec2 } from "planck-js";
 import { rotate } from "@lib/math/rotateVec2";
 import { planckToPixi } from "@lib/math/units";
@@ -19,14 +19,17 @@ export class Graphics<R extends Renderer = Renderer> {
 	renderer!: R;
 	fpsElem: Text = new Text({ text: "0" });
 
-	async preload() {
-		await Assets.load("./assets/ground/pins/meta.json");
-		await Assets.load("./assets/ground/ice/meta.json");
-		await Assets.load("./assets/entities/char/meta.json");
-		await Assets.load("./assets/entities/goomba/meta.json");
-		await Assets.load("./assets/entities/koopa/meta.json");
-		await Assets.load("./assets/ground/grass/meta.json");
-		await Assets.load("./assets/ui/meta.json");
+	preload() {
+		return Promise.all([
+			Assets.load("./assets/ground/pins/meta.json"),
+			Assets.load("./assets/ground/ice/meta.json"),
+			Assets.load("./assets/entities/char/meta.json"),
+			Assets.load("./assets/entities/goomba/meta.json"),
+			Assets.load("./assets/entities/koopa/meta.json"),
+			Assets.load("./assets/ground/grass/meta.json"),
+			Assets.load("./assets/ui/meta.json"),
+			Assets.load("./assets/blocks/meta.json"),
+		]);
 	}
 	async setup() {
 		this.renderer = (await autoDetectRenderer({ background: "white" })) as R;

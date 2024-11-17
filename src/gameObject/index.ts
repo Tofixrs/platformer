@@ -37,6 +37,7 @@ export const GOID = {
 	Ice: "ice",
 	Goomba: "goomba",
 	Koopa: "koopa",
+	Brick: "brick",
 } as const;
 
 type GOIOKeys = keyof typeof GOID;

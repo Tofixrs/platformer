@@ -9,6 +9,8 @@ import { Goomba } from "@gameObjs/goomba";
 import { Koopa } from "@gameObjs/koopa";
 import { Grass } from "@gameObjs/grass";
 import { Ice } from "@gameObjs/ice";
+import { Brick } from "@gameObjs/brick";
+import { fillBlocks } from "gameObject/types/block";
 
 export class ObjectPlacer {
 	mouseHandler = new MouseHandler(new Vec2(0, 0));
@@ -55,7 +57,9 @@ export class ObjectPlacer {
 		if (
 			!this.mouseHandler.finishedPos ||
 			!this.mouseHandler.finishedSize ||
-			!this.worldRef.ui.selected
+			!this.worldRef.ui.selected ||
+			!this.mouseHandler.finishedDragStartPos ||
+			!this.mouseHandler.finishedDragEndPos
 		)
 			return;
 		const physPos = pixiToPlanck(this.mouseHandler.finishedPos);
@@ -67,36 +71,49 @@ export class ObjectPlacer {
 			).length;
 			if (amount >= selectedClass.maxInstances) return;
 		}
-		let go!: GameObject;
 
 		switch (selectedClass) {
 			//@ts-expect-error TS stop being stuped
 			case Player: {
-				go = new Player(physPos, PowerState.Small);
+				this.worldRef.addEntity(new Player(physPos, PowerState.Small));
 				break;
 			}
 			//@ts-expect-error TS stop being stuped
 			case Grass: {
-				go = new Grass(physPos, new Box(physSize.x, physSize.y));
+				this.worldRef.addEntity(
+					new Grass(physPos, new Box(physSize.x, physSize.y)),
+				);
 				break;
 			}
 			//@ts-expect-error TS stop being stuped
 			case Ice: {
-				go = new Ice(physPos, new Box(physSize.x, physSize.y));
+				this.worldRef.addEntity(
+					new Ice(physPos, new Box(physSize.x, physSize.y)),
+				);
 				break;
 			}
 			//@ts-expect-error TS stop being stuped
 			case Goomba: {
-				go = new Goomba(physPos);
+				this.worldRef.addEntity(new Goomba(physPos));
 				break;
 			}
 			//@ts-expect-error TS stop being stuped
 			case Koopa: {
-				go = new Koopa(physPos);
+				this.worldRef.addEntity(new Koopa(physPos));
+				break;
+			}
+			//@ts-expect-error TS stop being stuped
+			case Brick: {
+				fillBlocks(
+					world,
+					this.mouseHandler.finishedDragStartPos,
+					this.mouseHandler.finishedDragEndPos,
+					//@ts-expect-error
+					Brick,
+				);
 				break;
 			}
 		}
 		this.mouseHandler.reset();
-		this.worldRef.addEntity(go);
 	}
 }

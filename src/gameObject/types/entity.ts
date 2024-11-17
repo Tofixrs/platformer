@@ -4,7 +4,7 @@ import { meter, planckToPixi } from "@lib/math/units";
 import { Sprite } from "pixi.js";
 import { Vec2 } from "planck-js";
 import { PhysicsObject, PhysicsObjectOptions } from "./physicsObject";
-interface EntityOptions extends PhysicsObjectOptions {
+export interface EntityOptions extends PhysicsObjectOptions {
 	sprite: Sprite;
 }
 

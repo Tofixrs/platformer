@@ -12,6 +12,8 @@ export class MouseHandler {
 	currPos?: Vec2;
 	lastPos?: Vec2;
 	finishedPos?: Vec2;
+	finishedDragStartPos?: Vec2;
+	finishedDragEndPos?: Vec2;
 	finishedSize?: Vec2;
 	pivot: Vec2;
 	shouldDrag = false;
@@ -41,10 +43,14 @@ export class MouseHandler {
 
 		this.clearRender();
 		if (drawEndPos.x < drawStartPos.x) {
+			const temp = drawStartPos.x;
 			drawStartPos.x = drawEndPos.x;
+			drawEndPos.x = temp;
 		}
 		if (drawEndPos.y < drawStartPos.y) {
+			const temp = drawStartPos.y;
 			drawStartPos.y = drawEndPos.y;
+			drawEndPos.y = temp;
 		}
 		this.dragContainer.x = drawStartPos.x;
 		this.dragContainer.y = drawStartPos.y;
@@ -70,12 +76,6 @@ export class MouseHandler {
 		this.currPos = getGridPosAtPos(
 			new Vec2(ev.x + this.pivot.x, ev.y + this.pivot.y),
 		);
-		if (this.currPos.x > this.startPos.x) {
-			this.currPos.x += 1;
-		}
-		if (this.currPos.y > this.startPos.y) {
-			this.currPos.y += 1;
-		}
 	}
 	finishDrag(_ev: MouseEvent) {
 		if (this.testing) return;
@@ -98,6 +98,8 @@ export class MouseHandler {
 		}
 		this.finishedPos = pos;
 		this.finishedSize = size;
+		this.finishedDragStartPos = this.startPos;
+		this.finishedDragEndPos = this.currPos;
 
 		this.currPos = undefined;
 		this.startPos = undefined;
@@ -123,6 +125,8 @@ export class MouseHandler {
 		this.lastPos = undefined;
 		this.finishedSize = undefined;
 		this.finishedPos = undefined;
+		this.finishedDragStartPos = undefined;
+		this.finishedDragEndPos = undefined;
 		this.clearRender();
 	}
 }

@@ -1,0 +1,19 @@
+{
+	"frames": {
+		"brick": {
+			"frame": { "x": 0, "y": 0, "w": 32, "h": 32 }
+		},
+		"brick_pin": {
+			"frame": { "x": 0, "y": 0, "w": 32, "h": 32 }
+		}
+	},
+	"meta": {
+		"image": "blocks.png",
+		"format": "RGBA8888",
+		"scale": 1,
+		"size": {
+			"w": 32,
+			"h": 32
+		}
+	}
+}

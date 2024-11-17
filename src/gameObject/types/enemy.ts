@@ -20,7 +20,7 @@ export interface EnemyOptions {
 }
 
 export class Enemy extends Entity {
-	direction = 1;
+	direction = -1;
 	stomp = false;
 	stompID?: string;
 	sideTouch = false;

@@ -1,3 +1,4 @@
+import { Brick } from "@gameObjs/brick";
 import { Goomba } from "@gameObjs/goomba";
 import { Grass } from "@gameObjs/grass";
 import { Ice } from "@gameObjs/ice";
@@ -27,6 +28,7 @@ export function serialize(v: GameObject): SerializedGO {
 	if (v instanceof Goomba) return sGoomba(v);
 	if (v instanceof Koopa) return sKoopa(v);
 	if (v instanceof Ice) return sIce(v);
+	if (v instanceof Brick) return sBricks(v);
 }
 
 function sPlayer(v: Player): SerializedGO {
@@ -76,6 +78,19 @@ function sGrass(v: Grass): SerializedGO {
 	};
 }
 
+function dBricks(v: SerializedGO): Brick {
+	return new Brick(new Vec2(v.data.pos.x, v.data.pos.y));
+}
+
+function sBricks(v: Brick): SerializedGO {
+	return {
+		_type: GOID.Brick,
+		data: {
+			pos: v.pos,
+		},
+	};
+}
+
 function dGrass(v: SerializedGO): Grass {
 	const verts = v.data.shapeVerts.map((v: any) => new Vec2(v.x, v.y));
 	const shape = new Polygon(verts);
@@ -115,6 +130,9 @@ export function deserialize(v: SerializedGO): GameObject {
 		}
 		case GOID.Koopa: {
 			return dKoopa(v);
+		}
+		case GOID.Brick: {
+			return dBricks(v);
 		}
 	}
 }

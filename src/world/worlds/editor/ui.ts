@@ -13,6 +13,7 @@ export class EditorUi extends Screen {
 		GOID.Goomba,
 		GOID.Koopa,
 		GOID.Ice,
+		GOID.Brick,
 	];
 	selected?: GameObjectID;
 	dontPlace = false;

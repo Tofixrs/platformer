@@ -7,6 +7,8 @@ import { Actions } from "@lib/input";
 import { GOID } from "gameObject";
 import { Howler } from "howler";
 import { Timer } from "@lib/ticker";
+import { PhysObjUserData } from "gameObject/types/physicsObject";
+import { capsule } from "@lib/shape";
 
 export const PowerState = {
 	Small: 1,
@@ -36,7 +38,7 @@ export class Player extends Entity {
 	diveForce = 350;
 	groundpoundSpeed = 15;
 	sensor!: Fixture;
-	onGround = false;
+	touchedGrounds: string[] = [];
 	direction = 1;
 	divingDelay = new Timer(0.2);
 	actionStates: AState[] = [];
@@ -85,9 +87,9 @@ export class Player extends Entity {
 	currentAnim: PlayerAnims = "small_walk";
 	lastAnim: PlayerAnims = "small_walk";
 	maxVel = new Vec2(15, -20);
-	bigShape = new Box(0.23, 0.45);
-	smallShape = new Box(0.23, 0.23);
-	diveShape = new Box(0.45, 0.23);
+	bigShape = capsule(new Vec2(0.23, 0.45));
+	smallShape = capsule(new Vec2(0.23, 0.23));
+	diveShape = capsule(new Vec2(0.23, 0.45), Vec2.zero(), Math.PI / 2);
 	sensorShape = new Box(0.2, 0.05, new Vec2(0, 0.2));
 	smallSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.2));
 	bigSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.45));
@@ -499,9 +501,20 @@ export class Player extends Entity {
 	checkGround(contact: Contact) {
 		const fixA = contact.getFixtureA();
 		const fixB = contact.getFixtureB();
+		const userA = fixA.getUserData();
+		const userB = fixB.getUserData();
 
 		if (fixA != this.sensor && fixB != this.sensor) return;
-
-		this.onGround = contact.isTouching();
+		const groundFix = (userA == null ? userB : userA) as PhysObjUserData;
+		if (contact.isTouching()) {
+			this.touchedGrounds.push(groundFix.id);
+		} else {
+			this.touchedGrounds = this.touchedGrounds.filter(
+				(v) => v != groundFix.id,
+			);
+		}
+	}
+	get onGround() {
+		return this.touchedGrounds.length != 0;
 	}
 }
