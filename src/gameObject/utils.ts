@@ -5,6 +5,8 @@ import { Koopa } from "@gameObjs/koopa";
 import { Player } from "@gameObjs/player";
 import { GameObject, GameObjectID, GOID } from "gameObject";
 import { Brick } from "@gameObjs/brick";
+import { Mushroom } from "@gameObjs/mushroom";
+import { MarkBlock } from "@gameObjs/markBlock";
 
 export function getClassFromID(id: GameObjectID): typeof GameObject {
 	switch (id) {
@@ -31,6 +33,14 @@ export function getClassFromID(id: GameObjectID): typeof GameObject {
 		case GOID.Brick: {
 			//@ts-expect-error
 			return Brick;
+		}
+		case GOID.Mushroom: {
+			//@ts-expect-error
+			return Mushroom;
+		}
+		case GOID.MarkBlock: {
+			//@ts-expect-error
+			return MarkBlock;
 		}
 	}
 }

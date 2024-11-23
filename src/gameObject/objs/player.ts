@@ -1,14 +1,15 @@
-import { Box, Contact, Fixture, Vec2 } from "planck-js";
+import { Box, Contact, Fixture, Shape, Vec2 } from "planck-js";
 import { AnimatedSprite, Sprite, Texture } from "pixi.js";
 import { Entity } from "../types/entity";
 import { World } from "world";
 import { lerp2D } from "@lib/math/lerp";
 import { Actions } from "@lib/input";
-import { GOID } from "gameObject";
+import { GameObject, GOID, Property, PropertyValue } from "gameObject";
 import { Howler } from "howler";
 import { Timer } from "@lib/ticker";
 import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { capsule } from "@lib/shape";
+import { planckToPixi } from "@lib/math/units";
 
 export const PowerState = {
 	Small: 1,
@@ -48,7 +49,7 @@ export class Player extends Entity {
 		volume: 0.25,
 	});
 	powerState: PState = PowerState.Big;
-	invTimer = new Timer(0.5);
+	invTimer = new Timer(1, true);
 	anims = {
 		small_walk: new AnimatedSprite([
 			Texture.from("player_small_stand"),
@@ -94,6 +95,13 @@ export class Player extends Entity {
 	smallSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.2));
 	bigSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.45));
 	sensorDiveShape = new Box(0.4, 0.1, new Vec2(0, 0.2));
+	static props: Property[] = [
+		{
+			type: "number",
+			name: "pState",
+			defaultValue: "1",
+		},
+	];
 	constructor(pos: Vec2, powerState: PState) {
 		super({
 			pos,
@@ -124,7 +132,21 @@ export class Player extends Entity {
 		this.anims.shrink_anim.loop = false;
 		this.anims.shrink_anim.anchor.set(0.5, 0.5);
 		this.anims.crouch.anchor.set(0.5, 0.75);
+		this.anims.dive.anchor.set(0.5, 0.5);
 		this.powerState = powerState;
+	}
+	static commonConstructor(
+		pos: Vec2,
+		_shape: Shape,
+		props: PropertyValue[],
+	): GameObject {
+		const pState = props.find((v) => v.name == "pState");
+		return new Player(
+			pos,
+			isNaN(Number(pState?.value))
+				? PowerState.Small
+				: (Number(pState?.value) as PState),
+		);
 	}
 	create(world: World): void {
 		super.create(world);
@@ -148,7 +170,12 @@ export class Player extends Entity {
 		world.p.on("end-contact", (contact) => {
 			this.checkGround(contact);
 		});
+
+		world.p.on("pre-solve", (contact) => {
+			this.checkInv(contact);
+		});
 		this.setPState(this.powerState, world, false);
+		this.handleAnim();
 	}
 	remove(world: World, force?: boolean): boolean {
 		if (force) {
@@ -236,7 +263,10 @@ export class Player extends Entity {
 			(Actions.hold("jump") && this.onGround) ||
 			(this.actionStates.includes(ActionState.Jump) && Actions.hold("jump"));
 		if (this.checkActionState(ActionState.Jump, shouldJump)) return;
-		if (this.onGround) this.jumpSound.play();
+		if (this.onGround) {
+			this.jumpSound.stop();
+			this.jumpSound.play();
+		}
 
 		this.body?.applyForce(
 			new Vec2(0, this.jumpForce * dt),
@@ -267,7 +297,11 @@ export class Player extends Entity {
 		if (this.checkActionState(ActionState.Crouch, shouldCrouch)) return;
 	}
 	handleRoll(dt: number) {
-		if (this.powerState < PowerState.Big) return;
+		if (
+			this.powerState < PowerState.Big &&
+			!this.actionStates.includes(ActionState.Roll)
+		)
+			return;
 		if (this.actionStates.includes(ActionState.Locked)) return;
 		if (this.actionStates.includes(ActionState.Dive)) return;
 		if (this.actionStates.includes(ActionState.GroundPound)) return;
@@ -292,7 +326,11 @@ export class Player extends Entity {
 		);
 	}
 	handleDive(dt: number) {
-		if (this.powerState < PowerState.Big) return;
+		if (
+			this.powerState < PowerState.Big &&
+			!this.actionStates.includes(ActionState.Dive)
+		)
+			return;
 		if (this.actionStates.includes(ActionState.GroundPound)) return;
 		if (this.actionStates.includes(ActionState.Roll)) return;
 		if (this.actionStates.includes(ActionState.Crouch)) return;
@@ -305,6 +343,7 @@ export class Player extends Entity {
 		if (!this.actionStates.includes(ActionState.Dive) && shouldDive) {
 			this.body.applyForceToCenter(
 				new Vec2(this.diveForce * this.direction, 0),
+				true,
 			);
 			this.actionStates.push(ActionState.Locked);
 			this.divingDelay.reset();
@@ -329,7 +368,11 @@ export class Player extends Entity {
 		);
 	}
 	handleGroundPound() {
-		if (this.powerState < PowerState.Big) return;
+		if (
+			this.powerState < PowerState.Big &&
+			!this.actionStates.includes(ActionState.GroundPound)
+		)
+			return;
 		if (this.actionStates.includes(ActionState.Roll)) return;
 		if (this.actionStates.includes(ActionState.Crouch)) return;
 		if (this.actionStates.includes(ActionState.Dive)) return;
@@ -374,6 +417,11 @@ export class Player extends Entity {
 		this.maxVel.y = maxY;
 
 		const vel = this.body.getLinearVelocity();
+		if (vel.y == 0) {
+			this.actionStates = this.actionStates.filter(
+				(v) => v != ActionState.Jump,
+			);
+		}
 		if (vel.x * this.direction > this.maxVel.x)
 			this.body.setLinearVelocity(
 				new Vec2(this.maxVel.x * this.direction, vel.y),
@@ -442,6 +490,7 @@ export class Player extends Entity {
 			} else if (
 				!this.actionStates.includes(ActionState.Jump) &&
 				!this.actionStates.includes(ActionState.Crouch) &&
+				!this.actionStates.includes(ActionState.Dive) &&
 				this.currentAnim != "big_walk" &&
 				this.onGround
 			) {
@@ -487,6 +536,8 @@ export class Player extends Entity {
 		this.powerState = state;
 	}
 	setBigHitbox(yes: boolean) {
+		if (this.mainFix.m_shape == (yes ? this.bigShape : this.smallShape)) return;
+
 		this.density = yes ? 1 : 2;
 		if (this.mainFix) this.mainFix.m_density = this.density;
 		this.mainFix.m_shape = yes ? this.bigShape : this.smallShape;
@@ -494,9 +545,14 @@ export class Player extends Entity {
 		this.sensorShape.m_vertices = yes
 			? this.bigSensorShape.m_vertices
 			: this.smallSensorShape.m_vertices;
+
 		const pos = this.body.getPosition();
-		this.body.setPosition(new Vec2(pos.x, pos.y - (yes ? 0.25 : -0.25)));
+		pos.y -= yes ? 0.25 : -0.25;
+		this.body.setPosition(new Vec2(pos.x, pos.y));
 		this.body.setAwake(true);
+		const sprPos = planckToPixi(pos);
+		this.sprite.x = sprPos.x;
+		this.sprite.y = sprPos.y;
 	}
 	checkGround(contact: Contact) {
 		const fixA = contact.getFixtureA();
@@ -513,6 +569,18 @@ export class Player extends Entity {
 				(v) => v != groundFix.id,
 			);
 		}
+	}
+	checkInv(contact: Contact) {
+		if (this.invTimer.done()) return;
+		const fixA = contact.getFixtureA();
+		const fixB = contact.getFixtureB();
+		const userA = fixA.getUserData() as PhysObjUserData;
+		const userB = fixB.getUserData() as PhysObjUserData;
+		if (fixA != this.mainFix && fixB != this.mainFix) return;
+		if (userA == null || userB == null) return;
+		const enemyFix = userA.goid == "player" ? userB : userA;
+		if (enemyFix.goid != "koopa" && enemyFix.goid != "goomba") return;
+		contact.setEnabled(false);
 	}
 	get onGround() {
 		return this.touchedGrounds.length != 0;

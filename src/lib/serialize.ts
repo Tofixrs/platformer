@@ -3,8 +3,10 @@ import { Goomba } from "@gameObjs/goomba";
 import { Grass } from "@gameObjs/grass";
 import { Ice } from "@gameObjs/ice";
 import { Koopa } from "@gameObjs/koopa";
+import { MarkBlock } from "@gameObjs/markBlock";
+import { Mushroom } from "@gameObjs/mushroom";
 import { Player } from "@gameObjs/player";
-import { GameObject, GameObjectID, GOID } from "gameObject";
+import { GameObject, GameObjectID, GOID, PropType } from "gameObject";
 import { Polygon, Vec2 } from "planck-js";
 import { World } from "world";
 
@@ -29,6 +31,8 @@ export function serialize(v: GameObject): SerializedGO {
 	if (v instanceof Koopa) return sKoopa(v);
 	if (v instanceof Ice) return sIce(v);
 	if (v instanceof Brick) return sBricks(v);
+	if (v instanceof Mushroom) return sMushroom(v);
+	if (v instanceof MarkBlock) return sMarkBlock(v);
 }
 
 function sPlayer(v: Player): SerializedGO {
@@ -48,22 +52,28 @@ function dPlayer(v: SerializedGO): Player {
 function sGoomba(v: Goomba): SerializedGO {
 	return {
 		_type: GOID.Goomba,
-		data: v.pos,
+		data: {
+			pos: v.pos,
+			direction: v.direction,
+		},
 	};
 }
 
 function dGoomba(v: SerializedGO): Goomba {
-	return new Goomba(new Vec2(v.data.x, v.data.y));
+	return new Goomba(new Vec2(v.data.pos.x, v.data.pos.y), v.data.direction);
 }
 
 function dKoopa(v: SerializedGO): Koopa {
-	return new Koopa(new Vec2(v.data.x, v.data.y));
+	return new Koopa(new Vec2(v.data.pos.x, v.data.pos.y), v.data.direction);
 }
 
 function sKoopa(v: Koopa): SerializedGO {
 	return {
 		_type: GOID.Koopa,
-		data: v.pos,
+		data: {
+			pos: v.pos,
+			direction: v.direction,
+		},
 	};
 }
 
@@ -108,10 +118,38 @@ function sIce(v: Ice): SerializedGO {
 	};
 }
 
+function sMushroom(v: Mushroom): SerializedGO {
+	return {
+		_type: GOID.Mushroom,
+		data: {
+			pos: v.pos,
+			direction: v.direction,
+		},
+	};
+}
+
+function dMushroom(v: SerializedGO): Mushroom {
+	return new Mushroom(new Vec2(v.data.pos.x, v.data.pos.y), v.data.direction);
+}
+
 function dIce(v: SerializedGO): Grass {
 	const verts = v.data.shapeVerts.map((v: any) => new Vec2(v.x, v.y));
 	const shape = new Polygon(verts);
 	return new Ice(new Vec2(v.data.pos.x, v.data.pos.y), shape);
+}
+
+function dMarkBlock(v: SerializedGO): MarkBlock {
+	return new MarkBlock(new Vec2(v.data.pos.x, v.data.pos.y), v.data.item);
+}
+
+function sMarkBlock(v: MarkBlock): SerializedGO {
+	return {
+		_type: GOID.MarkBlock,
+		data: {
+			pos: v.pos,
+			item: v.item,
+		},
+	};
 }
 
 export function deserialize(v: SerializedGO): GameObject {
@@ -133,6 +171,12 @@ export function deserialize(v: SerializedGO): GameObject {
 		}
 		case GOID.Brick: {
 			return dBricks(v);
+		}
+		case GOID.Mushroom: {
+			return dMushroom(v);
+		}
+		case GOID.MarkBlock: {
+			return dMarkBlock(v);
 		}
 	}
 }

@@ -35,7 +35,7 @@ export class Editor extends World {
 		this.recenter(graphics.renderer.screen);
 	}
 	update(dt: number): void {
-		if (Actions.click("test")) {
+		if (Actions.click("test") && !this.ui.dontInput) {
 			this.setTesting(!this.testing);
 		}
 		if (this.testing) {

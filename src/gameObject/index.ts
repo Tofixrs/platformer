@@ -8,9 +8,28 @@ export interface GameObjectOptions {
 	goid: GameObjectID;
 }
 
+export const PropType = {
+	number: "number",
+	goid: "goid",
+} as const;
+
+export type PType = (typeof PropType)[keyof typeof PropType];
+
+export interface Property {
+	name: string;
+	type: PType;
+	defaultValue: string; //yes im gonna have to parse those pain
+}
+export interface PropertyValue {
+	name: string;
+	type: PType;
+	value: string;
+}
+
 export abstract class GameObject {
 	static draggable = false;
 	static maxInstances?: number;
+	static props: Property[] = [];
 	pos: Vec2;
 	shape: Shape;
 	goid: GameObjectID;
@@ -29,6 +48,13 @@ export abstract class GameObject {
 		return true;
 	}
 	static renderDrag(_startPos: Vec2, _currPos: Vec2, _container: Container) {}
+	static commonConstructor(
+		_pos: Vec2,
+		_shape: Shape,
+		_props?: PropertyValue[],
+	): GameObject {
+		return null as unknown as GameObject;
+	}
 }
 
 export const GOID = {
@@ -38,6 +64,8 @@ export const GOID = {
 	Goomba: "goomba",
 	Koopa: "koopa",
 	Brick: "brick",
+	Mushroom: "mushroom",
+	MarkBlock: "markBlock",
 } as const;
 
 type GOIOKeys = keyof typeof GOID;

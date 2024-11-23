@@ -2,12 +2,7 @@ import { MouseHandler } from "./mouseHandler";
 import { Box, Transform, Vec2 } from "planck-js";
 import { pixiToPlanck } from "@lib/math/units";
 import { getClassFromID } from "gameObject/utils";
-import { Player, PowerState } from "@gameObjs/player";
 import { Editor, getPosAtGrid } from ".";
-import { Goomba } from "@gameObjs/goomba";
-import { Koopa } from "@gameObjs/koopa";
-import { Grass } from "@gameObjs/grass";
-import { Ice } from "@gameObjs/ice";
 import { Brick } from "@gameObjs/brick";
 import { fillBlocks } from "gameObject/types/block";
 
@@ -71,47 +66,21 @@ export class ObjectPlacer {
 			if (amount >= selectedClass.maxInstances) return;
 		}
 
-		switch (selectedClass) {
-			//@ts-expect-error TS stop being stuped
-			case Player: {
-				this.worldRef.addEntity(new Player(physPos, PowerState.Small));
-				break;
-			}
-			//@ts-expect-error TS stop being stuped
-			case Grass: {
-				this.worldRef.addEntity(
-					new Grass(physPos, new Box(physSize.x, physSize.y)),
-				);
-				break;
-			}
-			//@ts-expect-error TS stop being stuped
-			case Ice: {
-				this.worldRef.addEntity(
-					new Ice(physPos, new Box(physSize.x, physSize.y)),
-				);
-				break;
-			}
-			//@ts-expect-error TS stop being stuped
-			case Goomba: {
-				this.worldRef.addEntity(new Goomba(physPos));
-				break;
-			}
-			//@ts-expect-error TS stop being stuped
-			case Koopa: {
-				this.worldRef.addEntity(new Koopa(physPos));
-				break;
-			}
-			//@ts-expect-error TS stop being stuped
-			case Brick: {
-				fillBlocks(
-					world,
-					this.mouseHandler.finishedDragStartPos,
-					this.mouseHandler.finishedDragEndPos,
-					//@ts-expect-error
-					Brick,
-				);
-				break;
-			}
+		//@ts-expect-error
+		if (selectedClass == Brick) {
+			fillBlocks(
+				world,
+				this.mouseHandler.finishedDragStartPos,
+				this.mouseHandler.finishedDragEndPos,
+				selectedClass,
+			);
+		} else {
+			const ent = selectedClass.commonConstructor(
+				physPos,
+				new Box(physSize.x, physSize.y),
+				this.worldRef.ui.propertyValue,
+			);
+			this.worldRef.addEntity(ent);
 		}
 		this.mouseHandler.reset();
 	}

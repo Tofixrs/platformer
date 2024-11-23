@@ -1,11 +1,12 @@
 import { capsule } from "@lib/shape";
 import { Timer } from "@lib/ticker";
-import { GOID } from "gameObject";
+import { GameObject, GOID, Property, PropertyValue } from "gameObject";
 import { Enemy } from "gameObject/types/enemy";
 import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { Sprite, Texture } from "pixi.js";
-import { Box, Contact, Fixture, Vec2 } from "planck-js";
+import { Box, Contact, Fixture, Shape, Vec2 } from "planck-js";
 import { World } from "world";
+import { Player } from "./player";
 
 export class Koopa extends Enemy {
 	rightEdgeSensor!: Fixture;
@@ -20,10 +21,17 @@ export class Koopa extends Enemy {
 	moving = true;
 	sideKillTimer = new Timer(0.2);
 	stompPushTimer = new Timer(0.2);
+	static props: Property[] = [
+		{
+			type: "number",
+			name: "direction",
+			defaultValue: "-1",
+		},
+	];
 	constructor(pos: Vec2, direction?: number) {
 		super({
 			pos,
-			shape: capsule(new Vec2(0.25, 0.25)),
+			shape: capsule(new Vec2(0.23, 0.23)),
 			sprite: Sprite.from("koopa"),
 			density: 0.5,
 			friction: 1,
@@ -32,6 +40,14 @@ export class Koopa extends Enemy {
 		});
 		this.sprite.anchor.set(0.35, 0.7);
 		this.sprite.scale.x = this.direction;
+	}
+	static commonConstructor(
+		pos: Vec2,
+		_shape: Shape,
+		props?: PropertyValue[],
+	): GameObject {
+		const direction = props?.find((v) => v.name == "direction");
+		return new Koopa(pos, Number(direction?.value));
 	}
 	update(dt: number, world: World): void {
 		super.update(dt, world);
@@ -45,7 +61,7 @@ export class Koopa extends Enemy {
 			),
 		);
 	}
-	onStomp(_world: World): void {
+	onStomp(world: World): void {
 		if (this.shelled && this.stompPushTimer.done()) {
 			this.moving = !this.moving;
 			this.stompPushTimer.reset();
@@ -54,6 +70,8 @@ export class Koopa extends Enemy {
 			this.setShelled(true);
 			this.stompPushTimer.reset();
 		}
+		const player = world.entities.find((v) => v.id == this.stompID) as Player;
+		player.body.applyForceToCenter(new Vec2(0, -500), true);
 	}
 	onSideTouch(world: World): void {
 		switch (this.sideTouchGOID) {
@@ -171,8 +189,14 @@ export class Koopa extends Enemy {
 			}
 		}
 
-		if (this.touchedGroundsLeft.length + this.touchedGroundsRight.length < 2) {
-			this.direction = -this.direction;
+		const leftL = this.touchedGroundsLeft.length;
+		const rightL = this.touchedGroundsRight.length;
+
+		if (leftL > 0 && rightL == 0) {
+			this.direction = -1;
+			this.sprite.scale.x = this.direction;
+		} else if (leftL == 0 && rightL > 0) {
+			this.direction = 1;
 			this.sprite.scale.x = this.direction;
 		}
 		this.touchedGroundsRight = this.touchedGroundsRight.filter(
@@ -193,7 +217,9 @@ export class Koopa extends Enemy {
 			return;
 		if (!contact.isTouching()) return;
 
-		this.direction = -this.direction;
+		this.direction =
+			fixA == this.leftWallSensor || fixB == this.leftWallSensor ? 1 : -1;
+		this.body.setLinearVelocity(new Vec2(this.speed * this.direction, 0));
 		this.sprite.scale.x = this.direction;
 	}
 }

@@ -1,0 +1,19 @@
+{
+	"frames": {
+		"mushroom": {
+			"frame": { "x": 0, "y": 0, "w": 32, "h": 32 }
+		},
+		"mushroom_pin": {
+			"frame": { "x": 0, "y": 0, "w": 32, "h": 32 }
+		}
+	},
+	"meta": {
+		"image": "muschroom.png",
+		"format": "RGBA8888",
+		"scale": 1,
+		"size": {
+			"w": 48,
+			"h": 96
+		}
+	}
+}

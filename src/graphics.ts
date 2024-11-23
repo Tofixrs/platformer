@@ -26,6 +26,7 @@ export class Graphics<R extends Renderer = Renderer> {
 			Assets.load("./assets/entities/char/meta.json"),
 			Assets.load("./assets/entities/goomba/meta.json"),
 			Assets.load("./assets/entities/koopa/meta.json"),
+			Assets.load("./assets/entities/mushroom/meta.json"),
 			Assets.load("./assets/ground/grass/meta.json"),
 			Assets.load("./assets/ui/meta.json"),
 			Assets.load("./assets/blocks/meta.json"),
@@ -33,6 +34,10 @@ export class Graphics<R extends Renderer = Renderer> {
 	}
 	async setup() {
 		this.renderer = (await autoDetectRenderer({ background: "white" })) as R;
+		//@ts-expect-error
+		globalThis.__PIXI_RENDERER__ = this.renderer;
+		//@ts-expect-error
+		globalThis.__PIXI_STAGE__ = this.stage;
 
 		globalThis.addEventListener("resize", () => {
 			this.resize();
@@ -56,15 +61,23 @@ export class Graphics<R extends Renderer = Renderer> {
 		this.debugDraw.clear();
 
 		for (let body = world.p.getBodyList(); body; body = body?.getNext()) {
-			this.debugDraw.setStrokeStyle({
-				color: body.getType() == "dynamic" ? 0x0000ff : 0x00ff00,
-				width: 3,
-			});
 			for (
 				let fixture = body.getFixtureList();
 				fixture;
 				fixture = fixture.getNext()
 			) {
+				let color;
+				if (fixture.isSensor()) {
+					color = 0xff0000;
+				} else if (body.getType() == "dynamic") {
+					color = 0x0000ff;
+				} else if (body.getType() == "static") {
+					color = 0x00ff00;
+				}
+				this.debugDraw.setStrokeStyle({
+					color,
+					width: 3,
+				});
 				switch (fixture.getType()) {
 					case "polygon": {
 						this.renderPolyglon(fixture.getShape() as PolygonShape, body);

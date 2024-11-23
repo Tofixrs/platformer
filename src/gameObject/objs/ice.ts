@@ -1,4 +1,4 @@
-import { GOID } from "gameObject";
+import { GameObject, GOID, PropertyValue } from "gameObject";
 import { Ground, GroundAtlas } from "gameObject/types/ground";
 import { Shape, Vec2 } from "planck-js";
 
@@ -18,5 +18,12 @@ export class Ice extends Ground {
 			shape,
 			goid: GOID.Ice,
 		});
+	}
+	static commonConstructor(
+		pos: Vec2,
+		shape: Shape,
+		_props?: PropertyValue[],
+	): GameObject {
+		return new Ice(pos, shape);
 	}
 }

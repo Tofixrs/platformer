@@ -116,7 +116,6 @@ export class Enemy extends Entity {
 		this.stomp = fix.getBody().m_linearVelocity.y > 0;
 		if (this.stomp) {
 			this.stompID = classA == Player ? userA.id : userB.id;
-			fix.getBody().applyForceToCenter(new Vec2(0, -1000), true);
 			return;
 		}
 	}

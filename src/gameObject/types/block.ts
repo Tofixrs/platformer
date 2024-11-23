@@ -6,13 +6,14 @@ import {
 } from "./physicsObject";
 import { pixiToPlanck, planckToPixi } from "@lib/math/units";
 import { World } from "world";
-import { Contact, Manifold, Vec2 } from "planck-js";
+import { Box, Contact, Fixture, Vec2 } from "planck-js";
 import { getPosAtGrid } from "@worlds/editor";
 import { GameObjectID, GOID } from "gameObject";
 import { Brick } from "@gameObjs/brick";
+import { ActionState, Player } from "@gameObjs/player";
 type BlockOptions = Omit<
 	PhysicsObjectOptions,
-	"fixedRotation" | "bodyType" | "density"
+	"fixedRotation" | "bodyType" | "density" | "shape"
 > & {
 	sprite: Sprite;
 };
@@ -23,19 +24,24 @@ export class Block extends PhysicsObject {
 	static draggable: boolean = true;
 	hit = false;
 	hitID?: string;
+	hitSide?: number;
 	anim = false;
 	static item: GameObjectID = "koopa";
 	defaultSpritePos: Vec2;
 	swapDirection = false;
+	hitSensor!: Fixture;
+	animDirection = 1;
 	constructor(opt: BlockOptions) {
 		super({
 			bodyType: "static",
 			fixedRotation: true,
 			density: 0,
+			shape: new Box(0.25, 0.25),
 			...opt,
 		});
 
 		this.sprite = opt.sprite;
+		this.sprite.cullable = true;
 		this.sprite.anchor.set(0.5, 0.5);
 		const spritePos = planckToPixi(this.pos);
 		this.sprite.x = spritePos.x;
@@ -79,11 +85,16 @@ export class Block extends PhysicsObject {
 				id: this.id,
 			},
 			filterCategoryBits: 10,
+			filterGroupIndex: -10,
+		});
+		this.hitSensor = this.body.createFixture({
+			isSensor: true,
+			shape: new Box(0.15, 0.28),
+		});
+		world.p.on("begin-contact", (contact) => {
+			this.onBegin(contact);
 		});
 		world.main.addChild(this.sprite);
-		world.p.on("pre-solve", (contact, oldManifold) =>
-			this.preSolve(contact, oldManifold),
-		);
 	}
 	remove(world: World, force?: boolean): boolean {
 		super.remove(world, force);
@@ -93,26 +104,46 @@ export class Block extends PhysicsObject {
 	update(dt: number, world: World): void {
 		if (this.hit) {
 			this.anim = this.onHit(world);
+			this.animDirection = this.hitSide!;
 			this.hit = false;
 			this.hitID = undefined;
+			this.hitSide = undefined;
 		}
 
 		if (!this.anim) return;
-		if (
-			Math.abs(this.sprite.y) - Math.abs(this.defaultSpritePos.y) < -16 &&
-			!this.swapDirection
-		) {
-			this.swapDirection = true;
-		}
-		this.sprite.y -= dt * 200 * (this.swapDirection ? -1 : 1);
-		if (Math.abs(this.sprite.y) > Math.abs(this.defaultSpritePos.y)) {
-			this.anim = false;
-			this.swapDirection = false;
-			this.sprite.x = this.defaultSpritePos.x;
-			this.sprite.y = this.defaultSpritePos.y;
+		if (this.animDirection == -1) {
+			if (
+				Math.abs(this.sprite.y) - Math.abs(this.defaultSpritePos.y) < -16 &&
+				!this.swapDirection
+			) {
+				this.swapDirection = true;
+			}
+
+			this.sprite.y -= dt * 200 * (this.swapDirection ? -1 : 1);
+			if (Math.abs(this.sprite.y) > Math.abs(this.defaultSpritePos.y)) {
+				this.anim = false;
+				this.swapDirection = false;
+				this.sprite.x = this.defaultSpritePos.x;
+				this.sprite.y = this.defaultSpritePos.y;
+			}
+		} else {
+			if (
+				Math.abs(this.sprite.y) - Math.abs(this.defaultSpritePos.y) > 16 &&
+				!this.swapDirection
+			) {
+				this.swapDirection = true;
+			}
+
+			this.sprite.y -= dt * -200 * (this.swapDirection ? -1 : 1);
+			if (Math.abs(this.sprite.y) < Math.abs(this.defaultSpritePos.y)) {
+				this.anim = false;
+				this.swapDirection = false;
+				this.sprite.x = this.defaultSpritePos.x;
+				this.sprite.y = this.defaultSpritePos.y;
+			}
 		}
 	}
-	preSolve(contact: Contact, _oldManifold: Manifold) {
+	onBegin(contact: Contact) {
 		const fixA = contact.getFixtureA();
 		const fixB = contact.getFixtureB();
 		const userA = fixA.getUserData() as PhysObjUserData;
@@ -120,15 +151,21 @@ export class Block extends PhysicsObject {
 		if (userA == null || userB == null) return;
 		if (userA.id != this.id && userB.id != this.id) return;
 		if (userA.goid != GOID.Player && userB.goid != GOID.Player) return;
+		if (contact.m_manifold.localNormal.x != 0) return;
 
 		const user = userA.goid == GOID.Player ? userA : userB;
-		const worldManifold = contact.getWorldManifold(undefined);
-		if (worldManifold!.normal.y > 0 || worldManifold?.normal.x != 0) return;
 		this.hit = true;
 		this.hitID = user.id;
+		this.hitSide = -Math.ceil(contact.m_manifold.localNormal.y);
 	}
-	onHit(_world: World): boolean {
-		return true;
+	onHit(world: World): boolean {
+		const player = world.entities.find((v) => v.id == this.hitID) as Player;
+		const vel = player.body.getLinearVelocity();
+		player.body.setLinearVelocity(new Vec2(vel.x, 0));
+		player.actionStates = player.actionStates.filter(
+			(v) => v != ActionState.Jump,
+		);
+		return false;
 	}
 }
 
