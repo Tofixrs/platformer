@@ -8,7 +8,7 @@ import { Loop } from "@lib/loop";
 import { WorldController } from "./world/controller";
 import { Level } from "@worlds/level";
 
-const levelData = await (await fetch("./levels/test.json")).text();
+const levelData = await (await fetch("./levels/1-1.json")).text();
 
 export class Game {
 	static debug = false;

@@ -6,7 +6,8 @@ import { Koopa } from "@gameObjs/koopa";
 import { MarkBlock } from "@gameObjs/markBlock";
 import { Mushroom } from "@gameObjs/mushroom";
 import { Player } from "@gameObjs/player";
-import { GameObject, GameObjectID, GOID, PropType } from "gameObject";
+import { Rock } from "@gameObjs/rock";
+import { GameObject, GameObjectID, GOID } from "gameObject";
 import { Polygon, Vec2 } from "planck-js";
 import { World } from "world";
 
@@ -33,6 +34,7 @@ export function serialize(v: GameObject): SerializedGO {
 	if (v instanceof Brick) return sBricks(v);
 	if (v instanceof Mushroom) return sMushroom(v);
 	if (v instanceof MarkBlock) return sMarkBlock(v);
+	if (v instanceof Rock) return sRock(v);
 }
 
 function sPlayer(v: Player): SerializedGO {
@@ -132,7 +134,7 @@ function dMushroom(v: SerializedGO): Mushroom {
 	return new Mushroom(new Vec2(v.data.pos.x, v.data.pos.y), v.data.direction);
 }
 
-function dIce(v: SerializedGO): Grass {
+function dIce(v: SerializedGO): Ice {
 	const verts = v.data.shapeVerts.map((v: any) => new Vec2(v.x, v.y));
 	const shape = new Polygon(verts);
 	return new Ice(new Vec2(v.data.pos.x, v.data.pos.y), shape);
@@ -152,6 +154,23 @@ function sMarkBlock(v: MarkBlock): SerializedGO {
 	};
 }
 
+function sRock(v: Rock): SerializedGO {
+	return {
+		_type: GOID.Rock,
+		data: {
+			pos: v.pos,
+			shapeVerts: (v.shape as Polygon).m_vertices,
+			friction: v.friction,
+		},
+	};
+}
+
+function dRock(v: SerializedGO): Rock {
+	const verts = v.data.shapeVerts.map((v: any) => new Vec2(v.x, v.y));
+	const shape = new Polygon(verts);
+	return new Rock(new Vec2(v.data.pos.x, v.data.pos.y), shape);
+}
+
 export function deserialize(v: SerializedGO): GameObject {
 	switch (v._type) {
 		case GOID.Player: {
@@ -162,6 +181,9 @@ export function deserialize(v: SerializedGO): GameObject {
 		}
 		case GOID.Ice: {
 			return dIce(v);
+		}
+		case GOID.Rock: {
+			return dRock(v);
 		}
 		case GOID.Goomba: {
 			return dGoomba(v);

@@ -55,6 +55,8 @@ export class MarkBlock extends Block {
 	static commonConstructor(
 		pos: Vec2,
 		_shape: Shape,
+		_startPos: Vec2,
+		_currPos: Vec2,
 		props?: PropertyValue[],
 	): GameObject {
 		const item = props?.find((v) => v.name == "item");
@@ -63,7 +65,7 @@ export class MarkBlock extends Block {
 	update(dt: number, world: World): void {
 		super.update(dt, world);
 		if (
-			Math.abs(this.sprite.y) - Math.abs(this.defaultSpritePos.y) < -8 &&
+			this.sprite.y - this.defaultSpritePos.y < -8 &&
 			this.currSprite != "hit"
 		) {
 			this.doneSprite = true;
@@ -101,7 +103,13 @@ export class MarkBlock extends Block {
 		const pos = this.pos.clone();
 		pos.y -= -this.hitSide! * 0.75;
 		if (item.prototype instanceof Ground) return true;
-		const go = item.commonConstructor(pos, new Box(0, 0), []);
+		const go = item.commonConstructor(
+			pos,
+			new Box(0, 0),
+			Vec2.zero(),
+			Vec2.zero(),
+			[],
+		);
 		world.addEntity(go);
 		this.item = undefined;
 

@@ -51,6 +51,8 @@ export abstract class GameObject {
 	static commonConstructor(
 		_pos: Vec2,
 		_shape: Shape,
+		_startPos: Vec2,
+		_currPos: Vec2,
 		_props?: PropertyValue[],
 	): GameObject {
 		return null as unknown as GameObject;
@@ -66,6 +68,7 @@ export const GOID = {
 	Brick: "brick",
 	Mushroom: "mushroom",
 	MarkBlock: "markBlock",
+	Rock: "rock",
 } as const;
 
 type GOIOKeys = keyof typeof GOID;

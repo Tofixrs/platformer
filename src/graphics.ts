@@ -23,6 +23,7 @@ export class Graphics<R extends Renderer = Renderer> {
 		return Promise.all([
 			Assets.load("./assets/ground/pins/meta.json"),
 			Assets.load("./assets/ground/ice/meta.json"),
+			Assets.load("./assets/ground/rock/meta.json"),
 			Assets.load("./assets/entities/char/meta.json"),
 			Assets.load("./assets/entities/goomba/meta.json"),
 			Assets.load("./assets/entities/koopa/meta.json"),

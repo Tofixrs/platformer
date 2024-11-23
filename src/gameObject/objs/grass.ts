@@ -14,6 +14,8 @@ export class Grass extends Ground {
 	static commonConstructor(
 		pos: Vec2,
 		shape: Shape,
+		_startPos: Vec2,
+		_currPos: Vec2,
 		_props?: PropertyValue[],
 	): GameObject {
 		return new Grass(pos, shape);

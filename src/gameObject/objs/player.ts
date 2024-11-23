@@ -31,8 +31,8 @@ export type AState = (typeof ActionState)[keyof typeof ActionState];
 export type PlayerAnims = keyof Player["anims"];
 
 export class Player extends Entity {
-	walkForce = 600;
-	runForce = 800;
+	walkForce = 500;
+	runForce = 600;
 	rollForce = 1000;
 	longJumpVertForce = 1500;
 	jumpForce = -10000;
@@ -41,7 +41,7 @@ export class Player extends Entity {
 	sensor!: Fixture;
 	touchedGrounds: string[] = [];
 	direction = 1;
-	divingDelay = new Timer(0.2);
+	divingDelay = new Timer(0.75);
 	actionStates: AState[] = [];
 	static maxInstances = 1;
 	jumpSound = new Howl({
@@ -138,6 +138,8 @@ export class Player extends Entity {
 	static commonConstructor(
 		pos: Vec2,
 		_shape: Shape,
+		_startPos: Vec2,
+		_currPos: Vec2,
 		props: PropertyValue[],
 	): GameObject {
 		const pState = props.find((v) => v.name == "pState");
@@ -273,6 +275,9 @@ export class Player extends Entity {
 			new Vec2(0, -1),
 			true,
 		);
+		if (this.body.getLinearVelocity().y < -2) {
+			this.touchedGrounds = [];
+		}
 	}
 	handleCrouch() {
 		if (this.powerState < PowerState.Big) return;
@@ -354,8 +359,12 @@ export class Player extends Entity {
 		if (this.actionStates.includes(ActionState.Dive) && !shouldDive) {
 			this.mainFix.m_friction /= 2;
 			this.body.applyForceToCenter(new Vec2(0, -250), true);
-			this.sensorShape.m_vertices = this.bigSensorShape.m_vertices;
-			this.mainFix.m_shape = this.bigShape;
+			this.sensorShape.m_vertices =
+				this.powerState < PowerState.Big
+					? this.smallSensorShape.m_vertices
+					: this.bigSensorShape.m_vertices;
+			this.mainFix.m_shape =
+				this.powerState < PowerState.Big ? this.smallShape : this.bigShape;
 		}
 
 		if (this.checkActionState(ActionState.Dive, shouldDive)) return;

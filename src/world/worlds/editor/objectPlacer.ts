@@ -78,6 +78,8 @@ export class ObjectPlacer {
 			const ent = selectedClass.commonConstructor(
 				physPos,
 				new Box(physSize.x, physSize.y),
+				this.mouseHandler.finishedDragStartPos,
+				this.mouseHandler.finishedDragEndPos,
 				this.worldRef.ui.propertyValue,
 			);
 			this.worldRef.addEntity(ent);

@@ -10,13 +10,14 @@ import { getClassFromID } from "gameObject/utils";
 export class EditorUi extends Screen {
 	topPinned: GameObjectID[] = [
 		GOID.Player,
-		GOID.Grass,
 		GOID.Goomba,
 		GOID.Koopa,
-		GOID.Ice,
-		GOID.Brick,
 		GOID.Mushroom,
 		GOID.MarkBlock,
+		GOID.Brick,
+		GOID.Grass,
+		GOID.Rock,
+		GOID.Ice,
 	];
 	selected?: GameObjectID;
 	dontPlace = false;
@@ -29,14 +30,8 @@ export class EditorUi extends Screen {
 	constructor(editor: Editor) {
 		super("Editor");
 		this.addTopPins();
-		this.addLoad();
 		this.addProps();
 		this.worldRef = editor;
-
-		window.addEventListener("paste", (ev) => {
-			ev.preventDefault();
-			this.input.value = ev.clipboardData?.getData("text")!;
-		});
 	}
 	public addTopPins() {
 		this.addContent({
@@ -79,26 +74,6 @@ export class EditorUi extends Screen {
 			},
 		});
 	}
-	public addLoad() {
-		this.input = new Input({
-			bg: Sprite.from("big_button"),
-			textStyle: {
-				fill: "white",
-			},
-			placeholder: "Input level data",
-		});
-		this.input.onEnter.connect((t) => (this.levelData = t));
-
-		this.addContent({
-			input: {
-				content: this.input,
-				styles: {
-					position: "center",
-					visible: false,
-				},
-			},
-		});
-	}
 	public addProps() {
 		this.addContent({
 			props: {
@@ -117,9 +92,9 @@ export class EditorUi extends Screen {
 		this.dontPlace = true;
 	}
 	switchLoad() {
-		this.input.value = "";
-		const child = this.getChildByID("input");
-		child!.visible = !child!.visible;
+		navigator.clipboard.readText().then((v) => {
+			this.levelData = v;
+		});
 		this.dontPlace = true;
 	}
 	copy() {

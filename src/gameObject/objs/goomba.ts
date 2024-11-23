@@ -43,6 +43,8 @@ export class Goomba extends Enemy {
 	static commonConstructor(
 		pos: Vec2,
 		_shape: Shape,
+		_startPos: Vec2,
+		_currPos: Vec2,
 		props?: PropertyValue[],
 	): GameObject {
 		const direction = props?.find((v) => v.name == "direction");

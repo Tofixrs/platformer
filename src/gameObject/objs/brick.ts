@@ -18,6 +18,8 @@ export class Brick extends Block {
 	static commonConstructor(
 		pos: Vec2,
 		_shape: Shape,
+		_startPos: Vec2,
+		_currPos: Vec2,
 		_props?: PropertyValue[],
 	): GameObject {
 		return new Brick(pos);
