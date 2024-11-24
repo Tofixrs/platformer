@@ -89,17 +89,18 @@ export class Koopa extends Enemy {
 				}
 				break;
 			}
-			case GOID.Koopa:
-			case GOID.Goomba: {
-				if (this.shelled && this.moving) {
-					world.removeEntity(this.sideTouchID!);
-				} else {
-					this.direction = -1;
-					this.sprite.scale.x = this.direction;
-				}
-				break;
-			}
 		}
+	}
+	onSideTouchOtherEnemy(world: World): void {
+		if (this.shelled && this.moving) {
+			world.removeEntity(this.sideTouchID!);
+			return;
+		}
+
+		this.direction = this.sideTouched!;
+		const pos = this.body.getPosition();
+		pos.x += 0.05 * this.direction;
+		this.sprite.scale.x = this.direction;
 	}
 	setShelled(yes: boolean) {
 		this.moving = !yes;

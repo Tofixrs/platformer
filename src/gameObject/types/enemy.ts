@@ -26,6 +26,7 @@ export class Enemy extends Entity {
 	sideTouchID?: string;
 	sideTouchGOID?: GameObjectID;
 	sideTouched?: number;
+	sideTouchGO?: GameObject;
 	constructor({
 		pos,
 		friction,
@@ -56,10 +57,14 @@ export class Enemy extends Entity {
 		}
 
 		if (this.sideTouch) {
+			const ent = world.entities.find((v) => v.id == this.sideTouchID);
+			this.sideTouchGO = ent;
+			if (this.sideTouchGO instanceof Enemy) this.onSideTouchOtherEnemy(world);
 			this.onSideTouch(world);
 			this.sideTouch = false;
 			this.sideTouchID = undefined;
 			this.sideTouched = undefined;
+			this.sideTouchGO = undefined;
 		}
 	}
 	create(world: World): void {
@@ -139,15 +144,16 @@ export class Enemy extends Entity {
 
 		this.sideTouch = worldManifold?.normal.x != 0;
 		const fix = this.id != userA.id ? fixA : fixB;
-		if (this.sideTouch) {
-			this.sideTouchID = this.id != userA.id ? userA.id : userB.id;
-			this.sideTouchGOID = this.id != userA.id ? userA.goid : userB.goid;
-			this.sideTouched = fix.getBody().getLinearVelocity().x < 0 ? -1 : 1;
-		}
+		if (!this.sideTouch) return;
+
+		this.sideTouchID = this.id != userA.id ? userA.id : userB.id;
+		this.sideTouchGOID = this.id != userA.id ? userA.goid : userB.goid;
+		this.sideTouched = fix.getBody().getLinearVelocity().x < 0 ? -1 : 1;
 	}
 	onSideTouch(world: World) {
 		world.removeEntity(this.sideTouchID!);
 	}
+	onSideTouchOtherEnemy(world: World) {}
 	onStomp(world: World): void {
 		world.removeEntity(this.id);
 	}

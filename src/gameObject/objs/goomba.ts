@@ -6,6 +6,7 @@ import { AnimatedSprite, Texture } from "pixi.js";
 import { Box, Contact, Fixture, Shape, Vec2 } from "planck-js";
 import { World } from "world";
 import { Player } from "./player";
+import { Koopa } from "./koopa";
 
 export class Goomba extends Enemy {
 	rightEdgeSensor!: Fixture;
@@ -168,13 +169,14 @@ export class Goomba extends Enemy {
 		switch (this.sideTouchGOID) {
 			case GOID.Player: {
 				world.removeEntity(this.sideTouchID!);
-			}
-			case GOID.Koopa:
-			case GOID.Goomba: {
-				this.direction = 1;
 				break;
 			}
 		}
+	}
+	onSideTouchOtherEnemy(_world: World): void {
+		const pos = this.body.getPosition();
+		this.direction = this.sideTouched!;
+		pos.x += 0.05 * this.direction;
 	}
 	onStomp(world: World): void {
 		super.onStomp(world);
