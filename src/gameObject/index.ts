@@ -58,7 +58,7 @@ export abstract class GameObject {
 	): GameObject {
 		return null as unknown as GameObject;
 	}
-	static deserialize(obj: SerializedGO): GameObject {
+	static deserialize(_obj: SerializedGO): GameObject {
 		return null as unknown as GameObject;
 	}
 	serialize(): SerializedGO {
@@ -76,6 +76,7 @@ export const GOID = {
 	Mushroom: "mushroom",
 	MarkBlock: "markBlock",
 	Rock: "rock",
+	DeathPlane: "deathPlane",
 } as const;
 
 type GOIOKeys = keyof typeof GOID;

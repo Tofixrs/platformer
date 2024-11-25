@@ -32,6 +32,7 @@ export class Brick extends Block {
 			player.actionStates.includes(ActionState.GroundPound)
 		) {
 			world.removeEntity(this.id);
+			player.groundPoundHit = true;
 			return false;
 		}
 

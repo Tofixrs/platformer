@@ -44,6 +44,7 @@ export class Player extends Entity {
 	direction = 1;
 	divingDelay = new Timer(0.75);
 	actionStates: AState[] = [];
+	groundPoundHit = false;
 	static maxInstances = 1;
 	jumpSound = new Howl({
 		src: ["./jump.mp3"],
@@ -400,8 +401,10 @@ export class Player extends Entity {
 		if (this.actionStates.includes(ActionState.Crouch)) return;
 		if (this.actionStates.includes(ActionState.Dive)) return;
 		const shouldGroundPound =
-			(Actions.hold("groundpound") && !this.onGround) ||
-			(this.actionStates.includes(ActionState.GroundPound) && !this.onGround);
+			((Actions.hold("groundpound") && !this.onGround) ||
+				(this.actionStates.includes(ActionState.GroundPound) &&
+					!this.onGround)) &&
+			(!this.groundPoundHit || Actions.hold("groundpound"));
 		if (
 			shouldGroundPound &&
 			!this.actionStates.includes(ActionState.GroundPound)
@@ -419,6 +422,7 @@ export class Player extends Entity {
 			this.actionStates = this.actionStates.filter(
 				(v) => v != ActionState.Locked,
 			);
+			this.groundPoundHit = false;
 		}
 		if (this.checkActionState(ActionState.GroundPound, shouldGroundPound))
 			return;

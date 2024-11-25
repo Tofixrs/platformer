@@ -1,4 +1,4 @@
-import { Rectangle } from "pixi.js";
+import { Rectangle, Sprite } from "pixi.js";
 import { World } from "..";
 import { Graphics } from "graphics";
 import { Layout } from "@pixi/layout";
@@ -14,8 +14,29 @@ export class MainMenu extends World {
 		this.layout = new Layout({
 			content: [
 				{
-					id: "play",
-					content: new BigButton("Play", () => worldController.set("game")),
+					content: Sprite.from("background"),
+					styles: {
+						position: "center",
+						zIndex: -999999999,
+					},
+				},
+				{
+					content: [
+						{
+							content: Sprite.from("title"),
+							styles: {
+								position: "center",
+								padding: 100,
+								paddingBottom: 300,
+							},
+						},
+						{
+							content: new BigButton("Play", () => worldController.set("game")),
+							styles: {
+								position: "bottomCenter",
+							},
+						},
+					],
 					styles: {
 						position: "center",
 					},
@@ -55,6 +76,7 @@ export class MainMenu extends World {
 						width: "100%",
 						position: "top",
 						margin: 10,
+						zIndex: 9999999,
 					},
 				},
 			],

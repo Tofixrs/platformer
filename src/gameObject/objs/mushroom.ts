@@ -5,7 +5,6 @@ import { Sprite } from "pixi.js";
 import { Box, Contact, Fixture, Shape, Vec2 } from "planck-js";
 import { World } from "world";
 import { Player, PowerState } from "./player";
-import { SerializedGO } from "@lib/serialize";
 
 export class Mushroom extends Enemy {
 	rightWallSensor!: Fixture;

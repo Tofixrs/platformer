@@ -39,7 +39,7 @@ export class Koopa extends Enemy {
 			goid: GOID.Koopa,
 			direction,
 		});
-		this.sprite.anchor.set(0.35, 0.7);
+		this.sprite.anchor.set(0.35, 0.75);
 		this.sprite.scale.x = this.direction;
 	}
 	static commonConstructor(

@@ -9,6 +9,7 @@ export class WorldController {
 	constructor(stage: Container, debug: Draw) {
 		stage.addChild(this.worldContainer);
 		this.debug = debug;
+		this.debug.zIndex = 21;
 	}
 	add(name: string, world: World) {
 		this.worlds.set(name, world);

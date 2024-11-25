@@ -19,8 +19,14 @@ export class Graphics<R extends Renderer = Renderer> {
 	renderer!: R;
 	fpsElem: Text = new Text({ text: "0" });
 
-	preload() {
-		return Promise.all([
+	async preload() {
+		await Assets.load([
+			{
+				alias: "background",
+				src: "./assets/background.png",
+			},
+		]);
+		await Promise.all([
 			Assets.load("./assets/ground/pins/meta.json"),
 			Assets.load("./assets/ground/ice/meta.json"),
 			Assets.load("./assets/ground/rock/meta.json"),
@@ -47,6 +53,7 @@ export class Graphics<R extends Renderer = Renderer> {
 		this.fpsElem.label = "fpsElem";
 		this.fpsElem.visible = false;
 		this.stage.addChild(this.fpsElem);
+		this.fpsElem.zIndex = 2137;
 
 		document.getElementById("app")?.appendChild(this.renderer.canvas);
 	}

@@ -8,6 +8,7 @@ import { Brick } from "@gameObjs/brick";
 import { Mushroom } from "@gameObjs/mushroom";
 import { MarkBlock } from "@gameObjs/markBlock";
 import { Rock } from "@gameObjs/rock";
+import { DeathPlane } from "@gameObjs/deathPlane";
 
 export function getClassFromID(id: GameObjectID): typeof GameObject {
 	switch (id) {
@@ -46,6 +47,10 @@ export function getClassFromID(id: GameObjectID): typeof GameObject {
 		case GOID.Rock: {
 			//@ts-expect-error
 			return Rock;
+		}
+		case GOID.DeathPlane: {
+			//@ts-expect-error
+			return DeathPlane;
 		}
 	}
 }

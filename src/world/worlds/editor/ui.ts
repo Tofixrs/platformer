@@ -18,6 +18,7 @@ export class EditorUi extends Screen {
 		GOID.Grass,
 		GOID.Rock,
 		GOID.Ice,
+		GOID.DeathPlane,
 	];
 	selected?: GameObjectID;
 	dontPlace = false;

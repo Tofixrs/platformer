@@ -25,8 +25,10 @@ export class World {
 			attributeFilter: ["width", "height"],
 		});
 
-		this.c.addChild(this.main);
+		this.main.zIndex = 1;
+		this.top.zIndex = 10;
 		this.c.addChild(this.top);
+		this.c.addChild(this.main);
 	}
 	addEntity<T extends GameObject>(entity: T) {
 		entity.create(this);
@@ -37,14 +39,15 @@ export class World {
 			return v.id == id;
 		});
 		if (!this.entities[foundIndex]) return;
-		if (this.entities[foundIndex].remove(this) || force) {
+		if (this.entities[foundIndex].remove(this, force)) {
 			this.entities.splice(foundIndex, 1);
 		}
 	}
 	removeEntityIndex(index: number, force: boolean = false) {
 		if (!this.entities[index]) return;
-		this.entities[index].remove(this, force);
-		this.entities.splice(index, 1);
+		if (this.entities[index].remove(this, force)) {
+			this.entities.splice(index, 1);
+		}
 	}
 
 	update(dt: number) {
