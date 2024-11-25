@@ -21,6 +21,7 @@ export class Koopa extends Enemy {
 	moving = true;
 	sideKillTimer = new Timer(0.2);
 	stompPushTimer = new Timer(0.2);
+	brickID?: string;
 	static props: Property[] = [
 		{
 			type: "number",
@@ -55,6 +56,12 @@ export class Koopa extends Enemy {
 		super.update(dt, world);
 		this.sideKillTimer.tick(dt);
 		this.stompPushTimer.tick(dt);
+
+		if (this.brickID) {
+			world.removeEntity(this.brickID);
+			this.brickID = undefined;
+		}
+
 		if (!this.moving) return;
 		this.body.setLinearVelocity(
 			new Vec2(
@@ -220,6 +227,19 @@ export class Koopa extends Enemy {
 			return;
 		if (!contact.isTouching()) return;
 
+		const userA = fixA.getUserData() as PhysObjUserData;
+		const userB = fixB.getUserData() as PhysObjUserData;
+		if ((userA || userB) && this.shelled && this.moving) {
+			const other =
+				fixA == this.leftWallSensor || fixA == this.rightEdgeSensor
+					? userB
+					: userA;
+
+			if (other?.goid == GOID.Brick) {
+				this.brickID = other.id;
+				return;
+			}
+		}
 		this.direction =
 			fixA == this.leftWallSensor || fixB == this.leftWallSensor ? 1 : -1;
 		this.body.setLinearVelocity(new Vec2(this.speed * this.direction, 0));

@@ -197,6 +197,19 @@ export class Player extends Entity {
 	pausedUpdate(_dt: number, world: World): void {
 		if (this.currentAnim != "grow_anim" && this.currentAnim != "shrink_anim")
 			return;
+		if (this.currentAnim == "grow_anim") {
+			if (this.anims[this.currentAnim].texture.label == "player_big_stand") {
+				this.anims[this.currentAnim].anchor.set(0.5, 0.5);
+			} else {
+				this.anims[this.currentAnim].anchor.set(0.5, 0);
+			}
+		} else {
+			if (this.anims[this.currentAnim].texture.label == "player_big_stand") {
+				this.anims[this.currentAnim].anchor.set(0.5, 0.75);
+			} else {
+				this.anims[this.currentAnim].anchor.set(0.5, 0.5);
+			}
+		}
 		if (!this.anims[this.currentAnim].playing) {
 			world.pause = false;
 			this.anims[this.currentAnim].currentFrame = 0;

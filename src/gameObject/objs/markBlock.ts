@@ -65,7 +65,8 @@ export class MarkBlock extends Block {
 	update(dt: number, world: World): void {
 		super.update(dt, world);
 		if (
-			this.sprite.y - this.defaultSpritePos.y < -8 &&
+			(this.sprite.y - this.defaultSpritePos.y < -8 ||
+				this.sprite.y - this.defaultSpritePos.y > 8) &&
 			this.currSprite != "hit"
 		) {
 			this.doneSprite = true;

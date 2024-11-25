@@ -127,15 +127,12 @@ export class Block extends PhysicsObject {
 				this.sprite.y = this.defaultSpritePos.y;
 			}
 		} else {
-			if (
-				Math.abs(this.sprite.y) - Math.abs(this.defaultSpritePos.y) > 16 &&
-				!this.swapDirection
-			) {
+			if (this.sprite.y - this.defaultSpritePos.y > 16 && !this.swapDirection) {
 				this.swapDirection = true;
 			}
 
 			this.sprite.y -= dt * -200 * (this.swapDirection ? -1 : 1);
-			if (Math.abs(this.sprite.y) < Math.abs(this.defaultSpritePos.y)) {
+			if (this.sprite.y < this.defaultSpritePos.y) {
 				this.anim = false;
 				this.swapDirection = false;
 				this.sprite.x = this.defaultSpritePos.x;
