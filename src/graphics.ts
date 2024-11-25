@@ -25,6 +25,10 @@ export class Graphics<R extends Renderer = Renderer> {
 				alias: "background",
 				src: "./assets/background.png",
 			},
+			{
+				alias: "window",
+				src: "./assets/ui/window.png",
+			},
 		]);
 		await Promise.all([
 			Assets.load("./assets/ground/pins/meta.json"),

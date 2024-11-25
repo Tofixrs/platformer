@@ -31,7 +31,9 @@ export class MainMenu extends World {
 							},
 						},
 						{
-							content: new BigButton("Play", () => worldController.set("game")),
+							content: new BigButton("Play", () =>
+								worldController.set("levelSelect"),
+							),
 							styles: {
 								position: "bottomCenter",
 							},

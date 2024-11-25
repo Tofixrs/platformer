@@ -7,6 +7,7 @@ import { Editor } from "./world/worlds/editor";
 import { Loop } from "@lib/loop";
 import { WorldController } from "./world/controller";
 import { Level } from "@worlds/level";
+import { LevelSelect } from "@worlds/levelSelect/levelSelect";
 
 const levelData = await (await fetch("./levels/1-1.json")).text();
 
@@ -45,6 +46,9 @@ export class Game {
 		const level = new Level(this.graphics);
 		this.worldController.add("level", level);
 		this.worldController.set("mainMenu");
+
+		const levelSelect = new LevelSelect(this.graphics, this.worldController);
+		this.worldController.add("levelSelect", levelSelect);
 
 		this.loop.run();
 	}
