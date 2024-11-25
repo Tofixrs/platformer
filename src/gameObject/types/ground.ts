@@ -3,9 +3,11 @@ import { PhysicsObject, PhysicsObjectOptions } from "../types/physicsObject";
 import { Container, Sprite, Texture, TilingSprite } from "pixi.js";
 import { PolygonShape } from "planck-js/lib/shape";
 import { planckToPixi } from "@lib/math/units";
-import { Vec2 } from "planck-js";
+import { Box, Polygon, Vec2 } from "planck-js";
 import { Editor, getGridPosAtPos, getPosAtGrid } from "@worlds/editor";
 import { getClassFromID } from "gameObject/utils";
+import { SerializedGO } from "@lib/serialize";
+import { GameObject } from "gameObject";
 
 export type GroundOpts = Omit<
 	PhysicsObjectOptions,
@@ -186,5 +188,27 @@ export class Ground extends PhysicsObject {
 		super.remove(world);
 		world.main.removeChild(this.cont);
 		return true;
+	}
+	serialize(): SerializedGO {
+		return {
+			_type: this.goid,
+			data: {
+				pos: this.pos,
+				shapeVerts: (this.shape as Polygon).m_vertices,
+			},
+		};
+	}
+	static deserialize(obj: SerializedGO): GameObject {
+		const verts = obj.data.shapeVerts.map(
+			(v: { x: number; y: number }) => new Vec2(v.x, v.y),
+		);
+		const poly = new Polygon(verts);
+		const c = getClassFromID(obj._type);
+		return c.commonConstructor(
+			new Vec2(obj.data.pos.x, obj.data.pos.y),
+			poly,
+			Vec2.zero(),
+			Vec2.zero(),
+		);
 	}
 }

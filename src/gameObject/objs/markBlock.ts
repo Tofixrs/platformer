@@ -13,6 +13,7 @@ import { World } from "world";
 import { getClassFromID } from "gameObject/utils";
 import { Ground } from "gameObject/types/ground";
 import { ActionState, Player, PowerState } from "./player";
+import { SerializedGO } from "@lib/serialize";
 
 export class MarkBlock extends Block {
 	static dragTexture: Texture<TextureSource<any>> = Texture.from("brick");
@@ -115,5 +116,20 @@ export class MarkBlock extends Block {
 		this.item = undefined;
 
 		return true;
+	}
+	serialize(): SerializedGO {
+		return {
+			_type: this.goid,
+			data: {
+				pos: this.pos,
+				item: this.item,
+			},
+		};
+	}
+	static deserialize(obj: SerializedGO): GameObject {
+		return new MarkBlock(
+			new Vec2(obj.data.pos.x, obj.data.pos.y),
+			obj.data.item,
+		);
 	}
 }

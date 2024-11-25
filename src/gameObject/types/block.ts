@@ -8,9 +8,11 @@ import { pixiToPlanck, planckToPixi } from "@lib/math/units";
 import { World } from "world";
 import { Box, Contact, Fixture, Vec2 } from "planck-js";
 import { getPosAtGrid } from "@worlds/editor";
-import { GameObjectID, GOID } from "gameObject";
+import { GameObject, GameObjectID, GOID } from "gameObject";
 import { Brick } from "@gameObjs/brick";
 import { ActionState, Player } from "@gameObjs/player";
+import { SerializedGO } from "@lib/serialize";
+import { getClassFromID } from "gameObject/utils";
 type BlockOptions = Omit<
 	PhysicsObjectOptions,
 	"fixedRotation" | "bodyType" | "density" | "shape"
@@ -163,6 +165,23 @@ export class Block extends PhysicsObject {
 			(v) => v != ActionState.Jump,
 		);
 		return false;
+	}
+	serialize(): SerializedGO {
+		return {
+			_type: this.goid,
+			data: {
+				pos: this.pos,
+			},
+		};
+	}
+	static deserialize(obj: SerializedGO): GameObject {
+		const c = getClassFromID(obj._type);
+		return c.commonConstructor(
+			new Vec2(obj.data.pos.x, obj.data.pos.y),
+			new Box(0, 0),
+			Vec2.zero(),
+			Vec2.zero(),
+		);
 	}
 }
 

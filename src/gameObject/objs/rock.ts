@@ -1,13 +1,8 @@
-import {
-	meter,
-	pixiToPlanck,
-	pixiToPlanck1D,
-	planckToPixi,
-} from "@lib/math/units";
-import { Editor, getPosAtGrid } from "@worlds/editor";
-import { GameObject, GOID, Property, PropertyValue } from "gameObject";
+import { SerializedGO } from "@lib/serialize";
+import { getPosAtGrid } from "@worlds/editor";
+import { GameObject, GOID, PropertyValue } from "gameObject";
 import { Ground, GroundAtlas } from "gameObject/types/ground";
-import { Container, Sprite, Texture, TilingSprite } from "pixi.js";
+import { Container, Texture, TilingSprite } from "pixi.js";
 import { Box, Polygon, Shape, Vec2 } from "planck-js";
 
 export class Rock extends Ground {
@@ -72,5 +67,10 @@ export class Rock extends Ground {
 			pos.y += (h % 0.5) / 2;
 		}
 		return new Rock(pos, new Box(wA / 2, hA / 2));
+	}
+	static deserialize(obj: SerializedGO): GameObject {
+		const verts = obj.data.shapeVerts.map((v: any) => new Vec2(v.x, v.y));
+		const shape = new Polygon(verts);
+		return new Rock(new Vec2(obj.data.pos.x, obj.data.pos.y), shape);
 	}
 }

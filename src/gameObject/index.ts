@@ -1,3 +1,4 @@
+import { SerializedGO } from "@lib/serialize";
 import { Container } from "pixi.js";
 import { Shape, Vec2 } from "planck-js";
 import { World } from "world";
@@ -56,6 +57,12 @@ export abstract class GameObject {
 		_props?: PropertyValue[],
 	): GameObject {
 		return null as unknown as GameObject;
+	}
+	static deserialize(obj: SerializedGO): GameObject {
+		return null as unknown as GameObject;
+	}
+	serialize(): SerializedGO {
+		return null as unknown as SerializedGO;
 	}
 }
 

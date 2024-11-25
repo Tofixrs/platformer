@@ -3,7 +3,7 @@ import { Block } from "gameObject/types/block";
 import { Sprite, Texture, TextureSource } from "pixi.js";
 import { Shape, Vec2 } from "planck-js";
 import { World } from "world";
-import { Player, PowerState } from "./player";
+import { ActionState, Player, PowerState } from "./player";
 
 export class Brick extends Block {
 	static dragTexture: Texture<TextureSource<any>> = Texture.from("brick");
@@ -26,9 +26,16 @@ export class Brick extends Block {
 	}
 	onHit(world: World): boolean {
 		super.onHit(world);
-		if (this.hitSide == 1) return false;
 		const player = world.entities.find((v) => v.id == this.hitID) as Player;
+		if (
+			this.hitSide == 1 &&
+			player.actionStates.includes(ActionState.GroundPound)
+		) {
+			world.removeEntity(this.id);
+			return false;
+		}
 
+		if (this.hitSide == 1) return false;
 		if (player.powerState < PowerState.Big) return true;
 
 		world.removeEntity(this.id);

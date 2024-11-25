@@ -5,6 +5,7 @@ import { Layout } from "@pixi/layout";
 import { BigButton } from "@lib/ui/big_button";
 import { SmallButton } from "@lib/ui/small_button";
 import { WorldController } from "world/controller";
+import { Level } from "./level";
 
 export class MainMenu extends World {
 	layout: Layout;
@@ -30,9 +31,13 @@ export class MainMenu extends World {
 							},
 						},
 						{
-							content: new SmallButton("▶️", () =>
-								worldController.set("level"),
-							),
+							content: new SmallButton("▶️", () => {
+								navigator.clipboard.readText().then((v) => {
+									const level = new Level(graphics, v);
+									worldController.add("level", level);
+									worldController.set("level");
+								});
+							}),
 							styles: {
 								marginRight: 5,
 							},

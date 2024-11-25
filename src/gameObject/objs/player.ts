@@ -10,6 +10,7 @@ import { Timer } from "@lib/ticker";
 import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { capsule } from "@lib/shape";
 import { planckToPixi } from "@lib/math/units";
+import { SerializedGO } from "@lib/serialize";
 
 export const PowerState = {
 	Small: 1,
@@ -606,5 +607,20 @@ export class Player extends Entity {
 	}
 	get onGround() {
 		return this.touchedGrounds.length != 0;
+	}
+	serialize(): SerializedGO {
+		return {
+			_type: this.goid,
+			data: {
+				pos: this.pos,
+				pState: this.powerState,
+			},
+		};
+	}
+	static deserialize(obj: SerializedGO): GameObject {
+		return new Player(
+			new Vec2(obj.data.pos.x, obj.data.pos.y),
+			obj.data.pState,
+		);
 	}
 }

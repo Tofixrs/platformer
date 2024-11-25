@@ -1,12 +1,13 @@
-import { Fixture, Shape, Vec2, WorldManifold } from "planck-js";
+import { Box, Fixture, Shape, Vec2, WorldManifold } from "planck-js";
 import { Entity } from "./entity";
-import { GameObject, GameObjectID } from "gameObject";
+import { GameObject, GameObjectID, PropType } from "gameObject";
 import { Sprite } from "pixi.js";
 import { World } from "world";
 import { PhysObjUserData } from "./physicsObject";
 import { getClassFromID } from "gameObject/utils";
 import { Player } from "@gameObjs/player";
 import { Ground } from "./ground";
+import { SerializedGO } from "@lib/serialize";
 
 export interface EnemyOptions {
 	sprite: Sprite;
@@ -156,5 +157,30 @@ export class Enemy extends Entity {
 	onSideTouchOtherEnemy(world: World) {}
 	onStomp(world: World): void {
 		world.removeEntity(this.id);
+	}
+	serialize(): SerializedGO {
+		return {
+			_type: this.goid,
+			data: {
+				pos: this.pos,
+				direction: this.direction,
+			},
+		};
+	}
+	static deserialize(obj: SerializedGO): GameObject {
+		const c = getClassFromID(obj._type);
+		return c.commonConstructor(
+			new Vec2(obj.data.pos.x, obj.data.pos.y),
+			new Box(0, 0),
+			Vec2.zero(),
+			Vec2.zero(),
+			[
+				{
+					name: "direction",
+					value: String(obj.data.direction),
+					type: PropType.number,
+				},
+			],
+		);
 	}
 }
