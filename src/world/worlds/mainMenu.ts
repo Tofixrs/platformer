@@ -56,7 +56,7 @@ export class MainMenu extends World {
 						{
 							content: new SmallButton("▶️", () => {
 								navigator.clipboard.readText().then((v) => {
-									const level = new Level(graphics, v);
+									const level = new Level(graphics, v, worldController);
 									worldController.add("level", level);
 									worldController.set("level");
 								});
