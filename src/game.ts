@@ -37,14 +37,12 @@ export class Game {
 		const settings = new Settings(this.graphics, this.worldController);
 		this.worldController.add("settings", settings);
 
-		const world = new Level(this.graphics, levelData);
+		const world = new Level(this.graphics, levelData, this.worldController);
 		this.worldController.add("game", world);
 
 		const editor = new Editor(this.graphics);
 		this.worldController.add("editor", editor);
 
-		const level = new Level(this.graphics);
-		this.worldController.add("level", level);
 		this.worldController.set("mainMenu");
 
 		const levelSelect = new LevelSelect(this.graphics, this.worldController);

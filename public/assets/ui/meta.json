@@ -11,7 +11,8 @@
 		},
 		"title": {
 			"frame": { "x": 768, "y": 0, "w": 969, "h": 344 }
-		}
+		},
+		"deathPlane_pin": { "frame": { "x": 768, "y": 344, "w": 32, "h": 32 } }
 	},
 	"meta": {
 		"image": "ui.png",

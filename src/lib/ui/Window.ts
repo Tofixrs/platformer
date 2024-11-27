@@ -2,15 +2,17 @@ import { Content, Styles } from "@pixi/layout";
 import { Sprite } from "pixi.js";
 import { Screen } from "./screen";
 
-export class Window extends Screen {
+export class Window<T> extends Screen {
 	constructor({
 		title,
 		styles,
 		ribbonStyle,
+		data,
 	}: {
 		title: string;
 		styles?: Styles;
 		ribbonStyle?: Styles;
+		data?: T;
 	}) {
 		super(title, styles);
 		this.addContent({
@@ -32,7 +34,7 @@ export class Window extends Screen {
 						maxHeight: "10%",
 					},
 				},
-				c: this.createContent(),
+				c: this.createContent(data!),
 			},
 			styles: {
 				position: "center",
@@ -42,7 +44,7 @@ export class Window extends Screen {
 			},
 		});
 	}
-	createContent(): Content {
+	createContent(data: T): Content {
 		return [];
 	}
 }

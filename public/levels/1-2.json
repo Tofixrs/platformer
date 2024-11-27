@@ -707,30 +707,6 @@
 	{ "_type": "brick", "data": { "pos": { "x": 90, "y": 4.25 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 90.5, "y": 4.25 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 91, "y": 4.25 } } },
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 91.75, "y": 6 },
-			"shapeVerts": [
-				{ "x": 0.5, "y": -2 },
-				{ "x": 0.5, "y": 2 },
-				{ "x": -0.5, "y": 2 },
-				{ "x": -0.5, "y": -2 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 90.75, "y": 7.5 },
-			"shapeVerts": [
-				{ "x": 0.5, "y": -0.5 },
-				{ "x": 0.5, "y": 0.5 },
-				{ "x": -0.5, "y": 0.5 },
-				{ "x": -0.5, "y": -0.5 }
-			]
-		}
-	},
 	{ "_type": "brick", "data": { "pos": { "x": 96, "y": 4.25 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 96, "y": 4.75 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 96, "y": 5.25 } } },
@@ -1263,5 +1239,9 @@
 	{ "_type": "brick", "data": { "pos": { "x": 12.5, "y": -33.25 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 12.5, "y": -33.75 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 12.5, "y": -34.25 } } },
-	{ "_type": "player", "data": { "pos": { "x": 14, "y": 4.25 }, "pState": 1 } }
+	{ "_type": "player", "data": { "pos": { "x": 14, "y": 4.25 }, "pState": 1 } },
+	{ "_type": "brick", "data": { "pos": { "x": 91.5, "y": 4.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 92, "y": 4.25 } } },
+	{ "_type": "flag", "data": { "x": 92, "y": 3 } },
+	{ "_type": "deathPlane", "data": { "pos": { "x": 47.75, "y": 14 } } }
 ]

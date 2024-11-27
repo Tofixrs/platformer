@@ -2,7 +2,22 @@ export class Storage {
 	static setMap(name: string, map: Map<any, any>) {
 		localStorage.setItem(name, JSON.stringify(Array.from(map.entries())));
 	}
-	static getMap<T, U>(name: string): Map<T, U> {
-		return new Map(JSON.parse(localStorage.getItem(name) || "[]"));
+	static getMap<T, U>(name: string, def?: Map<T, U>): Map<T, U> {
+		const item = localStorage.getItem(name);
+		if (!item) {
+			return def || new Map();
+		}
+
+		return new Map(JSON.parse(item));
+	}
+	static getObj<T>(name: string, def: T): T {
+		const item = localStorage.getItem(name);
+		if (!item) {
+			return def;
+		}
+		return JSON.parse(item);
+	}
+	static saveObj(name: string, obj: any) {
+		localStorage.setItem(name, JSON.stringify(obj));
 	}
 }

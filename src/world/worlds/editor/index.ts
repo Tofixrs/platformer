@@ -42,6 +42,7 @@ export class Editor extends World {
 			super.update(dt);
 			return;
 		}
+		this.ui.onUpdate(dt);
 
 		this.editorCamPos = new Vec2(this.main.pivot.x, this.main.pivot.y);
 		this.objectPlacer.update(this.editorCamPos, this);

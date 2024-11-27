@@ -9,6 +9,7 @@ import { Mushroom } from "@gameObjs/mushroom";
 import { MarkBlock } from "@gameObjs/markBlock";
 import { Rock } from "@gameObjs/rock";
 import { DeathPlane } from "@gameObjs/deathPlane";
+import { Flag } from "@gameObjs/flag";
 
 export function getClassFromID(id: GameObjectID): typeof GameObject {
 	switch (id) {
@@ -51,6 +52,10 @@ export function getClassFromID(id: GameObjectID): typeof GameObject {
 		case GOID.DeathPlane: {
 			//@ts-expect-error
 			return DeathPlane;
+		}
+		case GOID.Flag: {
+			//@ts-expect-error
+			return Flag;
 		}
 	}
 }

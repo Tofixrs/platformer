@@ -1,25 +1,15 @@
 import { SmallButton } from "@lib/ui/small_button";
-import { Content } from "@pixi/layout";
-import { FancyButton, Input } from "@pixi/ui";
+import { Content, Layout } from "@pixi/layout";
+import { FancyButton, Input, ScrollBox } from "@pixi/ui";
 import { Screen } from "@ui/screen";
 import { GameObjectID, GOID, PropertyValue, PropType } from "gameObject";
-import { Sprite, Text } from "pixi.js";
+import { Sprite, Text, Texture } from "pixi.js";
 import { Editor } from ".";
 import { getClassFromID } from "gameObject/utils";
+import { Storage } from "@lib/storage";
+import { Window } from "@lib/ui/Window";
 
 export class EditorUi extends Screen {
-	topPinned: GameObjectID[] = [
-		GOID.Player,
-		GOID.Goomba,
-		GOID.Koopa,
-		GOID.Mushroom,
-		GOID.MarkBlock,
-		GOID.Brick,
-		GOID.Grass,
-		GOID.Rock,
-		GOID.Ice,
-		GOID.DeathPlane,
-	];
 	selected?: GameObjectID;
 	dontPlace = false;
 	dontInput = false;
@@ -28,49 +18,73 @@ export class EditorUi extends Screen {
 	input!: Input;
 	levelData?: string;
 	propertyValue: PropertyValue[] = [];
+	pinWindow = new PinWindow(this);
 	constructor(editor: Editor) {
 		super("Editor");
-		this.addTopPins();
+		this.addTop();
 		this.addProps();
+		this.addPinWindow();
 		this.worldRef = editor;
 	}
-	public addTopPins() {
+	public addTop() {
+		const pinWindowButton = new FancyButton({
+			defaultView: "small_button",
+			text: "⬇️",
+			defaultTextScale: 5,
+		});
+		pinWindowButton.addEventListener("pointerdown", () =>
+			this.switchPinWindow(),
+		);
 		this.addContent({
-			topPins: {
-				content: this.pins,
+			top: {
+				content: {
+					topPinned: {
+						content: [
+							...this.pins,
+							{
+								content: pinWindowButton,
+								styles: {
+									paddingRight: 15,
+								},
+							},
+						],
+						styles: {
+							position: "centerTop",
+							maxWidth: "50%",
+						},
+					},
+					right: {
+						content: [
+							{
+								content: new SmallButton("🔄", () => this.switchLoad()),
+								styles: {
+									paddingLeft: 5,
+								},
+							},
+							{
+								content: new SmallButton("📋", () => this.copy()),
+								styles: {
+									paddingLeft: 5,
+								},
+							},
+							{
+								content: new SmallButton("🗑️", () => this.switchErase()),
+								styles: {
+									paddingLeft: 5,
+								},
+							},
+						],
+						styles: {
+							position: "right",
+							height: "100%",
+						},
+					},
+				},
 				styles: {
 					position: "centerTop",
-					maxWidth: "50%",
-					maxHeight: "10%",
+					width: "100%",
+					maxHeight: "30%",
 					marginTop: 5,
-				},
-			},
-			eraser: {
-				content: [
-					{
-						content: new SmallButton("🔄", () => this.switchLoad()),
-						styles: {
-							paddingLeft: 5,
-						},
-					},
-					{
-						content: new SmallButton("📋", () => this.copy()),
-						styles: {
-							paddingLeft: 5,
-						},
-					},
-					{
-						content: new SmallButton("🗑️", () => this.switchErase()),
-						styles: {
-							paddingLeft: 5,
-						},
-					},
-				],
-				styles: {
-					position: "topRight",
-					margin: 5,
-					maxHeight: "10%",
-					maxWidth: "25%",
 				},
 			},
 		});
@@ -88,6 +102,18 @@ export class EditorUi extends Screen {
 			},
 		});
 	}
+	public addPinWindow() {
+		this.addContent({
+			pinWindow: {
+				content: this.pinWindow,
+				styles: {
+					height: "100%",
+					width: "100%",
+					visible: false,
+				},
+			},
+		});
+	}
 	switchErase() {
 		this.erase = !this.erase;
 		this.dontPlace = true;
@@ -96,6 +122,11 @@ export class EditorUi extends Screen {
 		navigator.clipboard.readText().then((v) => {
 			this.levelData = v;
 		});
+		this.dontPlace = true;
+	}
+	switchPinWindow() {
+		const pinWindow = this.getChildByID("pinWindow");
+		pinWindow!.visible = !pinWindow?.visible;
 		this.dontPlace = true;
 	}
 	copy() {
@@ -197,15 +228,18 @@ export class EditorUi extends Screen {
 		const pins: Content = [];
 		const amt = 10;
 		for (let i = 0; i < amt; i++) {
-			const icon = this.topPinned[i]
-				? Sprite.from(this.topPinned[i] + "_pin")
+			const icon = this.pinWindow.topPinned[i]
+				? Sprite.from(this.pinWindow.topPinned[i] + "_pin")
 				: undefined;
 			const btn = new FancyButton({
 				defaultView: "editor_pin",
 				icon,
 				defaultIconScale: 5,
 			});
-			btn.onPress.connect(() => this.onSelectedPin(this.topPinned[i]));
+			btn.onPress.connect(() =>
+				this.onSelectedPin(this.pinWindow.topPinned[i]),
+			);
+			btn.label = "pin";
 			pins.push({
 				content: btn,
 				styles: {
@@ -214,5 +248,123 @@ export class EditorUi extends Screen {
 			});
 		}
 		return pins;
+	}
+}
+
+class PinWindow extends Window<GameObjectID[]> {
+	private _topPinned: GameObjectID[];
+	private editorUiRef: EditorUi;
+	private selectedPin?: number;
+	constructor(editorUiRef: EditorUi) {
+		const topPinned = Storage.getObj("pins", [
+			GOID.Player,
+			GOID.Goomba,
+			GOID.Koopa,
+			GOID.Mushroom,
+			GOID.MarkBlock,
+			GOID.Brick,
+			GOID.Grass,
+			GOID.Rock,
+			GOID.Ice,
+			GOID.DeathPlane,
+		]);
+
+		super({ title: "pins", data: topPinned });
+		this._topPinned = topPinned;
+		this.editorUiRef = editorUiRef;
+	}
+	createContent(data: GameObjectID[]): Content {
+		return {
+			levels: {
+				content: new ScrollBox({
+					width: 850,
+					height: 550,
+					radius: 70,
+					horPadding: 60,
+					elementsMargin: 20,
+					items: this.objs,
+				}),
+				styles: {
+					position: "center",
+					marginTop: 50,
+				},
+			},
+			pins: {
+				content: this.pins(data),
+				styles: {
+					position: "centerTop",
+					maxWidth: "80%",
+					marginTop: 80,
+				},
+			},
+			styles: {
+				position: "center",
+			},
+		};
+	}
+	pins(pin: GameObjectID[]) {
+		const pins: Content = [];
+		const amt = 10;
+		for (let i = 0; i < amt; i++) {
+			const icon = Sprite.from(pin[i] + "_pin");
+			const btn = new FancyButton({
+				defaultView: "editor_pin",
+				icon,
+				defaultIconScale: 5,
+			});
+			btn.addEventListener("pointerdown", () => {
+				this.selectedPin = i;
+			});
+			pins.push({
+				content: btn,
+				styles: {
+					paddingRight: 15,
+				},
+			});
+		}
+		return pins;
+	}
+	get objs() {
+		return Object.values(GOID).map((v) => {
+			const btn = new FancyButton({
+				defaultView: "editor_pin",
+				icon: Sprite.from(v + "_pin"),
+				defaultIconScale: 5,
+				scale: 0.5,
+			});
+			btn.addEventListener("pointerdown", () => {
+				if (!this.selectedPin) {
+					this.editorUiRef.selected = v;
+					this.editorUiRef.dontPlace = true;
+					const pinWindow = this.editorUiRef.getChildByID("pinWindow");
+					pinWindow!.visible = false;
+					return;
+				}
+
+				const pinned = this.topPinned;
+				pinned[this.selectedPin] = v;
+				this.topPinned = pinned;
+				this.selectedPin = undefined;
+			});
+			return btn;
+		});
+	}
+	get topPinned() {
+		return this._topPinned;
+	}
+	set topPinned(pins: GameObjectID[]) {
+		this._topPinned = pins;
+		Storage.saveObj("pins", this._topPinned);
+		const p = this.editorUiRef.getChildByID("topPinned")!;
+		const p2 = this.getChildByID("pins")!;
+		(
+			(p.children[this.selectedPin!].children[0] as FancyButton)
+				.iconView as Sprite
+		).texture = Texture.from(this._topPinned[this.selectedPin!] + "_pin");
+
+		(
+			(p2.children[this.selectedPin!].children[0] as FancyButton)
+				.iconView as Sprite
+		).texture = Texture.from(this._topPinned[this.selectedPin!] + "_pin");
 	}
 }

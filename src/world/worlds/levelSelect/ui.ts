@@ -9,7 +9,7 @@ import { Levels } from "./levelSelect";
 const levelData: Levels = await fetch("./levels/index.json").then((v) =>
 	v.json(),
 );
-export class LevelWindow extends Window {
+export class LevelWindow extends Window<undefined> {
 	worldController: WorldController;
 	constructor(worldController: WorldController) {
 		super({

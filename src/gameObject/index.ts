@@ -77,6 +77,7 @@ export const GOID = {
 	MarkBlock: "markBlock",
 	Rock: "rock",
 	DeathPlane: "deathPlane",
+	Flag: "flag",
 } as const;
 
 type GOIOKeys = keyof typeof GOID;

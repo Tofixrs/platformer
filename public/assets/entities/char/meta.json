@@ -27,9 +27,14 @@
 		"player_roll": {
 			"frame": { "x": 96, "y": 128, "w": 32, "h": 32 }
 		},
-
 		"player_dive": {
 			"frame": { "x": 0, "y": 64, "w": 64, "h": 32 }
+		},
+		"player_small_flag": {
+			"frame": { "x": 0, "y": 96, "w": 32, "h": 32 }
+		},
+		"player_big_flag": {
+			"frame": { "x": 64, "y": 64, "w": 32, "h": 64 }
 		}
 	},
 	"meta": {

@@ -19,10 +19,13 @@ export class LevelSelect extends World {
 			fetch(`./levels/${level.name}.json`)
 				.then((v) => v.text())
 				.then((v) => {
-					worldController.add(level.name, new Level(graphics, v));
+					worldController.add(
+						level.name,
+						new Level(graphics, v, worldController),
+					);
 				});
 		}
-		this.ui = new LevelWindow(worldController, levels);
+		this.ui = new LevelWindow(worldController);
 
 		this.top.addChild(this.ui);
 		this.recenter(graphics.renderer.screen);
