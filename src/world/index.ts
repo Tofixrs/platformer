@@ -66,4 +66,5 @@ export class World {
 		this.main.x = screen.width / 2;
 		this.main.y = screen.height / 2;
 	}
+	onSet() {}
 }

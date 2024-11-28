@@ -50,7 +50,7 @@ export class Player extends Entity {
 		src: ["./jump.mp3"],
 		volume: 0.25,
 	});
-	powerState: PState = PowerState.Big;
+	powerState: PState = PowerState.Small;
 	invTimer = new Timer(1, true);
 	anims = {
 		small_walk: new AnimatedSprite([

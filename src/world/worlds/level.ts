@@ -11,6 +11,7 @@ export class Level extends World {
 	done = false;
 	controlled: boolean;
 	worldControlRef: WorldController;
+	data: string;
 	constructor(
 		graphics: Graphics,
 		data: string,
@@ -18,7 +19,8 @@ export class Level extends World {
 		controlled: boolean = false,
 	) {
 		super(graphics);
-		this.load(data);
+		this.data = data;
+		this.load();
 		this.recenter(graphics.renderer.screen);
 		this.controlled = controlled;
 		this.worldControlRef = worldController;
@@ -28,19 +30,25 @@ export class Level extends World {
 		if (this.loaded && !this.flag) {
 			this.flag = this.entities.find((v) => v.goid == GOID.Flag) as Flag;
 		}
+		if (
+			this.entities.findIndex((v) => v.goid == GOID.Player) == -1 &&
+			!this.flag?.win
+		) {
+			this.load();
+			return;
+		}
 		if (!this.flag) return;
 		if (!this.flag.winAnimDone) return;
-		this.flag.winAnimDone = true;
 		if (this.controlled) return;
 
 		this.worldControlRef.set("mainMenu");
 	}
 
-	load(data: string) {
+	load() {
 		for (let i = this.entities.length - 1; i != -1; i--) {
 			this.removeEntityIndex(i, true);
 		}
-		const ent = deserializeWorld(data);
+		const ent = deserializeWorld(this.data);
 		ent.forEach((v) => this.addEntity(v));
 		this.loaded = true;
 	}

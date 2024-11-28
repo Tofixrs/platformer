@@ -8,6 +8,7 @@ import { Loop } from "@lib/loop";
 import { WorldController } from "./world/controller";
 import { Level } from "@worlds/level";
 import { LevelSelect } from "@worlds/levelSelect/levelSelect";
+import { Campaign } from "@worlds/campaign/campaign";
 
 const levelData = await (await fetch("./levels/1-1.json")).text();
 
@@ -48,6 +49,8 @@ export class Game {
 		const levelSelect = new LevelSelect(this.graphics, this.worldController);
 		this.worldController.add("levelSelect", levelSelect);
 
+		const campaign = new Campaign(this.graphics, this.worldController);
+		this.worldController.add("campaign", campaign);
 		this.loop.run();
 	}
 	update(dt: number) {

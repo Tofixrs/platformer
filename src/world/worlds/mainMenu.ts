@@ -31,9 +31,13 @@ export class MainMenu extends World {
 							},
 						},
 						{
-							content: new BigButton("Play", () =>
-								worldController.set("levelSelect"),
-							),
+							content: new BigButton("Play", () => {
+								if (localStorage.getItem("win") == "true") {
+									worldController.set("levelSelect");
+								} else {
+									worldController.set("campaign");
+								}
+							}),
 							styles: {
 								position: "bottomCenter",
 							},

@@ -23,6 +23,7 @@ export class WorldController {
 		if (this.world) {
 			this.worldContainer.addChild(this.world.c);
 			this.world.main.addChild(this.debug);
+			this.world.onSet();
 		}
 	}
 	get world() {
