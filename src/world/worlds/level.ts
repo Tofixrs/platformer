@@ -27,9 +27,6 @@ export class Level extends World {
 	}
 	update(dt: number): void {
 		super.update(dt);
-		if (this.loaded && !this.flag) {
-			this.flag = this.entities.find((v) => v.goid == GOID.Flag) as Flag;
-		}
 		if (
 			this.entities.findIndex((v) => v.goid == GOID.Player) == -1 &&
 			!this.flag?.win
@@ -49,7 +46,9 @@ export class Level extends World {
 			this.removeEntityIndex(i, true);
 		}
 		const ent = deserializeWorld(this.data);
-		ent.forEach((v) => this.addEntity(v));
-		this.loaded = true;
+		ent.forEach((v) => {
+			if (v.goid == GOID.Flag) this.flag = v as Flag;
+			this.addEntity(v);
+		});
 	}
 }
