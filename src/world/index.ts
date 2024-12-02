@@ -7,8 +7,9 @@ export class World {
 	p = new PhysicsWorld({
 		gravity: new Vec2(0.0, 50.0),
 	});
-	top = new Container();
-	main = new Container();
+	top = new Container({ zIndex: 10 });
+	main = new Container({ zIndex: 1 });
+	bottom = new Container({ zIndex: -10 });
 	c = new Container();
 	entities: GameObject[] = [];
 	static physicsStepTime = 1 / 60;
@@ -25,9 +26,8 @@ export class World {
 			attributeFilter: ["width", "height"],
 		});
 
-		this.main.zIndex = 1;
-		this.top.zIndex = 10;
 		this.c.addChild(this.top);
+		this.c.addChild(this.bottom);
 		this.c.addChild(this.main);
 	}
 	addEntity<T extends GameObject>(entity: T) {

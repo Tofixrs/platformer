@@ -564,5 +564,6 @@
 		}
 	},
 	{ "_type": "deathPlane", "data": { "pos": { "x": 53.75, "y": 7.25 } } },
-	{ "_type": "flag", "data": { "x": 108.5, "y": -2 } }
+	{ "_type": "flag", "data": { "x": 108.5, "y": -2 } },
+	{ "_type": "paralax", "data": 1 }
 ]

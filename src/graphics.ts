@@ -19,18 +19,18 @@ export class Graphics<R extends Renderer = Renderer> {
 	renderer!: R;
 	fpsElem: Text = new Text({ text: "0" });
 
-	async preload() {
-		await Assets.load([
-			{
-				alias: "background",
-				src: "./assets/background.png",
-			},
-			{
-				alias: "window",
-				src: "./assets/ui/window.png",
-			},
-		]);
-		await Promise.all([
+	preload() {
+		return Promise.all([
+			Assets.load([
+				{
+					alias: "background",
+					src: "./assets/background.png",
+				},
+				{
+					alias: "window",
+					src: "./assets/ui/window.png",
+				},
+			]),
 			Assets.load("./assets/ground/pins/meta.json"),
 			Assets.load("./assets/ground/ice/meta.json"),
 			Assets.load("./assets/ground/rock/meta.json"),
@@ -42,6 +42,7 @@ export class Graphics<R extends Renderer = Renderer> {
 			Assets.load("./assets/ui/meta.json"),
 			Assets.load("./assets/blocks/meta.json"),
 			Assets.load("./assets/flag/meta.json"),
+			Assets.load("./assets/backgrounds/normal/meta.json"),
 		]);
 	}
 	async setup() {

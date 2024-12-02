@@ -334,8 +334,7 @@ class PinWindow extends Window<GameObjectID[]> {
 			});
 			btn.addEventListener("pointerdown", () => {
 				if (!this.selectedPin) {
-					this.editorUiRef.selected = v;
-					this.editorUiRef.dontPlace = true;
+					this.editorUiRef.onSelectedPin(v);
 					const pinWindow = this.editorUiRef.getChildByID("pinWindow");
 					pinWindow!.visible = false;
 					return;

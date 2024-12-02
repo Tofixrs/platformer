@@ -1,0 +1,19 @@
+{
+	"frames": {
+		"normal_bg": {
+			"frame": { "x": 0, "y": 1080, "w": 1920, "h": 1080 }
+		},
+		"normal_fg": {
+			"frame": { "x": 0, "y": 0, "w": 1920, "h": 1080 }
+		}
+	},
+	"meta": {
+		"image": "normal.png",
+		"format": "RGBA8888",
+		"scale": 1,
+		"size": {
+			"w": 1920,
+			"h": 2160
+		}
+	}
+}

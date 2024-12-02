@@ -10,6 +10,7 @@ import { MarkBlock } from "@gameObjs/markBlock";
 import { Rock } from "@gameObjs/rock";
 import { DeathPlane } from "@gameObjs/deathPlane";
 import { Flag } from "@gameObjs/flag";
+import { Paralax } from "@gameObjs/paralax";
 
 export function getClassFromID(id: GameObjectID): typeof GameObject {
 	switch (id) {
@@ -56,6 +57,10 @@ export function getClassFromID(id: GameObjectID): typeof GameObject {
 		case GOID.Flag: {
 			//@ts-expect-error
 			return Flag;
+		}
+		case GOID.Paralax: {
+			//@ts-expect-error
+			return Paralax;
 		}
 	}
 }
