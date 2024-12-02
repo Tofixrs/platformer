@@ -60,7 +60,23 @@ export class Enemy extends Entity {
 		if (this.sideTouch) {
 			const ent = world.entities.find((v) => v.id == this.sideTouchID);
 			this.sideTouchGO = ent;
-			if (this.sideTouchGO instanceof Enemy) this.onSideTouchOtherEnemy(world);
+			if (this.sideTouchGO instanceof Enemy) {
+				this.sideTouchGO.sideTouch = true;
+				this.sideTouchGO.sideTouchID = this.id;
+				this.sideTouchGO.sideTouched = -this.sideTouched!;
+				this.sideTouchGO.sideTouchGO = this;
+				this.sideTouchGO.onSideTouchOtherEnemy(world);
+				this.onSideTouchOtherEnemy(world);
+				this.sideTouchGO.sideTouch = false;
+				this.sideTouchGO.sideTouchID = undefined;
+				this.sideTouchGO.sideTouched = undefined;
+				this.sideTouchGO.sideTouchGO = undefined;
+				this.sideTouch = false;
+				this.sideTouchID = undefined;
+				this.sideTouched = undefined;
+				this.sideTouchGO = undefined;
+				return;
+			}
 			this.onSideTouch(world);
 			this.sideTouch = false;
 			this.sideTouchID = undefined;
@@ -154,7 +170,11 @@ export class Enemy extends Entity {
 	onSideTouch(world: World) {
 		world.removeEntity(this.sideTouchID!);
 	}
-	onSideTouchOtherEnemy(world: World) {}
+	onSideTouchOtherEnemy(world: World) {
+		const pos = this.body.getPosition();
+		this.direction = this.sideTouched!;
+		pos.x += 0.05 * this.direction;
+	}
 	onStomp(world: World): void {
 		world.removeEntity(this.id);
 	}

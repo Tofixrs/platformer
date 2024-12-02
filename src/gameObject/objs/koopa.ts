@@ -104,9 +104,7 @@ export class Koopa extends Enemy {
 			return;
 		}
 
-		this.direction = this.sideTouched!;
-		const pos = this.body.getPosition();
-		pos.x += 0.05 * this.direction;
+		this.direction = -this.direction;
 		this.sprite.scale.x = this.direction;
 	}
 	setShelled(yes: boolean) {

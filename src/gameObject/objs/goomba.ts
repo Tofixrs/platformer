@@ -173,11 +173,6 @@ export class Goomba extends Enemy {
 			}
 		}
 	}
-	onSideTouchOtherEnemy(_world: World): void {
-		const pos = this.body.getPosition();
-		this.direction = this.sideTouched!;
-		pos.x += 0.05 * this.direction;
-	}
 	onStomp(world: World): void {
 		super.onStomp(world);
 		const player = world.entities.find((v) => v.id == this.stompID) as Player;

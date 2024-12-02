@@ -6,6 +6,8 @@ export class CampaignUi extends Screen {
 		text: "❤️3",
 		style: new TextStyle({
 			fontSize: 50,
+			dropShadow: true,
+			fill: "#DDDDDD",
 		}),
 	});
 	constructor() {
@@ -18,6 +20,7 @@ export class CampaignUi extends Screen {
 				content: {
 					liveCounter: {
 						content: this.livesText,
+						styles: {},
 					},
 				},
 				styles: {

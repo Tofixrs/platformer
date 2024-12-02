@@ -225,8 +225,8 @@ export class Player extends Entity {
 	update(dt: number, world: World): void {
 		super.update(dt, world);
 		this.followCam(world, dt);
-		this.handleMove(dt);
 		this.handleAnim();
+		this.handleMove(dt);
 
 		this.invTimer.tick(dt);
 	}
