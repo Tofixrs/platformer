@@ -1,4 +1,5 @@
 import { Flag } from "@gameObjs/flag";
+import { OneUp } from "@gameObjs/oneUp";
 import { deserializeWorld } from "@lib/serialize";
 import { GOID } from "gameObject";
 import { Graphics } from "graphics";
@@ -27,6 +28,11 @@ export class Level extends World {
 	}
 	update(dt: number): void {
 		super.update(dt);
+		this.entities
+			.filter((v) => v.goid == GOID.OneUp && (v as OneUp).collected)
+			.forEach((v) => {
+				this.removeEntity(v.id);
+			});
 		if (
 			this.entities.findIndex((v) => v.goid == GOID.Player) == -1 &&
 			!this.flag?.win

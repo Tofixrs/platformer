@@ -11,6 +11,7 @@ import { Rock } from "@gameObjs/rock";
 import { DeathPlane } from "@gameObjs/deathPlane";
 import { Flag } from "@gameObjs/flag";
 import { Paralax } from "@gameObjs/paralax";
+import { OneUp } from "@gameObjs/oneUp";
 
 export function getClassFromID(id: GameObjectID): typeof GameObject {
 	switch (id) {
@@ -61,6 +62,10 @@ export function getClassFromID(id: GameObjectID): typeof GameObject {
 		case GOID.Paralax: {
 			//@ts-expect-error
 			return Paralax;
+		}
+		case GOID.OneUp: {
+			//@ts-expect-error
+			return OneUp;
 		}
 	}
 }

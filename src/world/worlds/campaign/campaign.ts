@@ -7,6 +7,7 @@ import { World } from "world";
 import { WorldController } from "world/controller";
 import { CampaignUi } from "./ui";
 import { Rectangle } from "pixi.js";
+import { OneUp } from "@gameObjs/oneUp";
 
 const levels = await fetch("./levels/index.json")
 	.then((v) => v.json())
@@ -32,6 +33,12 @@ export class Campaign extends World {
 	update(dt: number): void {
 		super.update(dt);
 
+		this.entities
+			.filter((v) => v.goid == GOID.OneUp && (v as OneUp).collected)
+			.forEach((v) => {
+				this.lives += 1;
+				this.removeEntity(v.id);
+			});
 		if (
 			this.entities.findIndex((v) => v.goid == GOID.Player) == -1 &&
 			!this.flag?.win

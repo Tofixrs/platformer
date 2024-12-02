@@ -8,6 +8,8 @@ import { ObjectPlacer } from "./objectPlacer";
 import { meter } from "@lib/math/units";
 import { EditorUi } from "./ui";
 import { deserializeWorld, serializeWorld } from "@lib/serialize";
+import { GOID } from "gameObject";
+import { OneUp } from "@gameObjs/oneUp";
 
 export class Editor extends World {
 	screen: Rectangle = new Rectangle(0, 0);
@@ -40,6 +42,11 @@ export class Editor extends World {
 		}
 		if (this.testing) {
 			super.update(dt);
+			this.entities
+				.filter((v) => v.goid == GOID.OneUp && (v as OneUp).collected)
+				.forEach((v) => {
+					this.removeEntity(v.id);
+				});
 			return;
 		}
 		this.ui.onUpdate(dt);

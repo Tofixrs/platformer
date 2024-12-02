@@ -12,7 +12,8 @@
 		"title": {
 			"frame": { "x": 768, "y": 0, "w": 969, "h": 343 }
 		},
-		"deathPlane_pin": { "frame": { "x": 768, "y": 344, "w": 32, "h": 32 } }
+		"deathPlane_pin": { "frame": { "x": 768, "y": 344, "w": 32, "h": 32 } },
+		"paralax_pin": { "frame": { "x": 800, "y": 344, "w": 32, "h": 32 } }
 	},
 	"meta": {
 		"image": "ui.png",
