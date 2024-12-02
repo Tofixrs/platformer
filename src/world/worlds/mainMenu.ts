@@ -6,6 +6,7 @@ import { BigButton } from "@lib/ui/big_button";
 import { SmallButton } from "@lib/ui/small_button";
 import { WorldController } from "world/controller";
 import { Level } from "./level";
+import { Paralax } from "@gameObjs/paralax";
 
 export class MainMenu extends World {
 	layout: Layout;
@@ -13,13 +14,6 @@ export class MainMenu extends World {
 		super(graphics);
 		this.layout = new Layout({
 			content: [
-				{
-					content: Sprite.from("background"),
-					styles: {
-						position: "center",
-						zIndex: -999999999,
-					},
-				},
 				{
 					content: [
 						{
@@ -93,6 +87,7 @@ export class MainMenu extends World {
 		});
 		this.top.addChild(this.layout);
 		this.recenter(graphics.renderer.screen);
+		this.addEntity(new Paralax());
 	}
 	recenter(screen: Rectangle): void {
 		this.layout.resize(screen.width, screen.height);

@@ -23,10 +23,6 @@ export class Graphics<R extends Renderer = Renderer> {
 		return Promise.all([
 			Assets.load([
 				{
-					alias: "background",
-					src: "./assets/background.png",
-				},
-				{
 					alias: "window",
 					src: "./assets/ui/window.png",
 				},
