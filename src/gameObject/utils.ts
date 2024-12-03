@@ -12,6 +12,7 @@ import { DeathPlane } from "@gameObjs/deathPlane";
 import { Flag } from "@gameObjs/flag";
 import { Paralax } from "@gameObjs/paralax";
 import { OneUp } from "@gameObjs/oneUp";
+import { Coin } from "@gameObjs/coin";
 
 export function getClassFromID(id: GameObjectID): typeof GameObject {
 	switch (id) {
@@ -66,6 +67,10 @@ export function getClassFromID(id: GameObjectID): typeof GameObject {
 		case GOID.OneUp: {
 			//@ts-expect-error
 			return OneUp;
+		}
+		case GOID.Coin: {
+			//@ts-expect-error
+			return Coin;
 		}
 	}
 }

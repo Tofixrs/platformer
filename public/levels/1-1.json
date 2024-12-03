@@ -18,7 +18,7 @@
 	{ "_type": "brick", "data": { "pos": { "x": 20.5, "y": 1.25 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 18.5, "y": 1.25 }, "item": "goomba" }
+		"data": { "pos": { "x": 18.5, "y": 1.25 }, "item": "coin" }
 	},
 	{
 		"_type": "markBlock",
@@ -27,12 +27,12 @@
 	{ "_type": "brick", "data": { "pos": { "x": 21.5, "y": 1.25 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 22, "y": 1.25 }, "item": "goomba" }
+		"data": { "pos": { "x": 22, "y": 1.25 }, "item": "coin" }
 	},
 	{ "_type": "brick", "data": { "pos": { "x": 22.5, "y": 1.25 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 21.5, "y": -0.75 }, "item": "goomba" }
+		"data": { "pos": { "x": 21.5, "y": -0.75 }, "item": "coin" }
 	},
 	{
 		"_type": "goomba",
@@ -126,7 +126,7 @@
 	{ "_type": "brick", "data": { "pos": { "x": 57.5, "y": -0.75 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 58, "y": -0.75 }, "item": "goomba" }
+		"data": { "pos": { "x": 58, "y": -0.75 }, "item": "coin" }
 	},
 	{ "_type": "brick", "data": { "pos": { "x": 61, "y": 1.25 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 61.5, "y": 1.25 } } },
@@ -140,15 +140,15 @@
 	},
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 64, "y": 1.25 }, "item": "goomba" }
+		"data": { "pos": { "x": 64, "y": 1.25 }, "item": "coin" }
 	},
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 65.5, "y": 1.25 }, "item": "goomba" }
+		"data": { "pos": { "x": 65.5, "y": 1.25 }, "item": "coin" }
 	},
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 67, "y": 1.25 }, "item": "goomba" }
+		"data": { "pos": { "x": 67, "y": 1.25 }, "item": "coin" }
 	},
 	{
 		"_type": "markBlock",
@@ -165,11 +165,11 @@
 	{ "_type": "brick", "data": { "pos": { "x": 74.5, "y": -0.75 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 75, "y": -0.75 }, "item": "goomba" }
+		"data": { "pos": { "x": 75, "y": -0.75 }, "item": "coin" }
 	},
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 75.5, "y": -0.75 }, "item": "goomba" }
+		"data": { "pos": { "x": 75.5, "y": -0.75 }, "item": "coin" }
 	},
 	{ "_type": "brick", "data": { "pos": { "x": 76, "y": -0.75 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 75, "y": 1.25 } } },
@@ -406,7 +406,7 @@
 	{ "_type": "brick", "data": { "pos": { "x": 94.5, "y": 1.25 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 95, "y": 1.25 }, "item": "goomba" }
+		"data": { "pos": { "x": 95, "y": 1.25 }, "item": "coin" }
 	},
 	{ "_type": "brick", "data": { "pos": { "x": 95.5, "y": 1.25 } } },
 	{

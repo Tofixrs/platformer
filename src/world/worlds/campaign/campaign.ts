@@ -8,6 +8,7 @@ import { WorldController } from "world/controller";
 import { CampaignUi } from "./ui";
 import { Rectangle } from "pixi.js";
 import { OneUp } from "@gameObjs/oneUp";
+import { Coin } from "@gameObjs/coin";
 
 const levels = await fetch("./levels/index.json")
 	.then((v) => v.json())
@@ -23,6 +24,7 @@ export class Campaign extends World {
 	playerPState?: PState;
 	player?: Player;
 	_lives = 3;
+	_coins = 0;
 	ui = new CampaignUi();
 	constructor(graphics: Graphics, worldControllerRef: WorldController) {
 		super(graphics);
@@ -34,9 +36,18 @@ export class Campaign extends World {
 		super.update(dt);
 
 		this.entities
-			.filter((v) => v.goid == GOID.OneUp && (v as OneUp).collected)
+			.filter(
+				(v) =>
+					(v.goid == GOID.OneUp || v.goid == GOID.Coin) &&
+					(v as OneUp).collected,
+			)
 			.forEach((v) => {
-				this.lives += 1;
+				if (v instanceof OneUp) {
+					this.lives += 1;
+				}
+				if (v instanceof Coin) {
+					this.coins += 1;
+				}
 				this.removeEntity(v.id);
 			});
 		if (
@@ -72,6 +83,13 @@ export class Campaign extends World {
 	set lives(lives: number) {
 		this._lives = lives;
 		this.ui.lives = lives;
+	}
+	get coins() {
+		return this._coins;
+	}
+	set coins(coins: number) {
+		this._coins = coins;
+		this.ui.coins = coins;
 	}
 	won() {
 		this.worldControllerRef.set("mainMenu");

@@ -3,7 +3,15 @@ import { Text, TextStyle } from "pixi.js";
 
 export class CampaignUi extends Screen {
 	livesText = new Text({
-		text: "❤️3",
+		text: "❤️ 3",
+		style: new TextStyle({
+			fontSize: 50,
+			dropShadow: true,
+			fill: "#DDDDDD",
+		}),
+	});
+	coinsText = new Text({
+		text: "🪙 0",
 		style: new TextStyle({
 			fontSize: 50,
 			dropShadow: true,
@@ -20,18 +28,32 @@ export class CampaignUi extends Screen {
 				content: {
 					liveCounter: {
 						content: this.livesText,
-						styles: {},
+						styles: {
+							paddingLeft: 50,
+							paddingRight: 50,
+						},
+					},
+					coins: {
+						content: this.coinsText,
+						styles: {
+							paddingLeft: 50,
+							paddingRight: 50,
+						},
 					},
 				},
 				styles: {
 					position: "centerTop",
 					width: "100%",
 					maxHeight: "10%",
+					marginTop: 10,
 				},
 			},
 		});
 	}
 	set lives(lives: number) {
-		this.livesText.text = "❤️" + lives.toString();
+		this.livesText.text = "❤️ " + lives.toString();
+	}
+	set coins(coins: number) {
+		this.coinsText.text = "🪙 " + coins.toString();
 	}
 }

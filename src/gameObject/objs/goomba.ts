@@ -56,6 +56,18 @@ export class Goomba extends Enemy {
 		this.body.setLinearVelocity(
 			new Vec2(this.speed * this.direction, this.body.getLinearVelocity().y),
 		);
+
+		let touching = false;
+		for (let cList = this.body.getContactList(); cList; cList = cList!.next!) {
+			if (cList.contact.isTouching()) {
+				touching = true;
+				break;
+			}
+		}
+		if (!touching) {
+			this.touchedGroundsRight = ["hack", "hack"];
+			this.touchedGroundsLeft = ["hack", "hack"];
+		}
 	}
 	create(world: World): void {
 		super.create(world);

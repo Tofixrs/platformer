@@ -110,7 +110,7 @@ export class MarkBlock extends Block {
 			new Box(0, 0),
 			Vec2.zero(),
 			Vec2.zero(),
-			[],
+			[{ type: "number", name: "instant", value: "1" }],
 		);
 		world.addEntity(go);
 		this.item = undefined;

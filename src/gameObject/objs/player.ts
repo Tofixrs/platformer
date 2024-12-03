@@ -45,6 +45,7 @@ export class Player extends Entity {
 	divingDelay = new Timer(0.75);
 	actionStates: AState[] = [];
 	groundPoundHit = false;
+	dmg = false;
 	static maxInstances = 1;
 	jumpSound = new Howl({
 		src: ["./jump.mp3"],
@@ -197,8 +198,12 @@ export class Player extends Entity {
 		}
 	}
 	pausedUpdate(_dt: number, world: World): void {
-		if (this.currentAnim != "grow_anim" && this.currentAnim != "shrink_anim")
+		if (!this.dmg) return;
+		if (this.currentAnim != "grow_anim" && this.currentAnim != "shrink_anim") {
+			if (this.powerState > PowerState.Small) this.setAnim("grow_anim");
+			if (this.powerState < PowerState.Big) this.setAnim("shrink_anim");
 			return;
+		}
 		if (this.currentAnim == "grow_anim") {
 			if (this.anims[this.currentAnim].texture.label == "player_big_stand") {
 				this.anims[this.currentAnim].anchor.set(0.5, 0.5);
@@ -214,6 +219,7 @@ export class Player extends Entity {
 		}
 		if (!this.anims[this.currentAnim].playing) {
 			world.pause = false;
+			this.dmg = false;
 			this.anims[this.currentAnim].currentFrame = 0;
 			if (this.powerState > PowerState.Small) {
 				this.setAnim("big_walk");
@@ -550,6 +556,7 @@ export class Player extends Entity {
 		this.setBigHitbox(state >= PowerState.Big);
 		world.pause = pause;
 		if (pause) {
+			this.dmg = true;
 			if (this.powerState > PowerState.Small && state < PowerState.Big) {
 				this.setAnim("shrink_anim");
 				this.anims.shrink_anim.play();

@@ -29,7 +29,11 @@ export class Level extends World {
 	update(dt: number): void {
 		super.update(dt);
 		this.entities
-			.filter((v) => v.goid == GOID.OneUp && (v as OneUp).collected)
+			.filter(
+				(v) =>
+					(v.goid == GOID.OneUp || v.goid == GOID.Coin) &&
+					(v as OneUp).collected,
+			)
 			.forEach((v) => {
 				this.removeEntity(v.id);
 			});

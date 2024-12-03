@@ -80,6 +80,7 @@ export const GOID = {
 	Flag: "flag",
 	Paralax: "paralax",
 	OneUp: "1up",
+	Coin: "coin",
 } as const;
 
 type GOIOKeys = keyof typeof GOID;
