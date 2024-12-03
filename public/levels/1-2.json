@@ -28,19 +28,19 @@
 	},
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 18, "y": 7.75 }, "item": "goomba" }
+		"data": { "pos": { "x": 18, "y": 7.75 }, "item": "coin" }
 	},
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 18.5, "y": 7.75 }, "item": "goomba" }
+		"data": { "pos": { "x": 18.5, "y": 7.75 }, "item": "coin" }
 	},
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 19, "y": 7.75 }, "item": "goomba" }
+		"data": { "pos": { "x": 19, "y": 7.75 }, "item": "coin" }
 	},
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 19.5, "y": 7.75 }, "item": "goomba" }
+		"data": { "pos": { "x": 19.5, "y": 7.75 }, "item": "coin" }
 	},
 	{
 		"_type": "goomba",
