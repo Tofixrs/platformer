@@ -40,6 +40,7 @@ export class Graphics<R extends Renderer = Renderer> {
 			Assets.load("./assets/blocks/meta.json"),
 			Assets.load("./assets/flag/meta.json"),
 			Assets.load("./assets/backgrounds/normal/meta.json"),
+			Assets.load("./assets/backgrounds/cave/meta.json"),
 		]);
 	}
 	async setup() {

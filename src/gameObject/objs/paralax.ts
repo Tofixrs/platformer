@@ -20,8 +20,8 @@ export class Paralax extends GameObject {
 			fg: "normal_fg",
 		},
 		[Backgrounds.Cave]: {
-			bg: "normal_bg",
-			fg: "normal_fg",
+			bg: "cave_bg",
+			fg: "cave_fg",
 		},
 	};
 	static props: Property[] = [

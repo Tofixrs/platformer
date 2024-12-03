@@ -1,0 +1,16 @@
+{
+	"frames": {
+		"cave_bg": {
+			"frame": { "x": 0, "y": 0, "w": 1920, "h": 1080 }
+		}
+	},
+	"meta": {
+		"image": "cave.png",
+		"format": "RGBA8888",
+		"scale": 1,
+		"size": {
+			"w": 1920,
+			"h": 1080
+		}
+	}
+}

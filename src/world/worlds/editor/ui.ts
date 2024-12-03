@@ -73,19 +73,25 @@ export class EditorUi extends Screen {
 					right: {
 						content: [
 							{
-								content: new SmallButton("🔄", "Load level", () => this.switchLoad()),
+								content: new SmallButton("🔄", "Load level", () =>
+									this.switchLoad(),
+								),
 								styles: {
 									paddingLeft: 5,
 								},
 							},
 							{
-								content: new SmallButton("📋", "Copy Level data", () => this.copy()),
+								content: new SmallButton("📋", "Copy Level data", () =>
+									this.copy(),
+								),
 								styles: {
 									paddingLeft: 5,
 								},
 							},
 							{
-								content: new SmallButton("🗑️", "Remove game objects", () => this.switchErase()),
+								content: new SmallButton("🗑️", "Remove game objects", () =>
+									this.switchErase(),
+								),
 								styles: {
 									paddingLeft: 5,
 								},

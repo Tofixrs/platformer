@@ -1243,5 +1243,6 @@
 	{ "_type": "brick", "data": { "pos": { "x": 91.5, "y": 4.25 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 92, "y": 4.25 } } },
 	{ "_type": "flag", "data": { "x": 92, "y": 3 } },
-	{ "_type": "deathPlane", "data": { "pos": { "x": 47.75, "y": 14 } } }
+	{ "_type": "deathPlane", "data": { "pos": { "x": 47.75, "y": 14 } } },
+	{ "_type": "paralax", "data": 2 }
 ]
