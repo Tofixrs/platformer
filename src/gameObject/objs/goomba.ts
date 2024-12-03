@@ -6,7 +6,6 @@ import { AnimatedSprite, Texture } from "pixi.js";
 import { Box, Contact, Fixture, Shape, Vec2 } from "planck-js";
 import { World } from "world";
 import { Player } from "./player";
-import { Koopa } from "./koopa";
 
 export class Goomba extends Enemy {
 	rightEdgeSensor!: Fixture;

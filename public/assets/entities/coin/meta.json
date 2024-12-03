@@ -1,0 +1,19 @@
+{
+	"frames": {
+		"coin": {
+			"frame": { "x": 0, "y": 0, "w": 32, "h": 32 }
+		},
+		"coin_pin": {
+			"frame": { "x": 0, "y": 0, "w": 32, "h": 32 }
+		}
+	},
+	"meta": {
+		"image": "coin.png",
+		"format": "RGBA8888",
+		"scale": 1,
+		"size": {
+			"w": 32,
+			"h": 32
+		}
+	}
+}

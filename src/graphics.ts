@@ -34,6 +34,7 @@ export class Graphics<R extends Renderer = Renderer> {
 			Assets.load("./assets/entities/goomba/meta.json"),
 			Assets.load("./assets/entities/koopa/meta.json"),
 			Assets.load("./assets/entities/mushroom/meta.json"),
+			Assets.load("./assets/entities/coin/meta.json"),
 			Assets.load("./assets/ground/grass/meta.json"),
 			Assets.load("./assets/ui/meta.json"),
 			Assets.load("./assets/blocks/meta.json"),

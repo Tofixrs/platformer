@@ -5,9 +5,13 @@ import { Contact, Shape, Vec2 } from "planck-js";
 import { World } from "world";
 import { Entity } from "gameObject/types/entity";
 import { SerializedGO } from "@lib/serialize";
+import { planckToPixi } from "@lib/math/units";
 
 export class Coin extends Entity {
 	collected = false;
+	anim = false;
+	swapDirection = false;
+	defaultSpritePos: Vec2;
 	static props: Property[] = [
 		{ name: "instant", defaultValue: "0", type: "number" },
 	];
@@ -16,15 +20,16 @@ export class Coin extends Entity {
 		super({
 			pos,
 			shape: capsule(new Vec2(0.23, 0.23)),
-			density: 0.5,
-			friction: 1,
+			density: 0,
+			friction: 0,
 			goid: GOID.Coin,
-			sprite: Sprite.from("1up"),
-			bodyType: "dynamic",
+			sprite: Sprite.from("coin"),
+			bodyType: "static",
 			fixedRotation: true,
 		});
 		this.sprite.anchor.set(0.5, 0.5);
-		this.collected = instant;
+		this.anim = instant;
+		this.defaultSpritePos = planckToPixi(pos);
 	}
 	static commonConstructor(
 		pos: Vec2,
@@ -43,9 +48,24 @@ export class Coin extends Entity {
 			this.onBegin(contact);
 		});
 	}
-	update(dt: number, world: World): void {
-		super.update(dt, world);
-		if (this.collected) return;
+	update(dt: number, _world: World): void {
+		if (this.collected || this.anim) {
+			if (
+				this.sprite.y - this.defaultSpritePos.y < -16 &&
+				!this.swapDirection
+			) {
+				this.swapDirection = true;
+			}
+			this.sprite.y -= dt * 150 * (this.swapDirection ? -1 : 1);
+			if (this.sprite.y > this.defaultSpritePos.y) {
+				this.anim = false;
+				this.swapDirection = false;
+				this.sprite.x = this.defaultSpritePos.x;
+				this.sprite.y = this.defaultSpritePos.y;
+				this.collected = true;
+			}
+			return;
+		}
 		for (let cList = this.body.getContactList(); cList; cList = cList.next!) {
 			if (cList.contact.isTouching()) {
 				this.collected = true;
