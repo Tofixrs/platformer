@@ -31,6 +31,9 @@ export class Campaign extends World {
 		this.worldControllerRef = worldControllerRef;
 		this.top.addChild(this.ui);
 		this.recenter(graphics.renderer.screen);
+
+		this.ui.coins = this.coins;
+		this.ui.lives = this.lives;
 	}
 	update(dt: number): void {
 		super.update(dt);
@@ -50,6 +53,10 @@ export class Campaign extends World {
 				}
 				this.removeEntity(v.id);
 			});
+		if (this.coins >= 100) {
+			this.coins -= 100;
+			this.lives += 1;
+		}
 		if (
 			this.entities.findIndex((v) => v.goid == GOID.Player) == -1 &&
 			!this.flag?.win
