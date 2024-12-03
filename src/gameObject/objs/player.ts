@@ -265,6 +265,7 @@ export class Player extends Entity {
 	}
 	handleWalk(dt: number) {
 		if (this.actionStates.includes(ActionState.Locked)) return;
+		if (this.actionStates.includes(ActionState.Crouch) && this.onGround) return;
 		const shouldWalk = Actions.hold("left") || Actions.hold("right");
 		const shouldRun = shouldWalk && Actions.hold("run");
 		this.checkActionState(ActionState.Run, shouldRun);

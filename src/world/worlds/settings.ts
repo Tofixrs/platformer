@@ -5,14 +5,16 @@ import { Button } from "@ui/button";
 import { Vec2 } from "planck-js";
 import { Actions } from "@lib/input";
 import { Graphics } from "graphics";
-import { Layout } from "@pixi/layout";
+import { Content, Layout } from "@pixi/layout";
 import { BigButton } from "@lib/ui/big_button";
 import { SmallButton } from "@lib/ui/small_button";
 import { WorldController } from "world/controller";
 import { Storage } from "@lib/storage";
+import { Window } from "@lib/ui/Window"
+import i18next from "i18next";
 
 export class Settings extends World {
-	public tabs: Map<string, Tab> = new Map();
+	public tabs: Map<string, Window<any>> = new Map();
 	public currentTab = "";
 	layout: Layout;
 	tabContainer: Container = new Container();
@@ -20,9 +22,9 @@ export class Settings extends World {
 		super(graphics);
 		this.main.x = 0;
 		this.main.y = 0;
-		const audio = new BigButton("Audio", () => this.changeTab("audio"));
-		const bindBtn = new BigButton("binds", () => this.changeTab("bind"));
-		const close = new SmallButton("❌", () => worldController.set("mainMenu"));
+		const audio = new BigButton("Audio", "", () => this.changeTab("audio"));
+		const bindBtn = new BigButton("binds", "", () => this.changeTab("bind"));
+		const close = new SmallButton("❌", "Close", () => worldController.set("mainMenu"));
 		const tabBtns = [audio, bindBtn];
 
 		this.layout = new Layout({
@@ -58,6 +60,9 @@ export class Settings extends World {
 					id: "lContent",
 					styles: {
 						position: "center",
+						width: "100%",
+						height: "100%",
+						marginTop: 50,
 					},
 					content: this.tabContainer,
 				},
@@ -78,41 +83,30 @@ export class Settings extends World {
 	}
 	changeTab(name: string) {
 		if (this.tabs.get(this.currentTab)) {
-			this.tabContainer.removeChild(this.tabs.get(this.currentTab)!.c);
+			this.tabContainer.removeChild(this.tabs.get(this.currentTab)!);
 		}
 		this.currentTab = name;
 		if (this.tabs.get(this.currentTab)) {
-			this.tabContainer.addChild(this.tabs.get(this.currentTab)!.c);
+			this.tabContainer.addChild(this.tabs.get(this.currentTab)!);
 		}
 	}
 	recenter(screen: Rectangle): void {
-		this.tabs.forEach((v) => v.recenter(screen));
+		this.tabs.forEach(v => v.resize(screen.width, screen.height))
 		this.layout.resize(screen.width, screen.height);
 	}
 }
 
-class Tab {
-	c: Container = new Container();
-	recenter(_screen: Rectangle) {}
-}
 
-class BindTab extends Tab {
-	public scrollbox: ScrollBox = new ScrollBox({
-		height: 800,
-		width: 1000,
-		topPadding: 10,
-		elementsMargin: 50,
-		type: "vertical",
-		items: [...this.createKeys()],
-	});
-
+class BindTab extends Window<undefined> {
+	public scrollbox!: ScrollBox
 	public reboundAction = "";
 	public reboundKey = "";
 	public rebinding = false;
 	constructor() {
-		super();
+		super({
+			title: "Binds",
+		});
 
-		this.c.addChild(this.scrollbox);
 		window.addEventListener("keydown", (v) => {
 			if (!this.rebinding) return;
 
@@ -128,12 +122,32 @@ class BindTab extends Tab {
 			this.scrollbox.addItems(this.createKeys());
 		});
 	}
+	createContent(_data: undefined): Content {
+		this.scrollbox = new ScrollBox({
+			width: 850,
+			height: 700,
+			horPadding: 60,
+			elementsMargin: 20,
+			type: "vertical",
+			items: [...this.createKeys()],
+		});
+
+		return {
+			content: this.scrollbox,
+			styles: {
+				position: "centerTop",
+				maxWidth: "80%",
+				marginTop: 80,
+			},
+		};
+	}
+
 	createKeys() {
 		const bindContainers: Container[] = [];
 		Actions.actions.forEach((_, action) => {
 			const keys: string[] = [];
 			const container = new Container();
-			const text = new Text({ text: action });
+			const text = new Text({ text: i18next.t(action) });
 			container.addChild(text);
 
 			Actions.inputs.forEach((v, k) => {
@@ -141,8 +155,10 @@ class BindTab extends Tab {
 			});
 			let x = 500;
 			keys.forEach((v) => {
+				const txt = i18next.t(v);
 				const button = Button({
-					content: v,
+					content:
+						txt.replace(txt[0], txt[0].toLocaleUpperCase()),
 					size: new Vec2(150, 50),
 					fontSize: 20,
 				});
@@ -175,18 +191,23 @@ class BindTab extends Tab {
 		this.reboundAction = action;
 		this.reboundKey = key;
 	}
-	recenter(_screen: Rectangle) {}
 }
 
-class AudioTab extends Tab {
+class AudioTab extends Window<number> {
 	constructor() {
-		super();
 		const volume = Storage.getNum("volume", Howler.volume() * 100);
 		Howler.volume(volume / 100);
+		super({
+			title: "audio",
+			data: volume,
+		});
+
+	}
+	createContent(data: number): Content {
 		const masterAudioSlider = new Slider({
 			min: 0,
 			max: 100,
-			value: volume,
+			value: data,
 			slider: "player_small_stand",
 			bg: "big_button",
 			fill: "player_big_stand",
@@ -195,8 +216,9 @@ class AudioTab extends Tab {
 			Howler.volume(v / 100);
 			localStorage.setItem("volume", v.toString());
 		});
-
-		this.c.addChild(masterAudioSlider);
+		return {
+			content: masterAudioSlider
+		};
 	}
-	recenter(_screen: Rectangle) {}
+	recenter(_screen: Rectangle) { }
 }

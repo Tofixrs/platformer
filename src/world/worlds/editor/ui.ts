@@ -27,11 +27,28 @@ export class EditorUi extends Screen {
 		this.worldRef = editor;
 	}
 	public addTop() {
+		const hover = new Text({
+			text: "More game objects",
+			style: {
+				align: "center",
+				fontSize: 50,
+			},
+		});
+		hover.visible = false;
 		const pinWindowButton = new FancyButton({
 			defaultView: "small_button",
 			text: "⬇️",
 			defaultTextScale: 5,
 		});
+		pinWindowButton.addChild(hover);
+		pinWindowButton.addEventListener("pointerover", () => {
+			hover.visible = true;
+		});
+		pinWindowButton.addEventListener("pointerout", () => {
+			hover.visible = false;
+		});
+		hover.y += 275;
+		hover.x += 30;
 		pinWindowButton.addEventListener("pointerdown", () =>
 			this.switchPinWindow(),
 		);
@@ -56,19 +73,19 @@ export class EditorUi extends Screen {
 					right: {
 						content: [
 							{
-								content: new SmallButton("🔄", () => this.switchLoad()),
+								content: new SmallButton("🔄", "Load level", () => this.switchLoad()),
 								styles: {
 									paddingLeft: 5,
 								},
 							},
 							{
-								content: new SmallButton("📋", () => this.copy()),
+								content: new SmallButton("📋", "Copy Level data", () => this.copy()),
 								styles: {
 									paddingLeft: 5,
 								},
 							},
 							{
-								content: new SmallButton("🗑️", () => this.switchErase()),
+								content: new SmallButton("🗑️", "Remove game objects", () => this.switchErase()),
 								styles: {
 									paddingLeft: 5,
 								},

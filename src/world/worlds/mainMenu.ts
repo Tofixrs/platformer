@@ -25,7 +25,7 @@ export class MainMenu extends World {
 							},
 						},
 						{
-							content: new BigButton("Play", () => {
+							content: new BigButton("Play", "", () => {
 								if (localStorage.getItem("win") == "true") {
 									worldController.set("levelSelect");
 								} else {
@@ -44,7 +44,7 @@ export class MainMenu extends World {
 				{
 					content: [
 						{
-							content: new SmallButton("⚙️", () =>
+							content: new SmallButton("⚙️", "Settings", () =>
 								worldController.set("settings"),
 							),
 							styles: {
@@ -52,7 +52,7 @@ export class MainMenu extends World {
 							},
 						},
 						{
-							content: new SmallButton("▶️", () => {
+							content: new SmallButton("▶️", "Load level", () => {
 								navigator.clipboard.readText().then((v) => {
 									const level = new Level(graphics, v, worldController);
 									worldController.add("level", level);
@@ -64,7 +64,7 @@ export class MainMenu extends World {
 							},
 						},
 						{
-							content: new SmallButton("🔧", () =>
+							content: new SmallButton("🔧", "Settings", () =>
 								worldController.set("editor"),
 							),
 							styles: {

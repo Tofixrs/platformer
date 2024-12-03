@@ -46,12 +46,12 @@ export class LevelWindow extends Window<undefined> {
 		for (let i = 0; i < levelData.amtToDisplay; i++) {
 			if (levelData.levels[i]) {
 				sprites.push(
-					new SmallButton(levelData.levels[i].name, () =>
+					new SmallButton(levelData.levels[i].name, "", () =>
 						this.worldController.set(levelData.levels[i].name),
 					),
 				);
 			} else {
-				sprites.push(new SmallButton("🔒", () => {}));
+				sprites.push(new SmallButton("🔒", "Locked", () => {}));
 			}
 		}
 		return sprites;

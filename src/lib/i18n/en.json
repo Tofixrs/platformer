@@ -1,0 +1,19 @@
+{
+	"groundpound": "Ground Pound",
+	"jump": "Jump",
+	"crouch": "Crouch",
+	"left": "Left",
+	"right": "Right",
+	"roll": "Roll",
+	"longjump": "Long Jump",
+	"dive": "Dive",
+	"back": "Go back",
+	"test": "Test level",
+	"run": "Sprint",
+	"debug": "Debug",
+	"arrowup": "⬆️",
+	"arrowdown": "⬇️",
+	"arrowleft": "⬅️",
+	"arrowright": "⬇️",
+	"escape": "Esc"
+}
