@@ -1,5 +1,5 @@
 import { SmallButton } from "@lib/ui/small_button";
-import { Content, Layout } from "@pixi/layout";
+import { Content } from "@pixi/layout";
 import { FancyButton, Input, ScrollBox } from "@pixi/ui";
 import { Screen } from "@ui/screen";
 import { GameObjectID, GOID, PropertyValue, PropType } from "gameObject";

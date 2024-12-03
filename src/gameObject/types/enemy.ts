@@ -170,7 +170,7 @@ export class Enemy extends Entity {
 	onSideTouch(world: World) {
 		world.removeEntity(this.sideTouchID!);
 	}
-	onSideTouchOtherEnemy(world: World) {
+	onSideTouchOtherEnemy(_world: World) {
 		const pos = this.body.getPosition();
 		this.direction = this.sideTouched!;
 		pos.x += 0.05 * this.direction;

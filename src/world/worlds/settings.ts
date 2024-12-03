@@ -1,6 +1,6 @@
 import { Container, Rectangle, Text } from "pixi.js";
 import { World } from "..";
-import { ScrollBox } from "@pixi/ui";
+import { ScrollBox, Slider } from "@pixi/ui";
 import { Button } from "@ui/button";
 import { Vec2 } from "planck-js";
 import { Actions } from "@lib/input";
@@ -9,6 +9,7 @@ import { Layout } from "@pixi/layout";
 import { BigButton } from "@lib/ui/big_button";
 import { SmallButton } from "@lib/ui/small_button";
 import { WorldController } from "world/controller";
+import { Storage } from "@lib/storage";
 
 export class Settings extends World {
 	public tabs: Map<string, Tab> = new Map();
@@ -67,8 +68,10 @@ export class Settings extends World {
 			},
 		});
 		const bindTab = new BindTab();
+		const audioTab = new AudioTab();
 
 		this.tabs.set("bind", bindTab);
+		this.tabs.set("audio", audioTab);
 		this.changeTab("bind");
 		this.main.addChild(this.layout);
 		this.recenter(graphics.renderer.screen);
@@ -171,6 +174,29 @@ class BindTab extends Tab {
 		this.rebinding = true;
 		this.reboundAction = action;
 		this.reboundKey = key;
+	}
+	recenter(_screen: Rectangle) {}
+}
+
+class AudioTab extends Tab {
+	constructor() {
+		super();
+		const volume = Storage.getNum("volume", Howler.volume() * 100);
+		Howler.volume(volume / 100);
+		const masterAudioSlider = new Slider({
+			min: 0,
+			max: 100,
+			value: volume,
+			slider: "player_small_stand",
+			bg: "big_button",
+			fill: "player_big_stand",
+		});
+		masterAudioSlider.onChange.connect((v) => {
+			Howler.volume(v / 100);
+			localStorage.setItem("volume", v.toString());
+		});
+
+		this.c.addChild(masterAudioSlider);
 	}
 	recenter(_screen: Rectangle) {}
 }

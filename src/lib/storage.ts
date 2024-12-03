@@ -20,4 +20,14 @@ export class Storage {
 	static saveObj(name: string, obj: any) {
 		localStorage.setItem(name, JSON.stringify(obj));
 	}
+	static getNum(name: string, def: number) {
+		const item = localStorage.getItem(name);
+		if (!item) {
+			return def;
+		}
+		return Number(item);
+	}
+	static exists(name: string) {
+		return localStorage.getItem(name) == null;
+	}
 }
