@@ -27,7 +27,7 @@ export class MainMenu extends World {
 							},
 						},
 						{
-							content: new BigButton("Play", "", () => {
+							content: new BigButton(i18next.t("play"), "", () => {
 								if (localStorage.getItem("win") == "true") {
 									worldController.set("levelSelect");
 								} else {

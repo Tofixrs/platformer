@@ -35,5 +35,8 @@
 	"flag": "Flag",
 	"coin": "Coin",
 	"1up": "One Up",
-	"paralax": "Paralax background"
+	"paralax": "Paralax background",
+	"play": "Play",
+	"levels": "Levels",
+	"locked": "Locked"
 }

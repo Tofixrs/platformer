@@ -5,6 +5,7 @@ import { Container, ContainerChild } from "pixi.js";
 import { WorldController } from "world/controller";
 import { Levels } from "./levelSelect";
 import { SmallButton } from "@lib/ui/small_button";
+import i18next from "i18next";
 
 const levelData: Levels = await fetch("./levels/index.json").then((v) =>
 	v.json(),
@@ -14,7 +15,7 @@ export class LevelWindow extends Window<Container> {
 	top: Container;
 	constructor(worldController: WorldController, top: Container) {
 		super({
-			title: "levels",
+			title: i18next.t("levels"),
 			data: top,
 		});
 		this.worldController = worldController;
@@ -61,7 +62,7 @@ export class LevelWindow extends Window<Container> {
 				sprites.push(
 					new SmallButton({
 						text: "🔒",
-						hoverText: "Locked",
+						hoverText: i18next.t("locked"),
 						hoverContainer: this.top,
 					}),
 				);
