@@ -164,7 +164,7 @@ class BindTab extends Window<undefined> {
 			keys.forEach((v) => {
 				const txt = i18next.t(v);
 				const button = Button({
-					content: txt.replace(txt[0], txt[0].toLocaleUpperCase()),
+					content: txt.replace(txt[0], txt[0]?.toLocaleUpperCase()),
 					size: new Vec2(150, 50),
 					fontSize: 20,
 				});
