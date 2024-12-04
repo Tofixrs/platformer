@@ -8,6 +8,7 @@ import { Level } from "./level";
 import { Paralax } from "@gameObjs/paralax";
 import { SmallButton } from "@lib/ui/small_button";
 import i18next from "i18next";
+import { GOID } from "gameObject";
 
 export class MainMenu extends World {
 	layout: Layout;
@@ -107,6 +108,17 @@ export class MainMenu extends World {
 		this.top.addChild(this.layout);
 		this.recenter(graphics.renderer.screen);
 		this.addEntity(new Paralax());
+	}
+	//hack lol
+	onSet(): void {
+		const paralax = this.entities.find(
+			(v) => v.goid == GOID.Paralax,
+		) as Paralax;
+		paralax.fg.anchor.x = 1;
+		paralax.bg.anchor.x = 1;
+
+		paralax.fg.anchor.x = 0;
+		paralax.bg.anchor.x = 0;
 	}
 	recenter(screen: Rectangle): void {
 		this.layout.resize(screen.width, screen.height);

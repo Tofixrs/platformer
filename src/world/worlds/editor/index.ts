@@ -10,6 +10,7 @@ import { EditorUi } from "./ui";
 import { deserializeWorld, serializeWorld } from "@lib/serialize";
 import { GOID } from "gameObject";
 import { OneUp } from "@gameObjs/oneUp";
+import { WorldController } from "world/controller";
 
 export class Editor extends World {
 	screen: Rectangle = new Rectangle(0, 0);
@@ -17,13 +18,14 @@ export class Editor extends World {
 	lastTime = 0;
 	moveSpeed = 500;
 	testing = false;
-	ui: EditorUi = new EditorUi(this);
 	rerender = false;
 	grid: Grid;
 	objectPlacer: ObjectPlacer = new ObjectPlacer(this);
 	editorCamPos = new Vec2();
 	data = "";
-	constructor(graphics: Graphics) {
+	worldControllerRef: WorldController;
+	ui: EditorUi;
+	constructor(graphics: Graphics, worldControllerRef: WorldController) {
 		super(graphics);
 		this.main.x = 0;
 		this.main.y = 0;
@@ -31,7 +33,8 @@ export class Editor extends World {
 			new Vec2(this.main.pivot.x, this.main.pivot.y),
 			graphics.renderer.screen,
 		);
-
+		this.worldControllerRef = worldControllerRef;
+		this.ui = new EditorUi(this);
 		this.top.addChild(this.ui);
 		this.main.addChild(this.grid.draw);
 		this.recenter(graphics.renderer.screen);

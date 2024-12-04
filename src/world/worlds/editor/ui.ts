@@ -1,5 +1,5 @@
 import { Content } from "@pixi/layout";
-import { FancyButton, Input, ScrollBox } from "@pixi/ui";
+import { Input, ScrollBox } from "@pixi/ui";
 import { Screen } from "@ui/screen";
 import { GameObjectID, GOID, PropertyValue, PropType } from "gameObject";
 import { Sprite, Text, Texture } from "pixi.js";
@@ -22,10 +22,10 @@ export class EditorUi extends Screen {
 	pinWindow = new PinWindow(this);
 	constructor(editor: Editor) {
 		super("Editor");
+		this.worldRef = editor;
 		this.addTop();
 		this.addProps();
 		this.addPinWindow();
-		this.worldRef = editor;
 	}
 	public addTop() {
 		this.addContent({
@@ -100,6 +100,20 @@ export class EditorUi extends Screen {
 									paddingLeft: 5,
 								},
 							},
+							{
+								content: new SmallButton({
+									text: "❌",
+									hoverText: i18next.t("back"),
+									hoverContainer: this,
+									onClick: (self) => {
+										self.hover.visible = false;
+										this.worldRef.worldControllerRef.set("mainMenu");
+									},
+								}),
+								styles: {
+									paddingLeft: 5,
+								},
+							},
 						],
 						styles: {
 							position: "right",
@@ -110,8 +124,10 @@ export class EditorUi extends Screen {
 				styles: {
 					position: "centerTop",
 					width: "100%",
-					maxHeight: "30%",
+					maxHeight: "10%",
 					marginTop: 5,
+					marginRight: 5,
+					marginLeft: 5,
 				},
 			},
 		});
@@ -349,6 +365,7 @@ class PinWindow extends Window<{
 				defaultView: "editor_pin",
 				onClick: (self) => {
 					self.hover.visible = false;
+					self.setActive(true);
 					this.selectedPin = i;
 				},
 			});
@@ -403,6 +420,7 @@ class PinWindow extends Window<{
 			this._topPinned[this.selectedPin!] + "_pin",
 		);
 
+		p2Btn.setActive(false);
 		pBtn.hoverText.text = i18next.t(this._topPinned[this.selectedPin!]);
 		p2Btn.hoverText.text = i18next.t(this._topPinned[this.selectedPin!]);
 		(p2Btn.iconView as Sprite).texture = Texture.from(

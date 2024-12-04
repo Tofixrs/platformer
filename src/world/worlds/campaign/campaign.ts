@@ -65,6 +65,7 @@ export class Campaign extends World {
 			this.lives--;
 			if (this.lives < 1) {
 				this.worldControllerRef.set("mainMenu");
+				this.reset();
 				return;
 			}
 			this.load();
@@ -75,6 +76,12 @@ export class Campaign extends World {
 
 		this.currLevel += 1;
 		this.load();
+	}
+	reset() {
+		this.playerPState = undefined;
+		this.load();
+		this.lives = 3;
+		this.coins = 0;
 	}
 	onSet(): void {
 		this.lives = 3;
@@ -101,6 +108,9 @@ export class Campaign extends World {
 	won() {
 		this.worldControllerRef.set("mainMenu");
 		localStorage.setItem("win", "true");
+		this.playerPState = undefined;
+		this.lives = 3;
+		this.coins = 0;
 	}
 	load() {
 		if (!this.levels[this.currLevel]) {

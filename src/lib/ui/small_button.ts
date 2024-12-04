@@ -1,43 +1,10 @@
 import { FancyButton } from "@pixi/ui";
 import { Container, Text, TextStyle } from "pixi.js";
-// export class SmallButton extends FancyButton {
-// 	constructor(text: string, hoverText: string, onclick: () => void) {
-// 		const hover = new Text({
-// 			text: hoverText,
-// 			style: {
-// 				align: "center",
-// 				fontSize: 50,
-// 			},
-// 		});
-// 		hover.visible = false;
-// 		super({
-// 			defaultView: "small_button",
-// 			scale: 0.33,
-// 			text: new Text({
-// 				text,
-// 				style: {
-// 					fill: "white",
-// 					fontSize: 150,
-// 				},
-// 			}),
-// 		});
-// 		this.addChild(hover);
-// 		this.addEventListener("pointerover", () => {
-// 			hover.visible = true;
-// 		});
-// 		this.addEventListener("pointerout", () => {
-// 			hover.visible = false;
-// 		});
-// 		hover.y += 275;
-// 		hover.x += 30;
-//
-// 		super.addEventListener("pointerdown", onclick);
-// 	}
-// }
 
 export class SmallButton extends FancyButton {
 	hover = new Container({ zIndex: 2137 });
 	hoverText: Text;
+	forceActive = false;
 	constructor({
 		textStyle,
 		text,
@@ -64,6 +31,7 @@ export class SmallButton extends FancyButton {
 		super({
 			defaultView: defaultView || "small_button",
 			hoverView: hoverView === undefined ? "small_button_hover" : undefined,
+			pressedView: "small_button_hover",
 			scale: scale || 0.33,
 			icon,
 			defaultIconScale,
@@ -98,5 +66,21 @@ export class SmallButton extends FancyButton {
 			this.hover.x = e.x;
 			this.hover.y = e.y + 20;
 		});
+	}
+	setActive(yes: boolean) {
+		if (yes) {
+			this.setState("pressed");
+			this.forceActive = true;
+		} else {
+			this.forceActive = false;
+			this.setState("default");
+		}
+	}
+	setState(
+		newState: "default" | "hover" | "pressed" | "disabled",
+		force?: boolean,
+	): void {
+		if (this.forceActive) return;
+		super.setState(newState, force);
 	}
 }

@@ -43,7 +43,7 @@ export class Game {
 		const world = new Level(this.graphics, levelData, this.worldController);
 		this.worldController.add("game", world);
 
-		const editor = new Editor(this.graphics);
+		const editor = new Editor(this.graphics, this.worldController);
 		this.worldController.add("editor", editor);
 
 		this.worldController.set("mainMenu");
