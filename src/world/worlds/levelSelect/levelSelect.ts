@@ -25,7 +25,7 @@ export class LevelSelect extends World {
 					);
 				});
 		}
-		this.ui = new LevelWindow(worldController);
+		this.ui = new LevelWindow(worldController, this.top);
 
 		this.top.addChild(this.ui);
 		this.recenter(graphics.renderer.screen);

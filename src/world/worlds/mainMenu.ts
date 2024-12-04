@@ -3,10 +3,11 @@ import { World } from "..";
 import { Graphics } from "graphics";
 import { Layout } from "@pixi/layout";
 import { BigButton } from "@lib/ui/big_button";
-import { SmallButton } from "@lib/ui/small_button";
 import { WorldController } from "world/controller";
 import { Level } from "./level";
 import { Paralax } from "@gameObjs/paralax";
+import { SmallButton } from "@lib/ui/small_button";
+import i18next from "i18next";
 
 export class MainMenu extends World {
 	layout: Layout;
@@ -44,29 +45,47 @@ export class MainMenu extends World {
 				{
 					content: [
 						{
-							content: new SmallButton("⚙️", "Settings", () =>
-								worldController.set("settings"),
-							),
-							styles: {
-								marginRight: 5,
-							},
-						},
-						{
-							content: new SmallButton("▶️", "Load level", () => {
-								navigator.clipboard.readText().then((v) => {
-									const level = new Level(graphics, v, worldController);
-									worldController.add("level", level);
-									worldController.set("level");
-								});
+							content: new SmallButton({
+								text: "⚙️",
+								hoverText: i18next.t("settings"),
+								hoverContainer: this.top,
+								onClick(self) {
+									self.hover.visible = false;
+									worldController.set("settings");
+								},
 							}),
 							styles: {
 								marginRight: 5,
 							},
 						},
 						{
-							content: new SmallButton("🔧", "Settings", () =>
-								worldController.set("editor"),
-							),
+							content: new SmallButton({
+								text: "▶️",
+								hoverText: i18next.t("levelLoad"),
+								hoverContainer: this.top,
+								onClick: (self) => {
+									navigator.clipboard.readText().then((v) => {
+										const level = new Level(graphics, v, worldController);
+										worldController.add("level", level);
+										worldController.set("level");
+										self.hover.visible = false;
+									});
+								},
+							}),
+							styles: {
+								marginRight: 5,
+							},
+						},
+						{
+							content: new SmallButton({
+								text: "🔧",
+								hoverText: i18next.t("editor"),
+								hoverContainer: this.top,
+								onClick(self) {
+									self.hover.visible = false;
+									worldController.set("editor");
+								},
+							}),
 							styles: {
 								marginRight: 5,
 							},

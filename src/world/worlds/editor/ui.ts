@@ -1,4 +1,3 @@
-import { SmallButton } from "@lib/ui/small_button";
 import { Content } from "@pixi/layout";
 import { FancyButton, Input, ScrollBox } from "@pixi/ui";
 import { Screen } from "@ui/screen";
@@ -8,6 +7,8 @@ import { Editor } from ".";
 import { getClassFromID } from "gameObject/utils";
 import { Storage } from "@lib/storage";
 import { Window } from "@lib/ui/Window";
+import { SmallButton } from "@lib/ui/small_button";
+import i18next from "i18next";
 
 export class EditorUi extends Screen {
 	selected?: GameObjectID;
@@ -27,31 +28,6 @@ export class EditorUi extends Screen {
 		this.worldRef = editor;
 	}
 	public addTop() {
-		const hover = new Text({
-			text: "More game objects",
-			style: {
-				align: "center",
-				fontSize: 50,
-			},
-		});
-		hover.visible = false;
-		const pinWindowButton = new FancyButton({
-			defaultView: "small_button",
-			text: "⬇️",
-			defaultTextScale: 5,
-		});
-		pinWindowButton.addChild(hover);
-		pinWindowButton.addEventListener("pointerover", () => {
-			hover.visible = true;
-		});
-		pinWindowButton.addEventListener("pointerout", () => {
-			hover.visible = false;
-		});
-		hover.y += 275;
-		hover.x += 30;
-		pinWindowButton.addEventListener("pointerdown", () =>
-			this.switchPinWindow(),
-		);
 		this.addContent({
 			top: {
 				content: {
@@ -59,7 +35,15 @@ export class EditorUi extends Screen {
 						content: [
 							...this.pins,
 							{
-								content: pinWindowButton,
+								content: new SmallButton({
+									text: "⬇️",
+									hoverText: i18next.t("moreGOS"),
+									hoverContainer: this,
+									onClick: (self) => {
+										self.hover.visible = false;
+										this.switchPinWindow();
+									},
+								}),
 								styles: {
 									paddingRight: 15,
 								},
@@ -73,25 +57,45 @@ export class EditorUi extends Screen {
 					right: {
 						content: [
 							{
-								content: new SmallButton("🔄", "Load level", () =>
-									this.switchLoad(),
-								),
+								content: new SmallButton({
+									text: "🔄",
+									hoverText: i18next.t("levelLoad"),
+									hoverContainer: this,
+									onClick: (self) => {
+										self.hover.visible = false;
+										this.switchLoad();
+									},
+								}),
 								styles: {
 									paddingLeft: 5,
 								},
 							},
 							{
-								content: new SmallButton("📋", "Copy Level data", () =>
-									this.copy(),
-								),
+								content: new SmallButton({
+									text: "📋",
+									hoverText: i18next.t("copyLevel"),
+									hoverContainer: this,
+									onClick: (self) => {
+										this.copy();
+										self.hoverText.text = "Copied!";
+										setTimeout(() => {
+											self.hoverText.text = "Copy level data";
+										}, 2000);
+									},
+								}),
 								styles: {
 									paddingLeft: 5,
 								},
 							},
 							{
-								content: new SmallButton("🗑️", "Remove game objects", () =>
-									this.switchErase(),
-								),
+								content: new SmallButton({
+									text: "🗑️",
+									hoverText: i18next.t("erase"),
+									hoverContainer: this,
+									onClick: () => {
+										this.switchErase();
+									},
+								}),
 								styles: {
 									paddingLeft: 5,
 								},
@@ -254,10 +258,13 @@ export class EditorUi extends Screen {
 			const icon = this.pinWindow.topPinned[i]
 				? Sprite.from(this.pinWindow.topPinned[i] + "_pin")
 				: undefined;
-			const btn = new FancyButton({
+			const btn = new SmallButton({
 				defaultView: "editor_pin",
+				hoverView: null,
 				icon,
 				defaultIconScale: 5,
+				hoverText: i18next.t(this.pinWindow.topPinned[i]),
+				hoverContainer: this,
 			});
 			btn.onPress.connect(() =>
 				this.onSelectedPin(this.pinWindow.topPinned[i]),
@@ -274,7 +281,10 @@ export class EditorUi extends Screen {
 	}
 }
 
-class PinWindow extends Window<GameObjectID[]> {
+class PinWindow extends Window<{
+	pins: GameObjectID[];
+	editorUiRef: EditorUi;
+}> {
 	private _topPinned: GameObjectID[];
 	private editorUiRef: EditorUi;
 	private selectedPin?: number;
@@ -292,11 +302,14 @@ class PinWindow extends Window<GameObjectID[]> {
 			GOID.DeathPlane,
 		]);
 
-		super({ title: "pins", data: topPinned });
+		super({ title: "pins", data: { pins: topPinned, editorUiRef } });
 		this._topPinned = topPinned;
 		this.editorUiRef = editorUiRef;
 	}
-	createContent(data: GameObjectID[]): Content {
+	createContent(data: {
+		pins: GameObjectID[];
+		editorUiRef: EditorUi;
+	}): Content {
 		return {
 			levels: {
 				content: new ScrollBox({
@@ -305,7 +318,7 @@ class PinWindow extends Window<GameObjectID[]> {
 					radius: 70,
 					horPadding: 60,
 					elementsMargin: 20,
-					items: this.objs,
+					items: this.objs(data.editorUiRef),
 				}),
 				styles: {
 					position: "center",
@@ -320,23 +333,24 @@ class PinWindow extends Window<GameObjectID[]> {
 					marginTop: 80,
 				},
 			},
-			styles: {
-				position: "center",
-			},
 		};
 	}
-	pins(pin: GameObjectID[]) {
+	pins(pin: { pins: GameObjectID[]; editorUiRef: EditorUi }) {
 		const pins: Content = [];
 		const amt = 10;
 		for (let i = 0; i < amt; i++) {
-			const icon = Sprite.from(pin[i] + "_pin");
-			const btn = new FancyButton({
-				defaultView: "editor_pin",
+			const icon = Sprite.from(pin.pins[i] + "_pin");
+			const btn = new SmallButton({
 				icon,
 				defaultIconScale: 5,
-			});
-			btn.addEventListener("pointerdown", () => {
-				this.selectedPin = i;
+				hoverText: i18next.t(pin.pins[i]),
+				hoverContainer: pin.editorUiRef,
+				hoverView: null,
+				defaultView: "editor_pin",
+				onClick: (self) => {
+					self.hover.visible = false;
+					this.selectedPin = i;
+				},
 			});
 			pins.push({
 				content: btn,
@@ -347,26 +361,30 @@ class PinWindow extends Window<GameObjectID[]> {
 		}
 		return pins;
 	}
-	get objs() {
+	objs(editorUiRef: EditorUi) {
 		return Object.values(GOID).map((v) => {
-			const btn = new FancyButton({
+			const btn = new SmallButton({
 				defaultView: "editor_pin",
-				icon: Sprite.from(v + "_pin"),
+				hoverView: null,
+				icon: Sprite.from(`${v}_pin`),
+				hoverText: i18next.t(v),
+				hoverContainer: editorUiRef,
 				defaultIconScale: 5,
 				scale: 0.5,
-			});
-			btn.addEventListener("pointerdown", () => {
-				if (!this.selectedPin) {
-					this.editorUiRef.onSelectedPin(v);
-					const pinWindow = this.editorUiRef.getChildByID("pinWindow");
-					pinWindow!.visible = false;
-					return;
-				}
+				onClick: (self) => {
+					if (!this.selectedPin) {
+						this.editorUiRef.onSelectedPin(v);
+						const pinWindow = this.editorUiRef.getChildByID("pinWindow");
+						pinWindow!.visible = false;
+						self.hover.visible = false;
+						return;
+					}
 
-				const pinned = this.topPinned;
-				pinned[this.selectedPin] = v;
-				this.topPinned = pinned;
-				this.selectedPin = undefined;
+					const pinned = this.topPinned;
+					pinned[this.selectedPin] = v;
+					this.topPinned = pinned;
+					this.selectedPin = undefined;
+				},
 			});
 			return btn;
 		});
@@ -379,14 +397,16 @@ class PinWindow extends Window<GameObjectID[]> {
 		Storage.saveObj("pins", this._topPinned);
 		const p = this.editorUiRef.getChildByID("topPinned")!;
 		const p2 = this.getChildByID("pins")!;
-		(
-			(p.children[this.selectedPin!].children[0] as FancyButton)
-				.iconView as Sprite
-		).texture = Texture.from(this._topPinned[this.selectedPin!] + "_pin");
+		const pBtn = p.children[this.selectedPin!].children[0] as SmallButton;
+		const p2Btn = p2.children[this.selectedPin!].children[0] as SmallButton;
+		(pBtn.iconView as Sprite).texture = Texture.from(
+			this._topPinned[this.selectedPin!] + "_pin",
+		);
 
-		(
-			(p2.children[this.selectedPin!].children[0] as FancyButton)
-				.iconView as Sprite
-		).texture = Texture.from(this._topPinned[this.selectedPin!] + "_pin");
+		pBtn.hoverText.text = i18next.t(this._topPinned[this.selectedPin!]);
+		p2Btn.hoverText.text = i18next.t(this._topPinned[this.selectedPin!]);
+		(p2Btn.iconView as Sprite).texture = Texture.from(
+			this._topPinned[this.selectedPin!] + "_pin",
+		);
 	}
 }

@@ -1,19 +1,22 @@
 {
 	"frames": {
 		"editor_pin": {
-			"frame": { "x": 0, "y": 256, "w": 256, "h": 256 }
+			"frame": { "x": 0, "y": 257, "w": 256, "h": 256 }
 		},
 		"small_button": {
 			"frame": { "x": 0, "y": 0, "w": 256, "h": 256 }
 		},
 		"big_button": {
-			"frame": { "x": 256, "y": 0, "w": 512, "h": 256 }
+			"frame": { "x": 257, "y": 0, "w": 512, "h": 256 }
+		},
+		"small_button_hover": {
+			"frame": { "x": 257, "y": 257, "w": 256, "h": 256 }
 		},
 		"title": {
-			"frame": { "x": 768, "y": 0, "w": 969, "h": 343 }
+			"frame": { "x": 770, "y": 0, "w": 969, "h": 343 }
 		},
-		"deathPlane_pin": { "frame": { "x": 768, "y": 344, "w": 32, "h": 32 } },
-		"paralax_pin": { "frame": { "x": 800, "y": 344, "w": 32, "h": 32 } }
+		"deathPlane_pin": { "frame": { "x": 770, "y": 345, "w": 32, "h": 32 } },
+		"paralax_pin": { "frame": { "x": 803, "y": 345, "w": 32, "h": 32 } }
 	},
 	"meta": {
 		"image": "ui.png",

@@ -1,23 +1,27 @@
-import { SmallButton } from "@lib/ui/small_button";
 import { Window } from "@lib/ui/Window";
 import { Content } from "@pixi/layout";
 import { ScrollBox } from "@pixi/ui";
-import { ContainerChild } from "pixi.js";
+import { Container, ContainerChild } from "pixi.js";
 import { WorldController } from "world/controller";
 import { Levels } from "./levelSelect";
+import { SmallButton } from "@lib/ui/small_button";
 
 const levelData: Levels = await fetch("./levels/index.json").then((v) =>
 	v.json(),
 );
-export class LevelWindow extends Window<undefined> {
+export class LevelWindow extends Window<Container> {
 	worldController: WorldController;
-	constructor(worldController: WorldController) {
+	top: Container;
+	constructor(worldController: WorldController, top: Container) {
 		super({
 			title: "levels",
+			data: top,
 		});
 		this.worldController = worldController;
+		this.top = top;
 	}
-	createContent(): Content {
+	createContent(data: Container<ContainerChild>): Content {
+		this.top = data;
 		return this.createLevelButtons();
 	}
 	createLevelButtons(): Content {
@@ -46,12 +50,21 @@ export class LevelWindow extends Window<undefined> {
 		for (let i = 0; i < levelData.amtToDisplay; i++) {
 			if (levelData.levels[i]) {
 				sprites.push(
-					new SmallButton(levelData.levels[i].name, "", () =>
-						this.worldController.set(levelData.levels[i].name),
-					),
+					new SmallButton({
+						text: levelData.levels[i].name,
+						onClick: () => {
+							this.worldController.set(levelData.levels[i].name);
+						},
+					}),
 				);
 			} else {
-				sprites.push(new SmallButton("🔒", "Locked", () => {}));
+				sprites.push(
+					new SmallButton({
+						text: "🔒",
+						hoverText: "Locked",
+						hoverContainer: this.top,
+					}),
+				);
 			}
 		}
 		return sprites;

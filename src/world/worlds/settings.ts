@@ -7,11 +7,11 @@ import { Actions } from "@lib/input";
 import { Graphics } from "graphics";
 import { Content, Layout } from "@pixi/layout";
 import { BigButton } from "@lib/ui/big_button";
-import { SmallButton } from "@lib/ui/small_button";
 import { WorldController } from "world/controller";
 import { Storage } from "@lib/storage";
-import { Window } from "@lib/ui/Window"
+import { Window } from "@lib/ui/Window";
 import i18next from "i18next";
+import { SmallButton } from "@lib/ui/small_button";
 
 export class Settings extends World {
 	public tabs: Map<string, Window<any>> = new Map();
@@ -24,7 +24,15 @@ export class Settings extends World {
 		this.main.y = 0;
 		const audio = new BigButton("Audio", "", () => this.changeTab("audio"));
 		const bindBtn = new BigButton("binds", "", () => this.changeTab("bind"));
-		const close = new SmallButton("❌", "Close", () => worldController.set("mainMenu"));
+		const close = new SmallButton({
+			text: "❌",
+			hoverText: "Back",
+			hoverContainer: this.top,
+			onClick: (self) => {
+				self.hover.visible = false;
+				worldController.set("mainMenu");
+			},
+		});
 		const tabBtns = [audio, bindBtn];
 
 		this.layout = new Layout({
@@ -91,14 +99,13 @@ export class Settings extends World {
 		}
 	}
 	recenter(screen: Rectangle): void {
-		this.tabs.forEach(v => v.resize(screen.width, screen.height))
+		this.tabs.forEach((v) => v.resize(screen.width, screen.height));
 		this.layout.resize(screen.width, screen.height);
 	}
 }
 
-
 class BindTab extends Window<undefined> {
-	public scrollbox!: ScrollBox
+	public scrollbox!: ScrollBox;
 	public reboundAction = "";
 	public reboundKey = "";
 	public rebinding = false;
@@ -157,8 +164,7 @@ class BindTab extends Window<undefined> {
 			keys.forEach((v) => {
 				const txt = i18next.t(v);
 				const button = Button({
-					content:
-						txt.replace(txt[0], txt[0].toLocaleUpperCase()),
+					content: txt.replace(txt[0], txt[0].toLocaleUpperCase()),
 					size: new Vec2(150, 50),
 					fontSize: 20,
 				});
@@ -201,7 +207,6 @@ class AudioTab extends Window<number> {
 			title: "audio",
 			data: volume,
 		});
-
 	}
 	createContent(data: number): Content {
 		const masterAudioSlider = new Slider({
@@ -217,8 +222,8 @@ class AudioTab extends Window<number> {
 			localStorage.setItem("volume", v.toString());
 		});
 		return {
-			content: masterAudioSlider
+			content: masterAudioSlider,
 		};
 	}
-	recenter(_screen: Rectangle) { }
+	recenter(_screen: Rectangle) {}
 }

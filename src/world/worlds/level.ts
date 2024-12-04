@@ -49,6 +49,7 @@ export class Level extends World {
 		if (this.controlled) return;
 
 		this.worldControlRef.set("mainMenu");
+		this.load();
 	}
 
 	load() {
