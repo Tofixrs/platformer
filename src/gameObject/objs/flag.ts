@@ -86,7 +86,10 @@ export class Flag extends PhysicsObject {
 		if (!this.win) return;
 		const player = world.entities.find((v) => v.id == this.playerId!) as Player;
 
-		const yPos = player.sprite.y - this.main.y;
+		const yPos =
+			player.sprite.y - this.main.y > 4 * meter
+				? 4 * meter
+				: player.sprite.y - this.main.y;
 		this.player_small.y = yPos;
 		this.player_big.y = yPos;
 
