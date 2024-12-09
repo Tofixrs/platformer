@@ -10,6 +10,10 @@ export class OneUp extends Enemy {
 	rightWallSensor!: Fixture;
 	leftWallSensor!: Fixture;
 	collected = false;
+	oneUpSound = new Howl({
+		src: ["./sounds/1up.mp3"],
+		volume: 0.25,
+	});
 	constructor(pos: Vec2, direction?: number) {
 		super({
 			pos,
@@ -64,6 +68,7 @@ export class OneUp extends Enemy {
 		const ent = world.entities.find((v) => v.id == this.sideTouchID);
 		if (!(ent instanceof Player)) return;
 		this.collected = true;
+		if (!this.oneUpSound.playing()) this.oneUpSound.play();
 	}
 	onBegin(contact: Contact) {
 		const fixA = contact.getFixtureA();
