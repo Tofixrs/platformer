@@ -228,6 +228,13 @@ export class EditorUi extends Screen {
 
 						return;
 					}
+					case PropType.boolean: {
+						const valid = v == "true" || v == "false" || v == "1" || v == "0";
+						if (valid) break;
+						placeholder.text = "Invalid format";
+						input.value = "";
+						return;
+					}
 				}
 				const find = this.propertyValue.findIndex((v) => v.name == prop.name);
 				if (find == -1) {

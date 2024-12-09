@@ -12,6 +12,7 @@ export interface GameObjectOptions {
 export const PropType = {
 	number: "number",
 	goid: "goid",
+	boolean: "boolean",
 } as const;
 
 export type PType = (typeof PropType)[keyof typeof PropType];
@@ -81,6 +82,7 @@ export const GOID = {
 	Paralax: "paralax",
 	OneUp: "1up",
 	Coin: "coin",
+	Spike: "spike",
 } as const;
 
 type GOIOKeys = keyof typeof GOID;

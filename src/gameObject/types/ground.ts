@@ -56,7 +56,7 @@ export class Ground extends PhysicsObject {
 			filterCategoryBits: 10,
 			userData: {
 				goid: this.goid,
-				id: window.crypto.randomUUID(),
+				id: this.id,
 			},
 		});
 		const shape = this.shape as PolygonShape;

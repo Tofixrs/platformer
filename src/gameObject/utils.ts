@@ -13,6 +13,7 @@ import { Flag } from "@gameObjs/flag";
 import { Paralax } from "@gameObjs/paralax";
 import { OneUp } from "@gameObjs/oneUp";
 import { Coin } from "@gameObjs/coin";
+import { Spike } from "@gameObjs/spike";
 
 export function getClassFromID(id: GameObjectID): typeof GameObject {
 	switch (id) {
@@ -71,6 +72,10 @@ export function getClassFromID(id: GameObjectID): typeof GameObject {
 		case GOID.Coin: {
 			//@ts-expect-error
 			return Coin;
+		}
+		case GOID.Spike: {
+			//@ts-expect-error
+			return Spike;
 		}
 	}
 }
