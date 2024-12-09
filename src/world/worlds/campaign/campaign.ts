@@ -41,7 +41,6 @@ export class Campaign extends World {
 	levels: { name: string; data: string }[] = levels;
 	levelTimes: { name: string; time: number }[] = [];
 	currLevel = 0;
-	flag?: Flag;
 	worldControllerRef: WorldController;
 	playerPState?: PState;
 	player?: Player;
@@ -86,7 +85,7 @@ export class Campaign extends World {
 		}
 		if (
 			this.entities.findIndex((v) => v.goid == GOID.Player) == -1 &&
-			!this.flag?.win
+			!this.entities.find((v) => v instanceof Flag && v.win)
 		) {
 			this.playerPState = undefined;
 			this.lives--;
@@ -99,7 +98,7 @@ export class Campaign extends World {
 			return;
 		}
 		this.playerPState = this.player?.powerState;
-		if (!this.flag?.winAnimDone) return;
+		if (!this.entities.find((v) => v instanceof Flag && v.winAnimDone)) return;
 
 		const name = this.levels[this.currLevel].name;
 		const bestTime = Storage.getNum(`${name}-bestTime`, Number.MAX_VALUE);
@@ -175,7 +174,6 @@ export class Campaign extends World {
 		const ent = deserializeWorld(this.levels[this.currLevel].data);
 		ent.forEach((v) => {
 			this.addEntity(v);
-			if (v.goid == GOID.Flag) this.flag = v as Flag;
 			if (v.goid == GOID.Player) {
 				if (this.playerPState) {
 					(v as Player).setPState(this.playerPState, this, false);

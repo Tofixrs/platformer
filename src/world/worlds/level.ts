@@ -11,7 +11,6 @@ import { Storage } from "@lib/storage";
 import { formatTime } from "@lib/math/units";
 
 export class Level extends World {
-	flag?: Flag;
 	loaded = false;
 	done = false;
 	worldControlRef: WorldController;
@@ -53,13 +52,12 @@ export class Level extends World {
 			});
 		if (
 			this.entities.findIndex((v) => v.goid == GOID.Player) == -1 &&
-			!this.flag?.win
+			!this.entities.find((v) => v instanceof Flag && v.win)
 		) {
 			this.load();
 			return;
 		}
-		if (!this.flag) return;
-		if (!this.flag.winAnimDone) return;
+		if (!this.entities.find((v) => v instanceof Flag && v.winAnimDone)) return;
 
 		if (this.name) {
 			const bestTime = Storage.getNum(
@@ -82,7 +80,6 @@ export class Level extends World {
 		}
 		const ent = deserializeWorld(this.data);
 		ent.forEach((v) => {
-			if (v.goid == GOID.Flag) this.flag = v as Flag;
 			this.addEntity(v);
 		});
 	}
