@@ -66,7 +66,7 @@ export class Level extends World {
 				`${this.name}-bestTime`,
 				Number.MAX_VALUE,
 			);
-			if (bestTime < this._time) {
+			if (bestTime > this._time) {
 				localStorage.setItem(`${this.name}-bestTime`, this._time.toString());
 			}
 		}

@@ -102,7 +102,7 @@ export class Flag extends PhysicsObject {
 		});
 		world.pause = true;
 	}
-	pausedUpdate(dt: number, _world: World): void {
+	pausedUpdate(dt: number, world: World): void {
 		if (!this.win) return;
 		this.animDelayTimer.tick(dt);
 		if (!this.animDelayTimer.done()) return;
@@ -111,6 +111,7 @@ export class Flag extends PhysicsObject {
 		}
 		if (this.player_small.y <= 4 * meter) {
 			this.player_small.y += 200 * dt;
+			world.main.pivot.y += 200 * dt;
 		}
 		if (this.player_big.y <= 4 * meter) {
 			this.player_big.y += 200 * dt;

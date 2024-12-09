@@ -120,7 +120,8 @@ export class LevelWindow extends Window<{ top: Container; scroll: ScrollBox }> {
 						text: levelData.levels[i].name,
 						hoverText: i18next.t("bestTime", { time: formatTime(time) }),
 						hoverContainer: time == -1 ? undefined : this.top,
-						onClick: () => {
+						onClick: (self) => {
+							self.hover.visible = false;
 							this.worldController.set(levelData.levels[i].name);
 						},
 					}),
@@ -131,6 +132,9 @@ export class LevelWindow extends Window<{ top: Container; scroll: ScrollBox }> {
 						text: "🔒",
 						hoverText: i18next.t("locked"),
 						hoverContainer: this.top,
+						onClick: (self) => {
+							self.hover.visible = false;
+						},
 					}),
 				);
 			}
