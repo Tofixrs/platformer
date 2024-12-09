@@ -4,11 +4,12 @@ import { Texture, TilingSprite } from "pixi.js";
 import { Box, Shape, Vec2 } from "planck-js";
 import { World } from "world";
 
-const Backgrounds = {
+export const Backgrounds = {
 	Normal: 1,
 	Cave: 2,
+	Settings: 3,
 } as const;
-type Background = (typeof Backgrounds)[keyof typeof Backgrounds];
+export type Background = (typeof Backgrounds)[keyof typeof Backgrounds];
 export class Paralax extends GameObject {
 	background: Background = Backgrounds.Normal;
 	static maxInstances?: number | undefined = 1;
@@ -22,6 +23,10 @@ export class Paralax extends GameObject {
 		[Backgrounds.Cave]: {
 			bg: "cave_bg",
 			fg: "cave_fg",
+		},
+		[Backgrounds.Settings]: {
+			bg: "settings_bg",
+			fg: "settings_fg",
 		},
 	};
 	static props: Property[] = [

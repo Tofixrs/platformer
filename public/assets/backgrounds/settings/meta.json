@@ -1,0 +1,16 @@
+{
+	"frames": {
+		"settings_bg": {
+			"frame": { "x": 0, "y": 1080, "w": 1920, "h": 1080 }
+		}
+	},
+	"meta": {
+		"image": "settings.png",
+		"format": "RGBA8888",
+		"scale": 1,
+		"size": {
+			"w": 1920,
+			"h": 1080
+		}
+	}
+}

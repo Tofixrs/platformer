@@ -12,6 +12,7 @@ import { Storage } from "@lib/storage";
 import { Window } from "@lib/ui/Window";
 import i18next from "i18next";
 import { SmallButton } from "@lib/ui/small_button";
+import { Paralax, Background, Backgrounds } from "@gameObjs/paralax";
 
 export class Settings extends World {
 	public tabs: Map<string, Window<any>> = new Map();
@@ -40,6 +41,7 @@ export class Settings extends World {
 			},
 		});
 		const tabBtns = [audio, bindBtn];
+		this.addEntity(new Paralax(Backgrounds.Settings));
 
 		this.layout = new Layout({
 			content: {
