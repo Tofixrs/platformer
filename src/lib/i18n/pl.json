@@ -17,9 +17,9 @@
 	"arrowright": "⬇️",
 	"escape": "Esc",
 	"editor": "Edytor",
-	"levelLoad": "Załaduj lewel",
+	"levelLoad": "Załaduj poziom",
 	"erase": "Wymazywanie",
-	"copyLevel": "Skopiuj dane poziomy",
+	"copyLevel": "Skopiuj dane poziomu",
 	"moreGOS": "Więcej obiektów",
 	"settings": "Ustawienia",
 	"player": "Marian",
@@ -38,5 +38,8 @@
 	"paralax": "Tło paralaks",
 	"play": "Graj",
 	"levels": "Poziomy",
-	"locked": "Zablokowany"
+	"locked": "Zablokowany",
+	"bestTime": "Najszybszy czas: {{time}}",
+	"spike": "Kolce",
+	"masterVolume": "Główna głośność:"
 }

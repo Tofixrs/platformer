@@ -84,6 +84,7 @@ export class Coin extends Entity {
 		if (fixA != this.mainFix && fixB != this.mainFix) return;
 		if (!contact.isTouching()) return;
 		this.collected = true;
+		contact.setEnabled(false);
 	}
 	serialize(): SerializedGO {
 		return {

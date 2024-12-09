@@ -112,6 +112,7 @@ export class EditorUi extends Screen {
 								}),
 								styles: {
 									paddingLeft: 5,
+									paddingRight: 10,
 								},
 							},
 						],

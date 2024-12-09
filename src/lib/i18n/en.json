@@ -39,5 +39,7 @@
 	"play": "Play",
 	"levels": "Levels",
 	"locked": "Locked",
-	"bestTime": "Best time: {{time}}"
+	"bestTime": "Best time: {{time}}",
+	"spike": "Spikes",
+	"masterVolume": "Master volume:"
 }

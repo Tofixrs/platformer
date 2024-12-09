@@ -5,6 +5,7 @@ import en from "./en.json";
 export async function initI18n() {
 	await i18next.init({
 		lng: navigator.language,
+		fallbackLng: "en",
 		resources: {
 			en: {
 				translation: en,

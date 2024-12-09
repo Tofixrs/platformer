@@ -33,7 +33,7 @@ export class Settings extends World {
 		});
 		const close = new SmallButton({
 			text: "❌",
-			hoverText: "Back",
+			hoverText: i18next.t("back"),
 			hoverContainer: this.top,
 			onClick: (self) => {
 				self.hover.visible = false;
@@ -245,7 +245,7 @@ class AudioTab extends Window<number> {
 						{
 							content: {
 								text: {
-									content: new Text({ text: "Master audio: " }),
+									content: new Text({ text: i18next.t("masterVolume") }),
 									styles: {
 										position: "center",
 									},
