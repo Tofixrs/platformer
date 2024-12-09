@@ -15,6 +15,10 @@ export class Coin extends Entity {
 	static props: Property[] = [
 		{ name: "instant", defaultValue: "0", type: "number" },
 	];
+	coinSound = new Howl({
+		src: ["./sounds/coin.mp3"],
+		volume: 0.25,
+	});
 
 	constructor(pos: Vec2, instant: boolean = false) {
 		super({
@@ -50,6 +54,7 @@ export class Coin extends Entity {
 	}
 	update(dt: number, _world: World): void {
 		if (this.collected || this.anim) {
+			if (!this.coinSound.playing()) this.coinSound.play();
 			if (
 				this.sprite.y - this.defaultSpritePos.y < -16 &&
 				!this.swapDirection

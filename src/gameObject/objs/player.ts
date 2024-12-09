@@ -48,8 +48,8 @@ export class Player extends Entity {
 	dmg = false;
 	static maxInstances = 1;
 	jumpSound = new Howl({
-		src: ["./jump.mp3"],
-		volume: 0.25,
+		src: ["./sounds/jump.mp3"],
+		volume: 1,
 	});
 	powerState: PState = PowerState.Small;
 	invTimer = new Timer(1, true);
