@@ -21,7 +21,7 @@ export class LevelSelect extends World {
 				.then((v) => {
 					worldController.add(
 						level.name,
-						new Level(graphics, v, worldController),
+						new Level(graphics, v, worldController, level.name),
 					);
 				});
 		}

@@ -16,14 +16,17 @@
 			"frame": { "x": 770, "y": 0, "w": 969, "h": 343 }
 		},
 		"deathPlane_pin": { "frame": { "x": 770, "y": 345, "w": 32, "h": 32 } },
-		"paralax_pin": { "frame": { "x": 803, "y": 345, "w": 32, "h": 32 } }
+		"paralax_pin": { "frame": { "x": 803, "y": 345, "w": 32, "h": 32 } },
+		"slider_bg": { "frame": { "x": 0, "y": 514, "w": 256, "h": 128 } },
+		"slider_slider": { "frame": { "x": 0, "y": 643, "w": 256, "h": 128 } },
+		"slider_point": { "frame": { "x": 257, "y": 514, "w": 32, "h": 32 } }
 	},
 	"meta": {
 		"image": "ui.png",
 		"format": "RGBA8888",
 		"size": {
-			"w": 768,
-			"h": 768
+			"w": 1739,
+			"h": 1026
 		}
 	}
 }

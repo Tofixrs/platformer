@@ -9,15 +9,37 @@ import { CampaignUi } from "./ui";
 import { Rectangle } from "pixi.js";
 import { OneUp } from "@gameObjs/oneUp";
 import { Coin } from "@gameObjs/coin";
+import { Storage } from "@lib/storage";
+import { formatTime } from "@lib/math/units";
 
 const levels = await fetch("./levels/index.json")
 	.then((v) => v.json())
 	.then((v) => v.levels as { name: string }[])
-	.then((v) => Promise.all(v.map((v) => fetch(`./levels/${v.name}.json`))))
-	.then((v) => Promise.all(v.map((v) => v.text())));
+	.then((v) =>
+		Promise.all(
+			v.map((v) =>
+				(async () => {
+					return { name: v.name, data: await fetch(`./levels/${v.name}.json`) };
+				})(),
+			),
+		),
+	)
+	.then((v) =>
+		Promise.all(
+			v.map((v) =>
+				(async () => {
+					return {
+						name: v.name,
+						data: await v.data.text(),
+					};
+				})(),
+			),
+		),
+	);
 
 export class Campaign extends World {
-	levels: string[] = levels;
+	levels: { name: string; data: string }[] = levels;
+	levelTimes: { name: string; time: number }[] = [];
 	currLevel = 0;
 	flag?: Flag;
 	worldControllerRef: WorldController;
@@ -25,6 +47,7 @@ export class Campaign extends World {
 	player?: Player;
 	_lives = 3;
 	_coins = 0;
+	_time = 0;
 	ui = new CampaignUi();
 	constructor(graphics: Graphics, worldControllerRef: WorldController) {
 		super(graphics);
@@ -37,7 +60,7 @@ export class Campaign extends World {
 	}
 	update(dt: number): void {
 		super.update(dt);
-
+		if (!this.pause) this.time += dt;
 		this.entities
 			.filter(
 				(v) =>
@@ -74,6 +97,12 @@ export class Campaign extends World {
 		this.playerPState = this.player?.powerState;
 		if (!this.flag?.winAnimDone) return;
 
+		const name = this.levels[this.currLevel].name;
+		const bestTime = Storage.getNum(`${name}-bestTime`, Number.MAX_VALUE);
+		if (this.time < bestTime) {
+			localStorage.setItem(`${name}-bestTime`, this.time.toString());
+		}
+		this.levelTimes.push({ name, time: this.time });
 		this.currLevel += 1;
 		this.load();
 	}
@@ -82,10 +111,12 @@ export class Campaign extends World {
 		this.load();
 		this.lives = 3;
 		this.coins = 0;
+		this.time = 0;
 	}
 	onSet(): void {
 		this.lives = 3;
 		this.currLevel = 0;
+		this.time = 0;
 		this.load();
 		if (!this.levels[this.currLevel]) {
 			this.worldControllerRef.set("mainMenu");
@@ -105,6 +136,14 @@ export class Campaign extends World {
 		this._coins = coins;
 		this.ui.coins = coins;
 	}
+
+	set time(time: number) {
+		this._time = time;
+		this.ui.time = formatTime(time);
+	}
+	get time() {
+		return this._time;
+	}
 	won() {
 		this.worldControllerRef.set("mainMenu");
 		localStorage.setItem("win", "true");
@@ -113,6 +152,7 @@ export class Campaign extends World {
 		this.coins = 0;
 	}
 	load() {
+		this.time = 0;
 		if (!this.levels[this.currLevel]) {
 			this.won();
 			return;
@@ -120,7 +160,7 @@ export class Campaign extends World {
 		for (let i = this.entities.length - 1; i != -1; i--) {
 			this.removeEntityIndex(i, true);
 		}
-		const ent = deserializeWorld(this.levels[this.currLevel]);
+		const ent = deserializeWorld(this.levels[this.currLevel].data);
 		ent.forEach((v) => {
 			this.addEntity(v);
 			if (v.goid == GOID.Flag) this.flag = v as Flag;

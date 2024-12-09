@@ -38,5 +38,6 @@
 	"paralax": "Paralax background",
 	"play": "Play",
 	"levels": "Levels",
-	"locked": "Locked"
+	"locked": "Locked",
+	"bestTime": "Best time: {{time}}"
 }

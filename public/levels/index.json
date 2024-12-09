@@ -1,4 +1,4 @@
 {
-	"amtToDisplay": 32,
+	"amtToDisplay": 64,
 	"levels": [{ "name": "1-1" }, { "name": "1-2" }]
 }

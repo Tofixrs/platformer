@@ -1,15 +1,17 @@
 import { pixiToPlanck, pixiToPlanck1D, planckToPixi } from "@lib/math/units";
+import { SerializedGO } from "@lib/serialize";
 import { getGridPosAtPos, getPosAtGrid } from "@worlds/editor";
 import { GameObject, GOID, Property, PropertyValue } from "gameObject";
 import { PhysicsObject, PhysObjUserData } from "gameObject/types/physicsObject";
 import { Container, Texture, TilingSprite } from "pixi.js";
 import { Box, Shape, Vec2 } from "planck-js";
-import { PolygonShape } from "planck-js/lib/shape";
+import { Polygon as PolygonShape } from "planck-js";
 import { World } from "world";
 
 export class Spike extends PhysicsObject {
 	instakill: boolean;
 	cont = new Container();
+	kill?: string;
 	static draggable = true;
 	static props: Property[] = [
 		{
@@ -89,6 +91,10 @@ export class Spike extends PhysicsObject {
 	}
 	update(dt: number, world: World): void {
 		super.update(dt, world);
+		if (!this.kill) return;
+
+		world.removeEntity(this.kill, this.instakill);
+		this.kill = undefined;
 	}
 	remove(world: World, _force?: boolean): boolean {
 		super.remove(world, _force);
@@ -136,7 +142,28 @@ export class Spike extends PhysicsObject {
 			if (userA.id != this.id && userB.id != this.id) return;
 			if (userA.goid != GOID.Player && userB.goid != GOID.Player) return;
 			const player = userA.goid == GOID.Player ? userA : userB;
-			world.removeEntity(player.id, this.instakill);
+			this.kill = player.id;
 		});
+	}
+	serialize(): SerializedGO {
+		return {
+			_type: this.goid,
+			data: {
+				verts: (this.shape as PolygonShape).m_vertices,
+				pos: this.pos,
+				instakill: this.instakill,
+			},
+		};
+	}
+	static deserialize(obj: SerializedGO): GameObject {
+		const verts = obj.data.verts.map(
+			(v: { x: number; y: number }) => new Vec2(v.x, v.y),
+		);
+		const poly = new PolygonShape(verts);
+		return new Spike(
+			new Vec2(obj.data.pos.x, obj.data.pos.y),
+			poly,
+			obj.data.instakill,
+		);
 	}
 }

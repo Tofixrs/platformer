@@ -1,3 +1,4 @@
+import { Layout } from "@pixi/layout";
 import { FancyButton } from "@pixi/ui";
 import { Container, Text, TextStyle } from "pixi.js";
 
@@ -48,9 +49,23 @@ export class SmallButton extends FancyButton {
 			text: hoverText,
 			style: {
 				fontSize: 20,
+				fill: "white",
 			},
 		});
-		this.hover.addChild(this.hoverText);
+		const layout = new Layout();
+		layout.addContent({
+			text: {
+				content: this.hoverText,
+				styles: {
+					backgroundColor: "black",
+					padding: 15,
+					paddingLeft: 25,
+					paddingRight: 25,
+					borderRadius: 25,
+				},
+			},
+		});
+		this.hover.addChild(layout);
 		this.hover.visible = false;
 		hoverContainer?.addChild(this.hover);
 		this.addEventListener("pointerover", () => {
@@ -65,6 +80,12 @@ export class SmallButton extends FancyButton {
 		this.addEventListener("pointermove", (e) => {
 			this.hover.x = e.x;
 			this.hover.y = e.y + 20;
+			if (this.hover.width + e.x > window.innerWidth) {
+				this.hover.x -= this.hover.width;
+			}
+			if (this.hover.height + e.y > window.innerHeight) {
+				this.hover.y -= this.hover.height;
+			}
 		});
 	}
 	setActive(yes: boolean) {

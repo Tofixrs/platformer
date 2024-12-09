@@ -18,6 +18,14 @@ export class CampaignUi extends Screen {
 			fill: "#DDDDDD",
 		}),
 	});
+	timeText = new Text({
+		text: "🕒 0:00",
+		style: new TextStyle({
+			fontSize: 50,
+			dropShadow: true,
+			fill: "#DDDDDD",
+		}),
+	});
 	constructor() {
 		super("campaign");
 		this.addTop();
@@ -40,6 +48,13 @@ export class CampaignUi extends Screen {
 							paddingRight: 50,
 						},
 					},
+					timeCounter: {
+						content: this.timeText,
+						styles: {
+							paddingLeft: 50,
+							paddingRight: 50,
+						},
+					},
 				},
 				styles: {
 					position: "centerTop",
@@ -55,5 +70,8 @@ export class CampaignUi extends Screen {
 	}
 	set coins(coins: number) {
 		this.coinsText.text = "🪙 " + coins.toString();
+	}
+	set time(time: string) {
+		this.timeText.text = "🕒 " + time;
 	}
 }

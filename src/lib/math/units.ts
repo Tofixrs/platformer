@@ -15,3 +15,10 @@ export function pixiToPlanck(vec: Vec2) {
 export function pixiToPlanck1D(v: number) {
 	return v / meter;
 }
+
+export function formatTime(time: number) {
+	const minutes = Math.floor(time / 60);
+	const seconds = Math.floor(time) % 60;
+	const centiseconds = Math.floor((time % 1) * 100);
+	return `${minutes}:${seconds}.${centiseconds}`;
+}

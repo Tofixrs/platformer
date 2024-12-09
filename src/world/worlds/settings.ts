@@ -59,9 +59,10 @@ export class Settings extends World {
 						},
 					},
 					styles: {
-						position: "top",
-						display: "block",
+						position: "centerTop",
 						marginTop: 10,
+						maxHeight: "7.5%",
+						width: "100%",
 					},
 				},
 				lContent: {
@@ -70,7 +71,6 @@ export class Settings extends World {
 						position: "center",
 						width: "100%",
 						height: "100%",
-						marginTop: 50,
 					},
 					content: this.tabContainer,
 				},
@@ -112,6 +112,10 @@ class BindTab extends Window<undefined> {
 	constructor() {
 		super({
 			title: "Binds",
+			styles: {
+				maxHeight: "80%",
+				position: "center",
+			},
 		});
 
 		window.addEventListener("keydown", (v) => {
@@ -205,6 +209,11 @@ class AudioTab extends Window<number> {
 		Howler.volume(volume / 100);
 		super({
 			title: "audio",
+			styles: {
+				position: "centerTop",
+				maxWidth: "80%",
+				marginTop: 80,
+			},
 			data: volume,
 		});
 	}
@@ -213,16 +222,43 @@ class AudioTab extends Window<number> {
 			min: 0,
 			max: 100,
 			value: data,
-			slider: "player_small_stand",
-			bg: "big_button",
-			fill: "player_big_stand",
+			slider: "slider_point",
+			bg: "slider_bg",
+			fill: "slider_slider",
 		});
 		masterAudioSlider.onChange.connect((v) => {
 			Howler.volume(v / 100);
 			localStorage.setItem("volume", v.toString());
 		});
 		return {
-			content: masterAudioSlider,
+			content: {
+				row: {
+					content: [
+						{
+							content: {
+								text: {
+									content: new Text({ text: "Master audio: " }),
+									styles: {
+										position: "center",
+									},
+								},
+							},
+							styles: {
+								height: "160%",
+							},
+						},
+						masterAudioSlider,
+					],
+					styles: {
+						height: "10%",
+					},
+				},
+			},
+			styles: {
+				width: "100%",
+				height: "100%",
+				padding: 80,
+			},
 		};
 	}
 	recenter(_screen: Rectangle) {}
