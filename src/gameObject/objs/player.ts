@@ -51,6 +51,10 @@ export class Player extends Entity {
 		src: ["./sounds/jump.mp3"],
 		volume: 1,
 	});
+	powerUpSound = new Howl({
+		src: ["./sounds/powerup.wav"],
+		volume: 1,
+	});
 	powerState: PState = PowerState.Small;
 	invTimer = new Timer(1, true);
 	anims = {
@@ -67,7 +71,6 @@ export class Player extends Entity {
 		roll: Sprite.from("player_roll"),
 		grow_anim: new AnimatedSprite([
 			Texture.from("player_small_stand"),
-			Texture.from("player_small_stand"),
 			Texture.from("player_big_stand"),
 			Texture.from("player_small_stand"),
 			Texture.from("player_big_stand"),
@@ -76,7 +79,6 @@ export class Player extends Entity {
 			Texture.from("player_big_stand"),
 		]),
 		shrink_anim: new AnimatedSprite([
-			Texture.from("player_big_stand"),
 			Texture.from("player_big_stand"),
 			Texture.from("player_small_stand"),
 			Texture.from("player_big_stand"),
@@ -127,11 +129,11 @@ export class Player extends Entity {
 		this.anims.big_walk.animationSpeed = 0;
 		this.anims.big_walk.play();
 		this.anims.big_jump.anchor.set(0.5, 0.5);
-		this.anims.grow_anim.animationSpeed = 0.1;
+		this.anims.grow_anim.animationSpeed = 0.125;
 		this.anims.grow_anim.loop = false;
 		this.anims.grow_anim.anchor.set(0.5, 0.5);
 
-		this.anims.shrink_anim.animationSpeed = 0.1;
+		this.anims.shrink_anim.animationSpeed = 0.125;
 		this.anims.shrink_anim.loop = false;
 		this.anims.shrink_anim.anchor.set(0.5, 0.5);
 		this.anims.crouch.anchor.set(0.5, 0.75);
@@ -565,6 +567,7 @@ export class Player extends Entity {
 			if (this.powerState < PowerState.Big && state > PowerState.Small) {
 				this.setAnim("grow_anim");
 				this.anims.grow_anim.play();
+				this.powerUpSound.play();
 			}
 		}
 		this.anims[this.currentAnim].scale.x = this.direction;
