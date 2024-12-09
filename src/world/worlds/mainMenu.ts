@@ -27,12 +27,15 @@ export class MainMenu extends World {
 							},
 						},
 						{
-							content: new BigButton(i18next.t("play"), "", () => {
-								if (localStorage.getItem("win") == "true") {
-									worldController.set("levelSelect");
-								} else {
-									worldController.set("campaign");
-								}
+							content: new BigButton({
+								text: i18next.t("play"),
+								onClick: () => {
+									if (localStorage.getItem("win") == "true") {
+										worldController.set("levelSelect");
+									} else {
+										worldController.set("campaign");
+									}
+								},
 							}),
 							styles: {
 								position: "bottomCenter",

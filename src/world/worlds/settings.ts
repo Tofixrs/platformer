@@ -22,8 +22,14 @@ export class Settings extends World {
 		super(graphics);
 		this.main.x = 0;
 		this.main.y = 0;
-		const audio = new BigButton("Audio", "", () => this.changeTab("audio"));
-		const bindBtn = new BigButton("binds", "", () => this.changeTab("bind"));
+		const audio = new BigButton({
+			text: "Audio",
+			onClick: () => this.changeTab("audio"),
+		});
+		const bindBtn = new BigButton({
+			text: "binds",
+			onClick: () => this.changeTab("bind"),
+		});
 		const close = new SmallButton({
 			text: "❌",
 			hoverText: "Back",

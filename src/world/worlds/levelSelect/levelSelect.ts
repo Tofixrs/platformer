@@ -30,6 +30,9 @@ export class LevelSelect extends World {
 		this.top.addChild(this.ui);
 		this.recenter(graphics.renderer.screen);
 	}
+	onSet(): void {
+		this.ui.refreshContent();
+	}
 	recenter(screen: Rectangle): void {
 		super.recenter(screen);
 		this.ui.layout.resize(screen.width, screen.height);

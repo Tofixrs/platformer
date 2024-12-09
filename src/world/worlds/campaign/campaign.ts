@@ -48,6 +48,7 @@ export class Campaign extends World {
 	_lives = 3;
 	_coins = 0;
 	_time = 0;
+	campaignTime = 0;
 	ui = new CampaignUi();
 	constructor(graphics: Graphics, worldControllerRef: WorldController) {
 		super(graphics);
@@ -60,7 +61,10 @@ export class Campaign extends World {
 	}
 	update(dt: number): void {
 		super.update(dt);
-		if (!this.pause) this.time += dt;
+		if (!this.pause) {
+			this.campaignTime += dt;
+			this.time += dt;
+		}
 		this.entities
 			.filter(
 				(v) =>
@@ -112,11 +116,14 @@ export class Campaign extends World {
 		this.lives = 3;
 		this.coins = 0;
 		this.time = 0;
+		this.campaignTime = 0;
 	}
 	onSet(): void {
 		this.lives = 3;
 		this.currLevel = 0;
 		this.time = 0;
+		this.campaignTime = 0;
+		this.playerPState = undefined;
 		this.load();
 		if (!this.levels[this.currLevel]) {
 			this.worldControllerRef.set("mainMenu");
@@ -150,6 +157,11 @@ export class Campaign extends World {
 		this.playerPState = undefined;
 		this.lives = 3;
 		this.coins = 0;
+
+		const campaignTime = Storage.getNum("campaign-bestTime", Number.MAX_VALUE);
+		if (this.campaignTime < campaignTime) {
+			localStorage.setItem("campaign-bestTime", this.campaignTime.toString());
+		}
 	}
 	load() {
 		this.time = 0;

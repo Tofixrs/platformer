@@ -1,6 +1,6 @@
 import { Layout } from "@pixi/layout";
 import { FancyButton } from "@pixi/ui";
-import { Container, Text, TextStyle } from "pixi.js";
+import { Container, Text, TextStyle, TextStyleOptions } from "pixi.js";
 
 export class SmallButton extends FancyButton {
 	hover = new Container({ zIndex: 2137 });
@@ -21,7 +21,7 @@ export class SmallButton extends FancyButton {
 		text?: string;
 		hoverText?: string;
 		hoverContainer?: Container;
-		textStyle?: TextStyle;
+		textStyle?: TextStyle | TextStyleOptions;
 		scale?: number;
 		onClick?: (self: SmallButton) => void;
 		defaultView?: string;
