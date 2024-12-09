@@ -77,9 +77,9 @@ export class EditorUi extends Screen {
 									hoverContainer: this,
 									onClick: (self) => {
 										this.copy();
-										self.hoverText.text = "Copied!";
+										self.hoverText.text = i18next.t("copied");
 										setTimeout(() => {
-											self.hoverText.text = "Copy level data";
+											self.hoverText.text = i18next.t("copyLevel");
 										}, 2000);
 									},
 								}),

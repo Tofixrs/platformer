@@ -41,5 +41,6 @@
 	"locked": "Zablokowany",
 	"bestTime": "Najszybszy czas: {{time}}",
 	"spike": "Kolce",
-	"masterVolume": "Główna głośność:"
+	"masterVolume": "Główna głośność:",
+	"copied": "Zkopiowano!"
 }
