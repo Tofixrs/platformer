@@ -75,6 +75,10 @@ export class Level extends World {
 	load() {
 		this.coins = 0;
 		this.time = 0;
+		this.colorMatrixDegrees = 0;
+		this.colorMatrixBrightness = 0.5;
+		this.colorMatrixBrightnessDir = 1;
+		this.colorMatrixTimer.reset();
 		for (let i = this.entities.length - 1; i != -1; i--) {
 			this.removeEntityIndex(i, true);
 		}

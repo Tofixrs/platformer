@@ -112,8 +112,10 @@ export class Editor extends World {
 			return true;
 		}
 
-
-		if (!this.entities.find((v) => v.goid == GOID.Flag && (v as Flag).winAnimDone)) return true;
+		if (
+			!this.entities.find((v) => v.goid == GOID.Flag && (v as Flag).winAnimDone)
+		)
+			return true;
 		this.setTesting(false);
 
 		return true;
@@ -160,6 +162,11 @@ export class Editor extends World {
 		this.lives = 3;
 		this.coins = 0;
 		this.time = 0;
+		this.c.filters = [];
+		this.colorMatrixDegrees = 0;
+		this.colorMatrixBrightness = 0.5;
+		this.colorMatrixBrightnessDir = 1;
+		this.colorMatrixTimer.reset();
 	}
 	recenter(screen: Rectangle): void {
 		this.screen = screen;

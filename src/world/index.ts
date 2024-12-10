@@ -1,7 +1,8 @@
-import { Container, Rectangle } from "pixi.js";
+import { ColorMatrixFilter, Container, Rectangle } from "pixi.js";
 import { World as PhysicsWorld, Vec2 } from "planck-js";
 import { Graphics } from "graphics";
 import { GameObject } from "gameObject";
+import { Timer } from "@lib/ticker";
 
 export class World {
 	p = new PhysicsWorld({
@@ -14,6 +15,10 @@ export class World {
 	entities: GameObject[] = [];
 	static physicsStepTime = 1 / 60;
 	pause: boolean = false;
+	colorMatrixTimer = new Timer(10);
+	colorMatrixDegrees = 0;
+	colorMatrixBrightness = 0.5;
+	colorMatrixBrightnessDir = 1;
 	constructor(graphics: Graphics) {
 		this.main.x = graphics.renderer.screen.width / 2;
 		this.main.y = graphics.renderer.screen.height / 2;
@@ -51,11 +56,33 @@ export class World {
 	}
 
 	update(dt: number) {
+		this.changeColorMatrix(dt);
 		if (this.pause) {
 			this.entities.forEach((e) => e.pausedUpdate(dt, this));
 			return;
 		}
 		this.entities.forEach((e) => e.update(dt, this));
+	}
+	changeColorMatrix(dt: number) {
+		this.colorMatrixTimer.tick(dt);
+		if (this.colorMatrixTimer.done()) {
+			this.colorMatrixTimer.reset();
+			this.c.filters = [];
+			return;
+		}
+		if (!Array.isArray(this.c.filters)) return;
+		const colorMatrixFilter = this.c.filters.find(
+			(v) => v instanceof ColorMatrixFilter,
+		);
+		if (colorMatrixFilter == undefined) return;
+		this.colorMatrixDegrees += 50 * dt;
+		this.colorMatrixBrightness += 1 * dt * this.colorMatrixBrightnessDir;
+		if (this.colorMatrixDegrees > 1 || this.colorMatrixDegrees < 1) {
+			this.colorMatrixBrightnessDir = -this.colorMatrixBrightnessDir;
+		}
+		this.colorMatrixBrightness += 0.1 * dt;
+		colorMatrixFilter.hue(this.colorMatrixDegrees, false);
+		colorMatrixFilter.brightness(this.colorMatrixBrightness, true);
 	}
 	fixedUpdate(): void {
 		if (this.pause) return;

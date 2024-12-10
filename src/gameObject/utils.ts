@@ -14,6 +14,7 @@ import { Paralax } from "@gameObjs/paralax";
 import { OneUp } from "@gameObjs/oneUp";
 import { Coin } from "@gameObjs/coin";
 import { Spike } from "@gameObjs/spike";
+import { Sushroom } from "@gameObjs/sushroom";
 
 export function getClassFromID(id: GameObjectID): typeof GameObject {
 	switch (id) {
@@ -76,6 +77,10 @@ export function getClassFromID(id: GameObjectID): typeof GameObject {
 		case GOID.Spike: {
 			//@ts-expect-error
 			return Spike;
+		}
+		case GOID.Sushroom: {
+			//@ts-expect-error
+			return Sushroom;
 		}
 	}
 }

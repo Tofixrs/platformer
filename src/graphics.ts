@@ -26,6 +26,10 @@ export class Graphics<R extends Renderer = Renderer> {
 					alias: "window",
 					src: "./assets/ui/window.png",
 				},
+				{
+					alias: "displacement",
+					src: "./assets/displacement_map.png",
+				},
 			]),
 			Assets.load("./assets/ground/pins/meta.json"),
 			Assets.load("./assets/ground/ice/meta.json"),

@@ -49,6 +49,19 @@ export class Actions {
 		);
 		return res;
 	}
+	static defaultBinds: { name: string; binds: string[] }[] = [
+		{ name: "jump", binds: ["arrowup", "w"] },
+		{ name: "crouch", binds: ["arrowdown", "s"] },
+		{ name: "left", binds: ["arrowleft", "d"] },
+		{ name: "right", binds: ["arrowright", "a"] },
+		{ name: "roll", binds: ["c"] },
+		{ name: "groundpound", binds: ["x"] },
+		{ name: "dive", binds: ["v"] },
+		{ name: "back", binds: ["escape"] },
+		{ name: "test", binds: ["p"] },
+		{ name: "run", binds: ["shift"] },
+		{ name: "debug", binds: ["`"] },
+	];
 	static init() {
 		//@ts-expect-error
 		window.action = Actions;
@@ -58,23 +71,16 @@ export class Actions {
 				Actions.actions.set(v, false);
 			}),
 		);
-		const defaultBinds = [
-			["jump", "ArrowUp"],
-			["crouch", "ArrowDown"],
-			["left", "ArrowLeft"],
-			["right", "ArrowRight"],
-			["roll", "c"],
-			["groundpound", "x"],
-			["longjump", "z"],
-			["dive", "v"],
-			["back", "escape"],
-			["test", "p"],
-			["run", "shift"],
-			["debug", "`"],
-		];
-		defaultBinds.forEach(([action, key]) => {
-			if (Actions.isBound(action)) return;
-			Actions.bind(action, [key]);
+		this.defaultBinds.forEach(({ name, binds }) => {
+			if (Actions.isBound(name)) return;
+			Actions.bind(name, binds);
+		});
+	}
+	static reset() {
+		this.inputs = new Map();
+		this.defaultBinds.forEach(({ name, binds }) => {
+			if (Actions.isBound(name)) return;
+			Actions.bind(name, binds);
 		});
 	}
 }

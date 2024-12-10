@@ -83,6 +83,7 @@ export const GOID = {
 	OneUp: "1up",
 	Coin: "coin",
 	Spike: "spike",
+	Sushroom: "sushroom",
 } as const;
 
 type GOIOKeys = keyof typeof GOID;

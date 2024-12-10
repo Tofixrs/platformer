@@ -88,7 +88,7 @@ export class Settings extends World {
 				height: "100%",
 			},
 		});
-		const bindTab = new BindTab();
+		const bindTab = new BindTab(this.top);
 		const audioTab = new AudioTab();
 
 		this.tabs.set("bind", bindTab);
@@ -112,19 +112,29 @@ export class Settings extends World {
 	}
 }
 
-class BindTab extends Window<undefined> {
+class BindTab extends Window<{ scroll: ScrollBox; top: Container }> {
 	public scrollbox!: ScrollBox;
 	public reboundAction = "";
 	public reboundKey = "";
 	public rebinding = false;
-	constructor() {
+	constructor(top: Container) {
+		const scrollbox = new ScrollBox({
+			width: 1000,
+			height: 575,
+			elementsMargin: 20,
+			horPadding: 10,
+			type: "vertical",
+			items: [],
+		});
 		super({
 			title: "Binds",
 			styles: {
 				maxHeight: "80%",
 				position: "center",
 			},
+			data: { scroll: scrollbox, top },
 		});
+		this.scrollbox = scrollbox;
 
 		window.addEventListener("keydown", (v) => {
 			if (!this.rebinding) return;
@@ -141,22 +151,38 @@ class BindTab extends Window<undefined> {
 			this.scrollbox.addItems(this.createKeys());
 		});
 	}
-	createContent(_data: undefined): Content {
-		this.scrollbox = new ScrollBox({
-			width: 850,
-			height: 700,
-			horPadding: 60,
-			elementsMargin: 20,
-			type: "vertical",
-			items: [...this.createKeys()],
-		});
-
+	createContent(data: { scroll: ScrollBox; top: Container }): Content {
+		data.scroll.addItems(this.createKeys());
 		return {
-			content: this.scrollbox,
+			content: {
+				scroll: {
+					content: data.scroll,
+					styles: {
+						width: "100%",
+						height: "75%",
+					},
+				},
+				buttons: {
+					content: [
+						new SmallButton({
+							text: "🗑️",
+							hoverText: i18next.t("reset"),
+							hoverContainer: data.top,
+							onClick: () => {
+								Actions.reset();
+								data.scroll.removeItems();
+								this.scrollbox.addItems(this.createKeys());
+							},
+						}),
+					],
+					styles: { height: "10%", width: "100%" },
+				},
+			},
 			styles: {
 				position: "centerTop",
-				maxWidth: "80%",
-				marginTop: 80,
+				width: "100%",
+				height: "100%",
+				padding: 80,
 			},
 		};
 	}

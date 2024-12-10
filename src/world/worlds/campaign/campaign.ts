@@ -116,6 +116,10 @@ export class Campaign extends World {
 		this.coins = 0;
 		this.time = 0;
 		this.campaignTime = 0;
+		this.colorMatrixDegrees = 0;
+		this.colorMatrixBrightness = 0.5;
+		this.colorMatrixBrightnessDir = 1;
+		this.colorMatrixTimer.reset();
 	}
 	onSet(): void {
 		this.lives = 3;
@@ -123,6 +127,10 @@ export class Campaign extends World {
 		this.time = 0;
 		this.campaignTime = 0;
 		this.playerPState = undefined;
+		this.colorMatrixDegrees = 0;
+		this.colorMatrixBrightness = 0.5;
+		this.colorMatrixBrightnessDir = 1;
+		this.colorMatrixTimer.reset();
 		this.load();
 		if (!this.levels[this.currLevel]) {
 			this.worldControllerRef.set("mainMenu");
