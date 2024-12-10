@@ -42,5 +42,6 @@
 	"bestTime": "Najszybszy czas: {{time}}",
 	"spike": "Kolce",
 	"masterVolume": "Główna głośność:",
-	"copied": "Zkopiowano!"
+	"copied": "Zkopiowano!",
+	"replay": "Zagraj ponownie kampanie"
 }

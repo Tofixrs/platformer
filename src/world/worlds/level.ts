@@ -103,7 +103,7 @@ export class Level extends World {
 	}
 }
 
-class LevelUi extends Screen {
+export class LevelUi extends Screen {
 	timeText = new Text({
 		text: "🕒 0:00",
 		style: new TextStyle({

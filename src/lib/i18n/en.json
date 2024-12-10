@@ -42,5 +42,6 @@
 	"bestTime": "Best time: {{time}}",
 	"spike": "Spikes",
 	"masterVolume": "Master volume:",
-	"copied": "Copied!"
+	"copied": "Copied!",
+	"reply": "Replay campaign"
 }

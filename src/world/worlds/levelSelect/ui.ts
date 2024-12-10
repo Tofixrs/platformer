@@ -59,12 +59,15 @@ export class LevelWindow extends Window<{ top: Container; scroll: ScrollBox }> {
 							btnsLeft: {
 								content: [
 									new BigButton({
-										text: "Replay",
+										text: i18next.t("replay"),
 										hoverText: i18next.t("bestTime", {
 											time: formatTime(time),
 										}),
 										hoverContainer: time == -1 ? undefined : this.top,
 										onClick: () => this.worldController.set("campaign"),
+										textStyle: {
+											fontSize: 40,
+										},
 									}),
 								],
 								styles: {
