@@ -58,9 +58,7 @@ export class Editor extends World {
 			this.setTesting(!this.testing);
 		}
 
-		const isTesting = this.isTesting(dt);
-		console.log(isTesting)
-		if (isTesting) return;
+		if (this.isTesting(dt)) return;
 
 		this.ui.onUpdate(dt);
 		this.editorCamPos = new Vec2(this.main.pivot.x, this.main.pivot.y);
