@@ -93,7 +93,7 @@ export class Spike extends PhysicsObject {
 		super.update(dt, world);
 		if (!this.kill) return;
 
-		world.removeEntity(this.kill, this.instakill);
+		world.removeEntity(this.kill, this.instakill, true);
 		this.kill = undefined;
 	}
 	remove(world: World, _force?: boolean): boolean {

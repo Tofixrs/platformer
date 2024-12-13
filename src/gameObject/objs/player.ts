@@ -46,6 +46,10 @@ export class Player extends Entity {
 	actionStates: AState[] = [];
 	groundPoundHit = false;
 	dmg = false;
+	die = false;
+	dieVel = 0;
+	dieAcc = 0;
+	diePos?: Vec2;
 	static maxInstances = 1;
 	jumpSound = new Howl({
 		src: ["./sounds/jump.mp3"],
@@ -89,6 +93,7 @@ export class Player extends Entity {
 		]),
 		crouch: Sprite.from("player_big_crouch"),
 		dive: Sprite.from("player_dive"),
+		die: Sprite.from("player_small_stand")
 	} as const;
 	currentAnim: PlayerAnims = "small_walk";
 	lastAnim: PlayerAnims = "small_walk";
@@ -184,51 +189,68 @@ export class Player extends Entity {
 		this.setPState(this.powerState, world, false);
 		this.handleAnim();
 	}
-	remove(world: World, force?: boolean): boolean {
-		if (force) {
-			super.remove(world, force);
-			return true;
-		}
+	remove(world: World, force?: boolean, anim?: boolean): boolean {
 		if (!this.invTimer.done()) return false;
 		if (this.powerState > PowerState.Small) {
 			this.setPState(PowerState.Small, world);
 			this.invTimer.reset();
 			return false;
-		} else {
-			super.remove(world, force);
+		} else if (!force || force && anim) {
+			this.setAnim("die");
+			this.die = true;
+			this.dieAcc = 4000;
+			this.dieVel = 0;
+			this.diePos = undefined;
+			world.pause = true;
+			return false;
+		} else  {
+			super.remove(world,force);
 			return true;
 		}
 	}
-	pausedUpdate(_dt: number, world: World): void {
-		if (!this.dmg) return;
-		if (this.currentAnim != "grow_anim" && this.currentAnim != "shrink_anim") {
-			if (this.powerState > PowerState.Small) this.setAnim("grow_anim");
-			if (this.powerState < PowerState.Big) this.setAnim("shrink_anim");
-			return;
-		}
-		if (this.currentAnim == "grow_anim") {
-			if (this.anims[this.currentAnim].texture.label == "player_big_stand") {
-				this.anims[this.currentAnim].anchor.set(0.5, 0.5);
-			} else {
-				this.anims[this.currentAnim].anchor.set(0.5, 0);
-			}
-		} else {
-			if (this.anims[this.currentAnim].texture.label == "player_big_stand") {
-				this.anims[this.currentAnim].anchor.set(0.5, 0.75);
-			} else {
-				this.anims[this.currentAnim].anchor.set(0.5, 0.5);
+	pausedUpdate(dt: number, world: World): void {
+		if (this.die) {
+			if (this.currentAnim != "die") this.setAnim("die");
+			if (!this.diePos) this.diePos = planckToPixi(this.pos);
+			this.dieVel += this.dieAcc * dt;
+			this.dieAcc -= 10000 * dt;
+			this.sprite.y -= this.dieVel * dt;
+
+			if (this.sprite.y - 500 > this.diePos.y) {
+				world.removeEntity(this.id,true);
+				this.die = false;
 			}
 		}
-		if (!this.anims[this.currentAnim].playing) {
-			world.pause = false;
-			this.dmg = false;
-			this.anims[this.currentAnim].currentFrame = 0;
-			if (this.powerState > PowerState.Small) {
-				this.setAnim("big_walk");
-			} else {
-				this.setAnim("small_walk");
+		if (this.dmg) {
+			if (this.currentAnim != "grow_anim" && this.currentAnim != "shrink_anim") {
+				if (this.powerState > PowerState.Small) this.setAnim("grow_anim");
+				if (this.powerState < PowerState.Big) this.setAnim("shrink_anim");
+				return;
 			}
-		}
+			if (this.currentAnim == "grow_anim") {
+				if (this.anims[this.currentAnim].texture.label == "player_big_stand") {
+					this.anims[this.currentAnim].anchor.set(0.5, 0.5);
+				} else {
+					this.anims[this.currentAnim].anchor.set(0.5, 0);
+				}
+			} else {
+				if (this.anims[this.currentAnim].texture.label == "player_big_stand") {
+					this.anims[this.currentAnim].anchor.set(0.5, 0.75);
+				} else {
+					this.anims[this.currentAnim].anchor.set(0.5, 0.5);
+				}
+			}
+			if (!this.anims[this.currentAnim].playing) {
+				world.pause = false;
+				this.dmg = false;
+				this.anims[this.currentAnim].currentFrame = 0;
+				if (this.powerState > PowerState.Small) {
+					this.setAnim("big_walk");
+				} else {
+					this.setAnim("small_walk");
+				}
+			}
+		};
 	}
 	update(dt: number, world: World): void {
 		super.update(dt, world);

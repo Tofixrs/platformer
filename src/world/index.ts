@@ -39,18 +39,18 @@ export class World {
 		entity.create(this);
 		this.entities.push(entity);
 	}
-	removeEntity(id: string, force: boolean = false) {
+	removeEntity(id: string, force: boolean = false, anim: boolean = false) {
 		const foundIndex = this.entities.findIndex((v) => {
 			return v.id == id;
 		});
 		if (!this.entities[foundIndex]) return;
-		if (this.entities[foundIndex].remove(this, force)) {
+		if (this.entities[foundIndex].remove(this, force, anim)) {
 			this.entities.splice(foundIndex, 1);
 		}
 	}
-	removeEntityIndex(index: number, force: boolean = false) {
+	removeEntityIndex(index: number, force: boolean = false, anim: boolean = false) {
 		if (!this.entities[index]) return;
-		if (this.entities[index].remove(this, force)) {
+		if (this.entities[index].remove(this, force, anim)) {
 			this.entities.splice(index, 1);
 		}
 	}
