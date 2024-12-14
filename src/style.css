@@ -8,15 +8,27 @@ html {
 	overflow: hidden;
 }
 
-@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
-	html {
-		transform: rotate(-90deg);
-		transform-origin: left top;
-		width: 100vh;
-		height: 100vw;
-		overflow-x: hidden;
-		position: absolute;
-		top: 100%;
-		left: 0;
-	}
+#screen-orientation {
+	place-items: center;
+	display: none;
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	background: gray;
+	font-weight: bold;
+	opacity: 0.9;
+	font-size: 50px;
+	text-align: center;
+}
+
+#screen-orientation.visible {
+	display: grid;
+}
+#fullscreen {
+	font-size: 50px;
+	border-radius: 1em;
+	border: 1px solid black;
+	background: white;
+	color: black;
+	padding: 0.5em 1em;
 }
