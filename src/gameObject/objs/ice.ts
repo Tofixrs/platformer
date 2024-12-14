@@ -1,6 +1,6 @@
 import { GameObject, GOID, PropertyValue } from "gameObject";
 import { Ground, GroundAtlas } from "gameObject/types/ground";
-import { Shape, Vec2 } from "planck-js";
+import { Shape, Vec2 } from "planck";
 
 export class Ice extends Ground {
 	static atlas: GroundAtlas = {

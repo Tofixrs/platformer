@@ -1,7 +1,7 @@
 import { capsule } from "@lib/shape";
 import { GameObject, GOID, Property, PropertyValue } from "gameObject";
 import { Sprite } from "pixi.js";
-import { Contact, Shape, Vec2 } from "planck-js";
+import { Contact, Shape, Vec2 } from "planck";
 import { World } from "world";
 import { Entity } from "gameObject/types/entity";
 import { SerializedGO } from "@lib/serialize";

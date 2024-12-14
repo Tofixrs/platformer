@@ -1,6 +1,6 @@
 import { SerializedGO } from "@lib/serialize";
 import { Container } from "pixi.js";
-import { Shape, Vec2 } from "planck-js";
+import { Shape, Vec2 } from "planck";
 import { World } from "world";
 
 export interface GameObjectOptions {

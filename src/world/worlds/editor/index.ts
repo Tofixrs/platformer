@@ -1,7 +1,7 @@
 import { Rectangle } from "pixi.js";
 import { World } from "../..";
 import { Graphics } from "graphics";
-import { Vec2 } from "planck-js";
+import { Vec2 } from "planck";
 import { Actions } from "@lib/input";
 import { Grid } from "./grid";
 import { ObjectPlacer } from "./objectPlacer";

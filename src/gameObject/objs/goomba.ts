@@ -3,7 +3,7 @@ import { GameObject, GOID, Property, PropertyValue } from "gameObject";
 import { Enemy } from "gameObject/types/enemy";
 import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { AnimatedSprite, Texture } from "pixi.js";
-import { Box, Contact, Fixture, Shape, Vec2 } from "planck-js";
+import { Box, Contact, Fixture, Shape, Vec2 } from "planck";
 import { World } from "world";
 import { Player } from "./player";
 

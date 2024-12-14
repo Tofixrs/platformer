@@ -1,7 +1,7 @@
 import { SerializedGO } from "@lib/serialize";
 import { GameObject, GOID, PropertyValue } from "gameObject";
 import { PhysicsObject, PhysObjUserData } from "gameObject/types/physicsObject";
-import { Box, Shape, Vec2 } from "planck-js";
+import { Box, Shape, Vec2 } from "planck";
 import { World } from "world";
 
 export class DeathPlane extends PhysicsObject {

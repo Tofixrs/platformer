@@ -1,4 +1,4 @@
-import { Vec2 } from "planck-js";
+import { Vec2 } from "planck";
 import { Graphics as Draw, Rectangle } from "pixi.js";
 import { Editor } from ".";
 

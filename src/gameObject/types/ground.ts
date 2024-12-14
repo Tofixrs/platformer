@@ -1,9 +1,8 @@
 import { World } from "world";
 import { PhysicsObject, PhysicsObjectOptions } from "../types/physicsObject";
 import { Container, Sprite, Texture, TilingSprite } from "pixi.js";
-import { PolygonShape } from "planck-js/lib/shape";
+import { PolygonShape, Polygon, Vec2 } from "planck";
 import { planckToPixi } from "@lib/math/units";
-import { Polygon, Vec2 } from "planck-js";
 import { Editor, getGridPosAtPos, getPosAtGrid } from "@worlds/editor";
 import { getClassFromID } from "gameObject/utils";
 import { SerializedGO } from "@lib/serialize";
@@ -194,7 +193,7 @@ export class Ground extends PhysicsObject {
 			_type: this.goid,
 			data: {
 				pos: this.pos,
-				shapeVerts: (this.shape as Polygon).m_vertices,
+				shapeVerts: (this.shape as PolygonShape).m_vertices,
 			},
 		};
 	}

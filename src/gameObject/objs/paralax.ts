@@ -1,7 +1,7 @@
 import { SerializedGO } from "@lib/serialize";
 import { GameObject, GOID, Property, PropertyValue } from "gameObject";
 import { Texture, TilingSprite } from "pixi.js";
-import { Box, Shape, Vec2 } from "planck-js";
+import { Box, Shape, Vec2 } from "planck";
 import { World } from "world";
 
 export const Backgrounds = {

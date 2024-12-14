@@ -1,5 +1,5 @@
 import { ColorMatrixFilter, Container, Rectangle } from "pixi.js";
-import { World as PhysicsWorld, Vec2 } from "planck-js";
+import { World as PhysicsWorld, Vec2 } from "planck";
 import { Graphics } from "graphics";
 import { GameObject } from "gameObject";
 import { Timer } from "@lib/ticker";
@@ -48,7 +48,11 @@ export class World {
 			this.entities.splice(foundIndex, 1);
 		}
 	}
-	removeEntityIndex(index: number, force: boolean = false, anim: boolean = false) {
+	removeEntityIndex(
+		index: number,
+		force: boolean = false,
+		anim: boolean = false,
+	) {
 		if (!this.entities[index]) return;
 		if (this.entities[index].remove(this, force, anim)) {
 			this.entities.splice(index, 1);

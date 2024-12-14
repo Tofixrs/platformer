@@ -3,7 +3,7 @@ import { getPosAtGrid } from "@worlds/editor";
 import { GameObject, GOID, PropertyValue } from "gameObject";
 import { Ground, GroundAtlas } from "gameObject/types/ground";
 import { Container, Texture, TilingSprite } from "pixi.js";
-import { Box, Polygon, Shape, Vec2 } from "planck-js";
+import { Box, Polygon, PolygonShape, Shape, Vec2 } from "planck";
 
 export class Rock extends Ground {
 	static atlas: GroundAtlas = {
@@ -51,7 +51,7 @@ export class Rock extends Ground {
 		_currPos: Vec2,
 		_props?: PropertyValue[],
 	): GameObject {
-		const s = shape as Polygon;
+		const s = shape as PolygonShape;
 		const w = Math.abs(s.m_vertices[3].x - s.m_vertices[0].x);
 		const h = Math.abs(s.m_vertices[3].y - s.m_vertices[1].y);
 		const wA = w + (w % 0.5);

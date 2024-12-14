@@ -10,17 +10,18 @@
 	},
 	"devDependencies": {
 		"@types/howler": "^2.2.12",
-		"typescript": "^5.6.3",
-		"vite": "^5.4.8",
+		"@types/node": "^22.10.2",
+		"typescript": "^5.7.2",
+		"vite": "^6.0.3",
 		"vite-plugin-checker": "^0.8.0",
-		"vite-tsconfig-paths": "^5.0.1"
+		"vite-tsconfig-paths": "^5.1.4"
 	},
 	"dependencies": {
 		"@pixi/layout": "^2.0.1",
-		"@pixi/ui": "^2.1.5",
+		"@pixi/ui": "^2.2.0",
 		"howler": "^2.2.4",
-		"i18next": "^24.0.5",
-		"pixi.js": "^8.5.0",
-		"planck-js": "^0.3.31"
+		"i18next": "^24.1.0",
+		"pixi.js": "^8.6.4",
+		"planck": "^1.1.2"
 	}
 }

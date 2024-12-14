@@ -1,7 +1,7 @@
 import { GameObject, GOID, PropertyValue } from "gameObject";
 import { Block } from "gameObject/types/block";
 import { Sprite, Texture, TextureSource } from "pixi.js";
-import { Shape, Vec2 } from "planck-js";
+import { Shape, Vec2 } from "planck";
 import { World } from "world";
 import { ActionState, Player, PowerState } from "./player";
 

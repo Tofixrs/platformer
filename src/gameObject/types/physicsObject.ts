@@ -1,6 +1,6 @@
 import { GameObject, GameObjectID, GameObjectOptions } from "gameObject";
 import { World } from "world";
-import { Body, BodyType, Fixture, Shape } from "planck-js";
+import { Body, BodyType, Fixture, Shape } from "planck";
 
 export interface PhysicsObjectOptions extends GameObjectOptions {
 	friction: number;

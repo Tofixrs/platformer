@@ -1,5 +1,5 @@
 import { MouseHandler } from "./mouseHandler";
-import { Box, Transform, Vec2 } from "planck-js";
+import { Box, Transform, Vec2 } from "planck";
 import { pixiToPlanck } from "@lib/math/units";
 import { getClassFromID } from "gameObject/utils";
 import { Editor, getPosAtGrid } from ".";

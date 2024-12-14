@@ -3,7 +3,7 @@ import { SerializedGO } from "@lib/serialize";
 import { GameObject, GOID, PropertyValue } from "gameObject";
 import { PhysicsObject, PhysObjUserData } from "gameObject/types/physicsObject";
 import { Sprite } from "pixi.js";
-import { Box, Shape, Vec2 } from "planck-js";
+import { Box, Shape, Vec2 } from "planck";
 import { World } from "world";
 import { Player, PowerState } from "./player";
 import { Timer } from "@lib/ticker";

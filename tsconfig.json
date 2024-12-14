@@ -23,7 +23,8 @@
 			"@ui/*": ["./lib/ui/*"],
 			"@worlds/*": ["./world/worlds/*"],
 			"@gameObjs/*": ["./gameObject/objs/*"]
-		}
+		},
+		"typeRoots": ["./src/types"]
 	},
 	"include": ["src"]
 }

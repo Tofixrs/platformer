@@ -4,8 +4,7 @@ import { getGridPosAtPos, getPosAtGrid } from "@worlds/editor";
 import { GameObject, GOID, Property, PropertyValue } from "gameObject";
 import { PhysicsObject, PhysObjUserData } from "gameObject/types/physicsObject";
 import { Container, Texture, TilingSprite } from "pixi.js";
-import { Box, Shape, Vec2 } from "planck-js";
-import { Polygon as PolygonShape } from "planck-js";
+import { Box, Shape, Vec2, PolygonShape } from "planck";
 import { World } from "world";
 
 export class Spike extends PhysicsObject {

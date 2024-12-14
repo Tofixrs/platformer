@@ -1,4 +1,4 @@
-import { Box, Fixture, Shape, Vec2, WorldManifold } from "planck-js";
+import { Box, Fixture, Shape, Vec2, WorldManifold } from "planck";
 import { Entity } from "./entity";
 import { GameObject, GameObjectID, PropType } from "gameObject";
 import { Sprite } from "pixi.js";
@@ -97,7 +97,7 @@ export class Enemy extends Entity {
 			const fixB = contact.getFixtureB();
 			const userA = fixA.getUserData() as PhysObjUserData;
 			const userB = fixB.getUserData() as PhysObjUserData;
-			const worldManifold = contact.getWorldManifold(undefined)!;
+			const worldManifold = contact.getWorldManifold(null)!;
 
 			if (userA == null || userB == null) return;
 
@@ -140,7 +140,7 @@ export class Enemy extends Entity {
 			return;
 
 		const fix = classA == Player ? fixA : fixB;
-		this.stomp = fix.getBody().m_linearVelocity.y > 0;
+		this.stomp = fix.getBody().getLinearVelocity().y > 0;
 		if (this.stomp) {
 			this.stompID = classA == Player ? userA.id : userB.id;
 			return;

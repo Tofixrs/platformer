@@ -8,7 +8,7 @@ import {
 } from "gameObject";
 import { Block } from "gameObject/types/block";
 import { AnimatedSprite, Sprite, Texture, TextureSource } from "pixi.js";
-import { Box, Shape, Vec2 } from "planck-js";
+import { Box, Shape, Vec2 } from "planck";
 import { World } from "world";
 import { getClassFromID } from "gameObject/utils";
 import { Ground } from "gameObject/types/ground";

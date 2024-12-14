@@ -6,9 +6,8 @@ import {
 	Renderer,
 	Text,
 } from "pixi.js";
-import { CircleShape, PolygonShape } from "planck-js/lib/shape";
 import { World } from "world";
-import { Body, Vec2 } from "planck-js";
+import { Body, CircleShape, PolygonShape, Vec2 } from "planck";
 import { rotate } from "@lib/math/rotateVec2";
 import { planckToPixi } from "@lib/math/units";
 import { Game } from "game";

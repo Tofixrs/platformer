@@ -6,7 +6,7 @@ import {
 } from "./physicsObject";
 import { pixiToPlanck, planckToPixi } from "@lib/math/units";
 import { World } from "world";
-import { Box, Contact, Fixture, Vec2 } from "planck-js";
+import { Box, Contact, Fixture, Vec2 } from "planck";
 import { getPosAtGrid } from "@worlds/editor";
 import { GameObject, GameObjectID, GOID } from "gameObject";
 import { Brick } from "@gameObjs/brick";
@@ -155,12 +155,12 @@ export class Block extends PhysicsObject {
 		if (userA == null || userB == null) return;
 		if (userA.id != this.id && userB.id != this.id) return;
 		if (userA.goid != GOID.Player && userB.goid != GOID.Player) return;
-		if (contact.m_manifold.localNormal.x != 0) return;
+		if (contact.getManifold().localNormal.x != 0) return;
 
 		const user = userA.goid == GOID.Player ? userA : userB;
 		this.hit = true;
 		this.hitID = user.id;
-		this.hitSide = -Math.ceil(contact.m_manifold.localNormal.y);
+		this.hitSide = -Math.ceil(contact.getManifold().localNormal.y);
 	}
 	onHit(world: World): boolean {
 		const player = world.entities.find((v) => v.id == this.hitID) as Player;

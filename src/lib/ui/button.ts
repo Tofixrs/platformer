@@ -1,6 +1,6 @@
 import { ButtonContainer } from "@pixi/ui";
 import { ColorSource, Graphics, Text, TextStyle } from "pixi.js";
-import { Vec2 } from "planck-js";
+import { Vec2 } from "planck";
 
 interface ButtonOptions {
 	size: Vec2;

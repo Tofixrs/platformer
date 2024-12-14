@@ -1,4 +1,4 @@
-import { Vec2 } from "planck-js";
+import { Vec2 } from "planck";
 
 export function lerp2D(s: Vec2, e: Vec2, amt: number) {
 	const dx = e.x - s.x;

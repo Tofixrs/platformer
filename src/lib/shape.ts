@@ -1,7 +1,11 @@
-import { Polygon, Vec2 } from "planck-js";
+import { PolygonShape, Polygon, Vec2 } from "planck";
 import { rotate } from "./math/rotateVec2";
 
-export function capsule(size: Vec2, offset?: Vec2, angle?: number): Polygon {
+export function capsule(
+	size: Vec2,
+	offset?: Vec2,
+	angle?: number,
+): PolygonShape {
 	const verts = [
 		new Vec2(-size.x / 2, -size.y + size.y / 10),
 		new Vec2(0, -size.y),

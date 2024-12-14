@@ -1,4 +1,4 @@
-import { Vec2 } from "planck-js";
+import { Vec2 } from "planck";
 
 export function rotate(point: Vec2, pivot: Vec2, angle: number) {
 	return new Vec2(

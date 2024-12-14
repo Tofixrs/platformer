@@ -2,7 +2,7 @@ import { Container, Rectangle, Text } from "pixi.js";
 import { World } from "..";
 import { ScrollBox, Slider } from "@pixi/ui";
 import { Button } from "@ui/button";
-import { Vec2 } from "planck-js";
+import { Vec2 } from "planck";
 import { Actions } from "@lib/input";
 import { Graphics } from "graphics";
 import { Content, Layout } from "@pixi/layout";

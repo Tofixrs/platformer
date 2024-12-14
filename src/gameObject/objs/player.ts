@@ -1,4 +1,4 @@
-import { Box, Contact, Fixture, Shape, Vec2 } from "planck-js";
+import { Box, Contact, Fixture, Shape, Vec2 } from "planck";
 import { AnimatedSprite, Sprite, Texture } from "pixi.js";
 import { Entity } from "../types/entity";
 import { World } from "world";
@@ -9,7 +9,7 @@ import { Howler } from "howler";
 import { Timer } from "@lib/ticker";
 import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { capsule } from "@lib/shape";
-import { meter, pixiToPlanck1D, planckToPixi } from "@lib/math/units";
+import { pixiToPlanck1D, planckToPixi } from "@lib/math/units";
 import { SerializedGO } from "@lib/serialize";
 
 export const PowerState = {
@@ -221,7 +221,7 @@ export class Player extends Entity {
 			this.dieAcc -= 10000 * dt;
 			this.sprite.y -= this.dieVel * dt;
 
-			if (this.sprite.y - 500 > this.diePos.y && !this.deathSound.playing()) {
+			if (this.sprite.y - 500 > this.diePos!.y && !this.deathSound.playing()) {
 				world.removeEntity(this.id, true);
 				this.die = false;
 			}
@@ -269,7 +269,7 @@ export class Player extends Entity {
 		this.invTimer.tick(dt);
 	}
 	followCam(world: World, dt: number) {
-		const moveDown = window.innerHeight > 540 ? window.innerHeight * 0.25: 0;
+		const moveDown = window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
 		const pos = lerp2D(
 			new Vec2(world.main.pivot.x, world.main.pivot.y),
 			new Vec2(this.sprite.x, this.sprite.y - moveDown),

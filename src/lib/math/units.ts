@@ -1,4 +1,4 @@
-import { Vec2 } from "planck-js";
+import { Vec2 } from "planck";
 
 export const meter = 64; // in px;
 

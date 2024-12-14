@@ -1,5 +1,5 @@
 import { Sprite, Container } from "pixi.js";
-import { Vec2 } from "planck-js";
+import { Vec2 } from "planck";
 import { Editor, getGridPosAtPos, getPosAtGrid } from ".";
 import { Actions } from "@lib/input";
 import { GameObjectID } from "gameObject";

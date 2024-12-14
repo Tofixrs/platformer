@@ -2,7 +2,7 @@ import { World } from "world";
 import { lerp, lerp2D } from "@lib/math/lerp";
 import { planckToPixi } from "@lib/math/units";
 import { Sprite } from "pixi.js";
-import { Vec2 } from "planck-js";
+import { Vec2 } from "planck";
 import { PhysicsObject, PhysicsObjectOptions } from "./physicsObject";
 export interface EntityOptions extends PhysicsObjectOptions {
 	sprite: Sprite;
