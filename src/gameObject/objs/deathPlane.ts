@@ -20,7 +20,7 @@ export class DeathPlane extends PhysicsObject {
 	update(_dt: number, world: World): void {
 		if (!this.killId) return;
 
-		world.removeEntity(this.killId, true);
+		world.removeEntity(this.killId, true, true);
 	}
 	create(world: World): void {
 		super.create(world);

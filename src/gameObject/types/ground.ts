@@ -3,7 +3,7 @@ import { PhysicsObject, PhysicsObjectOptions } from "../types/physicsObject";
 import { Container, Sprite, Texture, TilingSprite } from "pixi.js";
 import { PolygonShape } from "planck-js/lib/shape";
 import { planckToPixi } from "@lib/math/units";
-import { Box, Polygon, Vec2 } from "planck-js";
+import { Polygon, Vec2 } from "planck-js";
 import { Editor, getGridPosAtPos, getPosAtGrid } from "@worlds/editor";
 import { getClassFromID } from "gameObject/utils";
 import { SerializedGO } from "@lib/serialize";
@@ -24,7 +24,7 @@ export interface GroundAtlas {
 
 export class Ground extends PhysicsObject {
 	static draggable: boolean = true;
-	cont = new Container();
+	cont = new Container({ zIndex: -1 });
 	static atlas: GroundAtlas = {
 		corner: "grass_corner",
 		corner_both: "grass_corner_both",

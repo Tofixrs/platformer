@@ -93,7 +93,7 @@ export class Player extends Entity {
 		]),
 		crouch: Sprite.from("player_big_crouch"),
 		dive: Sprite.from("player_dive"),
-		die: Sprite.from("player_small_stand")
+		die: Sprite.from("player_small_stand"),
 	} as const;
 	currentAnim: PlayerAnims = "small_walk";
 	lastAnim: PlayerAnims = "small_walk";
@@ -191,20 +191,20 @@ export class Player extends Entity {
 	}
 	remove(world: World, force?: boolean, anim?: boolean): boolean {
 		if (!this.invTimer.done()) return false;
-		if (this.powerState > PowerState.Small) {
+		if (this.powerState > PowerState.Small && !force) {
 			this.setPState(PowerState.Small, world);
 			this.invTimer.reset();
 			return false;
-		} else if (!force || force && anim) {
+		} else if (!force || (force && anim)) {
 			this.setAnim("die");
 			this.die = true;
-			this.dieAcc = 4000;
-			this.dieVel = 0;
+			this.dieAcc = 500;
+			this.dieVel = 1000;
 			this.diePos = undefined;
 			world.pause = true;
 			return false;
-		} else  {
-			super.remove(world,force);
+		} else {
+			super.remove(world, force);
 			return true;
 		}
 	}
@@ -217,12 +217,15 @@ export class Player extends Entity {
 			this.sprite.y -= this.dieVel * dt;
 
 			if (this.sprite.y - 500 > this.diePos.y) {
-				world.removeEntity(this.id,true);
+				world.removeEntity(this.id, true);
 				this.die = false;
 			}
 		}
 		if (this.dmg) {
-			if (this.currentAnim != "grow_anim" && this.currentAnim != "shrink_anim") {
+			if (
+				this.currentAnim != "grow_anim" &&
+				this.currentAnim != "shrink_anim"
+			) {
 				if (this.powerState > PowerState.Small) this.setAnim("grow_anim");
 				if (this.powerState < PowerState.Big) this.setAnim("shrink_anim");
 				return;
@@ -250,7 +253,7 @@ export class Player extends Entity {
 					this.setAnim("small_walk");
 				}
 			}
-		};
+		}
 	}
 	update(dt: number, world: World): void {
 		super.update(dt, world);
