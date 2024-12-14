@@ -9,7 +9,7 @@ import { Howler } from "howler";
 import { Timer } from "@lib/ticker";
 import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { capsule } from "@lib/shape";
-import { meter, planckToPixi } from "@lib/math/units";
+import { meter, pixiToPlanck1D, planckToPixi } from "@lib/math/units";
 import { SerializedGO } from "@lib/serialize";
 
 export const PowerState = {
@@ -269,13 +269,14 @@ export class Player extends Entity {
 		this.invTimer.tick(dt);
 	}
 	followCam(world: World, dt: number) {
+		const moveDown = window.innerHeight > 540 ? window.innerHeight * 0.25: 0;
 		const pos = lerp2D(
 			new Vec2(world.main.pivot.x, world.main.pivot.y),
-			new Vec2(this.sprite.x, this.sprite.y - 3 * meter),
+			new Vec2(this.sprite.x, this.sprite.y - moveDown),
 			20 * dt,
 		);
 		world.main.pivot.set(pos.x, pos.y);
-		Howler.pos(this.pos.x, this.pos.y - 3);
+		Howler.pos(this.pos.x, this.pos.y - pixiToPlanck1D(moveDown));
 	}
 	handleMove(dt: number) {
 		if (Actions.hold("left")) {
