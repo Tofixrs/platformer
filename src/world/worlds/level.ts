@@ -5,10 +5,16 @@ import { GOID } from "gameObject";
 import { Graphics } from "graphics";
 import { World } from "world";
 import { WorldController } from "world/controller";
-import { Rectangle, Text, TextStyle } from "pixi.js";
+import { Container, Rectangle, Text, TextStyle } from "pixi.js";
 import { Screen } from "@lib/ui/screen";
 import { Storage } from "@lib/storage";
 import { formatTime } from "@lib/math/units";
+import { Window } from "@lib/ui/Window";
+import i18next from "i18next";
+import { Content } from "@pixi/layout";
+import { BigButton } from "@lib/ui/big_button";
+import { Actions } from "@lib/input";
+import { List } from "@pixi/ui";
 
 export class Level extends World {
 	loaded = false;
@@ -17,7 +23,7 @@ export class Level extends World {
 	data: string;
 	_time: number = 2137;
 	_coins = 0;
-	ui = new LevelUi();
+	ui: LevelUi;
 	name?: string;
 	constructor(
 		graphics: Graphics,
@@ -26,6 +32,7 @@ export class Level extends World {
 		name?: string,
 	) {
 		super(graphics);
+		this.ui = new LevelUi(worldController);
 		this.top.addChild(this.ui);
 		this.data = data;
 		this.load();
@@ -36,6 +43,10 @@ export class Level extends World {
 		this.name = name;
 	}
 	update(dt: number): void {
+		if (Actions.click("back")) {
+			this.pause = !this.pause;
+			this.ui.pauseWindow.visible = this.pause;
+		}
 		super.update(dt);
 		if (!this.pause) this.time += dt;
 		this.entities
@@ -124,9 +135,23 @@ export class LevelUi extends Screen {
 			fill: "#DDDDDD",
 		}),
 	});
-	constructor() {
+	pauseWindow: PauseWindow;
+	worldController: WorldController;
+	constructor(worldController: WorldController) {
 		super("level");
+		this.worldController = worldController;
+		this.pauseWindow = new PauseWindow(worldController, "mainMenu");
 		this.addTop();
+		this.addPause();
+	}
+	addPause() {
+		this.addContent({
+			content: this.pauseWindow,
+			styles: {
+				width: "100%",
+				height: "100%",
+			},
+		});
 	}
 	addTop() {
 		this.addContent({
@@ -161,5 +186,60 @@ export class LevelUi extends Screen {
 	}
 	set coins(coins: number) {
 		this.coinsText.text = "🪙 " + coins.toString();
+	}
+}
+
+export class PauseWindow extends Window<{
+	exit: string;
+	worldController: WorldController;
+	onExit?: (self: PauseWindow) => void;
+}> {
+	exit: string;
+	constructor(
+		worldController: WorldController,
+		exit: string,
+		onExit?: (self: PauseWindow) => void,
+	) {
+		super({
+			title: i18next.t("pause"),
+			data: { exit, worldController, onExit },
+		});
+		this.exit = exit;
+		this.visible = false;
+	}
+	createContent(data: {
+		exit: string;
+		worldController: WorldController;
+		onExit?: (self: PauseWindow) => void;
+	}): Content {
+		this.exit = data.exit;
+		const list = new List({
+			type: "vertical",
+			elementsMargin: 20,
+			items: [
+				new BigButton({
+					text: i18next.t("unpause"),
+					onClick: () => {
+						data.worldController.world!.pause = false;
+						this.visible = false;
+					},
+				}),
+				new BigButton({
+					text: i18next.t("exit"),
+					onClick: () => {
+						data.worldController.set(this.exit);
+						if (data.onExit) data.onExit(this);
+						this.visible = false;
+					},
+				}),
+			],
+		});
+		return {
+			content: new Container({ children: [list] }),
+			styles: {
+				position: "centerTop",
+				padding: 100,
+			},
+		};
 	}
 }

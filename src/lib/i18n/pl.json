@@ -46,5 +46,8 @@
 	"replay": "Zagraj ponownie kampanie",
 	"reset": "Zresetuj",
 	"sushroom": "Halucyn",
-	"orientation": "Proszę obrócić urządzenie"
+	"orientation": "Proszę obrócić urządzenie",
+	"unpause": "Wznów",
+	"exit": "Wyjdź",
+	"pause": "Pauza"
 }

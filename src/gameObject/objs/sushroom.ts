@@ -58,15 +58,15 @@ export class Sushroom extends Enemy {
 		const ent = world.entities.find((v) => v.id == this.sideTouchID);
 		if (!(ent instanceof Player)) return;
 
-		this.applyFilter(ent, world);
+		this.applyFilter(world);
 	}
 	onSideTouch(world: World): void {
 		const ent = world.entities.find((v) => v.id == this.sideTouchID);
 		if (!(ent instanceof Player)) return;
 
-		this.applyFilter(ent, world);
+		this.applyFilter(world);
 	}
-	applyFilter(player: Player, world: World) {
+	applyFilter(world: World) {
 		world.removeEntity(this.id);
 
 		const colorMatrix = new ColorMatrixFilter();

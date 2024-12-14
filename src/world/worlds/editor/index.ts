@@ -30,7 +30,7 @@ export class Editor extends World {
 	_coins = 0;
 	_time = 0;
 	ui: EditorUi;
-	gameUi = new CampaignUi();
+	gameUi: CampaignUi;
 	constructor(graphics: Graphics, worldControllerRef: WorldController) {
 		super(graphics);
 		this.main.x = 0;
@@ -42,6 +42,9 @@ export class Editor extends World {
 		this.worldControllerRef = worldControllerRef;
 
 		this.ui = new EditorUi(this);
+		this.gameUi = new CampaignUi(worldControllerRef, "editor", () =>
+			this.setTesting(false),
+		);
 		this.gameUi.visible = false;
 		this.top.addChild(this.ui);
 		this.top.addChild(this.gameUi);
@@ -77,6 +80,10 @@ export class Editor extends World {
 	}
 	isTesting(dt: number) {
 		if (!this.testing) return false;
+		if (Actions.click("back")) {
+			this.pause = !this.pause;
+			this.gameUi.pauseWindow.visible = this.pause;
+		}
 
 		super.update(dt);
 		if (!this.pause) this.time += dt;

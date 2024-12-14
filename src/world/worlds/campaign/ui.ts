@@ -1,5 +1,7 @@
 import { Screen } from "@lib/ui/screen";
+import { PauseWindow } from "@worlds/level";
 import { Text, TextStyle } from "pixi.js";
+import { WorldController } from "world/controller";
 
 export class CampaignUi extends Screen {
 	livesText = new Text({
@@ -26,9 +28,16 @@ export class CampaignUi extends Screen {
 			fill: "#DDDDDD",
 		}),
 	});
-	constructor() {
+	pauseWindow: PauseWindow;
+	constructor(
+		worldController: WorldController,
+		exit: string,
+		onExit?: (self: PauseWindow) => void,
+	) {
 		super("campaign");
+		this.pauseWindow = new PauseWindow(worldController, exit, onExit);
 		this.addTop();
+		this.addPause();
 	}
 	addTop() {
 		this.addContent({
@@ -62,6 +71,15 @@ export class CampaignUi extends Screen {
 					maxHeight: "10%",
 					marginTop: 10,
 				},
+			},
+		});
+	}
+	addPause() {
+		this.addContent({
+			content: this.pauseWindow,
+			styles: {
+				width: "100%",
+				height: "100%",
 			},
 		});
 	}

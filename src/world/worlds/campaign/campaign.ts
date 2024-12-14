@@ -11,6 +11,8 @@ import { OneUp } from "@gameObjs/oneUp";
 import { Coin } from "@gameObjs/coin";
 import { Storage } from "@lib/storage";
 import { formatTime } from "@lib/math/units";
+import { Actions } from "@lib/input";
+import { PauseWindow } from "@worlds/level";
 
 const levels = await fetch("./levels/index.json")
 	.then((v) => v.json())
@@ -48,9 +50,14 @@ export class Campaign extends World {
 	_coins = 0;
 	_time = 0;
 	campaignTime = 0;
-	ui = new CampaignUi();
+	ui: CampaignUi;
 	constructor(graphics: Graphics, worldControllerRef: WorldController) {
 		super(graphics);
+		const won = localStorage.getItem("win") == "true";
+		this.ui = new CampaignUi(
+			worldControllerRef,
+			won ? "levelSelect" : "mainMenu",
+		);
 		this.worldControllerRef = worldControllerRef;
 		this.top.addChild(this.ui);
 		this.recenter(graphics.renderer.screen);
@@ -59,6 +66,10 @@ export class Campaign extends World {
 		this.ui.lives = this.lives;
 	}
 	update(dt: number): void {
+		if (Actions.click("back")) {
+			this.pause = !this.pause;
+			this.ui.pauseWindow.visible = this.pause;
+		}
 		super.update(dt);
 		if (!this.pause) {
 			this.campaignTime += dt;
@@ -131,6 +142,8 @@ export class Campaign extends World {
 		this.colorMatrixBrightness = 0.5;
 		this.colorMatrixBrightnessDir = 1;
 		this.colorMatrixTimer.reset();
+		const won = localStorage.getItem("win") == "true";
+		this.ui.pauseWindow.exit = won ? "levelSelect" : "mainMenu";
 		this.load();
 		if (!this.levels[this.currLevel]) {
 			this.worldControllerRef.set("mainMenu");
