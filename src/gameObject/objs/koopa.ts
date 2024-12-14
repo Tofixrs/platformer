@@ -22,6 +22,10 @@ export class Koopa extends Enemy {
 	sideKillTimer = new Timer(0.2);
 	stompPushTimer = new Timer(0.2);
 	brickID?: string;
+	kickSound = new Howl({
+		src: ["./sounds/kick.wav"],
+		volume: 1,
+	});
 	static props: Property[] = [
 		{
 			type: "number",
@@ -54,6 +58,7 @@ export class Koopa extends Enemy {
 	}
 	update(dt: number, world: World): void {
 		super.update(dt, world);
+		this.kickSound.pos(this.pos.x, this.pos.y);
 		this.sideKillTimer.tick(dt);
 		this.stompPushTimer.tick(dt);
 
@@ -73,9 +78,11 @@ export class Koopa extends Enemy {
 	onStomp(world: World): void {
 		if (this.shelled && this.stompPushTimer.done()) {
 			this.moving = !this.moving;
+			this.kickSound.play();
 			this.stompPushTimer.reset();
 		}
 		if (!this.shelled && this.stompPushTimer.done()) {
+			this.stompSound.play();
 			this.setShelled(true);
 			this.stompPushTimer.reset();
 		}
@@ -87,6 +94,7 @@ export class Koopa extends Enemy {
 			case GOID.Player: {
 				if (this.shelled && !this.moving) {
 					this.moving = true;
+					this.kickSound.play();
 					this.sideKillTimer.reset();
 					this.direction = this.sideTouched!;
 				} else if (this.shelled && this.moving && this.sideKillTimer.done()) {
@@ -230,14 +238,10 @@ export class Koopa extends Enemy {
 		const userA = fixA.getUserData() as PhysObjUserData;
 		const userB = fixB.getUserData() as PhysObjUserData;
 		if ((userA || userB) && this.shelled && this.moving) {
-			const other =
-				fixA == this.leftWallSensor || fixA == this.rightEdgeSensor
-					? userB
-					: userA;
+			const other = userA?.goid == GOID.Brick ? userA : userB;
 
 			if (other?.goid == GOID.Brick) {
 				this.brickID = other.id;
-				return;
 			}
 		}
 		this.direction =

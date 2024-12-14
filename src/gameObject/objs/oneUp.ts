@@ -11,7 +11,7 @@ export class OneUp extends Enemy {
 	leftWallSensor!: Fixture;
 	collected = false;
 	oneUpSound = new Howl({
-		src: ["./sounds/1up.mp3"],
+		src: ["./sounds/1up.wav"],
 		volume: 0.25,
 	});
 	constructor(pos: Vec2, direction?: number) {

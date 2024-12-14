@@ -98,8 +98,8 @@ export class Player extends Entity {
 	currentAnim: PlayerAnims = "small_walk";
 	lastAnim: PlayerAnims = "small_walk";
 	maxVel = new Vec2(15, -20);
-	bigShape = capsule(new Vec2(0.23, 0.45));
-	smallShape = capsule(new Vec2(0.23, 0.23));
+	bigShape = capsule(new Vec2(0.23, 0.45), new Vec2(0, 0.05));
+	smallShape = capsule(new Vec2(0.23, 0.23), new Vec2(0, 0.02));
 	diveShape = capsule(new Vec2(0.23, 0.45), Vec2.zero(), Math.PI / 2);
 	sensorShape = new Box(0.2, 0.05, new Vec2(0, 0.2));
 	smallSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.2));
@@ -289,6 +289,7 @@ export class Player extends Entity {
 		this.handleDive(dt);
 		this.handleGroundPound();
 		this.jumpSound.pos(this.pos.x, this.pos.y);
+		this.powerUpSound.pos(this.pos.x, this.pos.y);
 	}
 	handleWalk(dt: number) {
 		if (this.actionStates.includes(ActionState.Locked)) return;
@@ -470,7 +471,7 @@ export class Player extends Entity {
 			if (v == ActionState.Dive) return new Vec2(20, -15);
 			if (v == ActionState.Run) return new Vec2(10, -22.5);
 
-			return new Vec2(5, -15);
+			return new Vec2(6, -15);
 		});
 		const maxX = Math.max(...maxVel.map((v) => v.x), 5);
 		const maxY = Math.max(...maxVel.map((v) => v.y), -15);
@@ -497,8 +498,8 @@ export class Player extends Entity {
 	}
 	handleAnim() {
 		const vel = this.body.getLinearVelocity();
-		this.anims.small_walk.animationSpeed = 0.02 * vel.x;
-		this.anims.big_walk.animationSpeed = 0.02 * vel.x;
+		this.anims.small_walk.animationSpeed = 0.05 * vel.x;
+		this.anims.big_walk.animationSpeed = 0.05 * vel.x;
 		if (vel.x == 0) {
 			this.anims.small_walk.currentFrame = 0;
 			this.anims.big_walk.currentFrame = 0;

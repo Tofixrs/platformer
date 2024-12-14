@@ -28,6 +28,10 @@ export class Enemy extends Entity {
 	sideTouchGOID?: GameObjectID;
 	sideTouched?: number;
 	sideTouchGO?: GameObject;
+	stompSound = new Howl({
+		src: ["./sounds/stomp.wav"],
+		volume: 1,
+	});
 	constructor({
 		pos,
 		friction,
@@ -83,6 +87,7 @@ export class Enemy extends Entity {
 			this.sideTouched = undefined;
 			this.sideTouchGO = undefined;
 		}
+		this.stompSound.pos(this.pos.x, this.pos.y);
 	}
 	create(world: World): void {
 		super.create(world);
@@ -186,6 +191,10 @@ export class Enemy extends Entity {
 				direction: this.direction,
 			},
 		};
+	}
+	remove(world: World, force?: boolean): boolean {
+		if (!force) this.stompSound.play();
+		return super.remove(world, force);
 	}
 	static deserialize(obj: SerializedGO): GameObject {
 		const c = getClassFromID(obj._type);

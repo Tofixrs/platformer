@@ -34,6 +34,7 @@ export class Coin extends Entity {
 		this.sprite.anchor.set(0.5, 0.5);
 		this.anim = instant;
 		this.defaultSpritePos = planckToPixi(pos);
+		this.coinSound.pos(this.pos.x, this.pos.y);
 	}
 	static commonConstructor(
 		pos: Vec2,

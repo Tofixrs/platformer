@@ -7,6 +7,10 @@ import { ActionState, Player, PowerState } from "./player";
 
 export class Brick extends Block {
 	static dragTexture: Texture<TextureSource<any>> = Texture.from("brick");
+	breakSound = new Howl({
+		src: ["./sounds/breakblock.wav"],
+		volume: 1,
+	});
 	constructor(pos: Vec2) {
 		super({
 			friction: 0.2,
@@ -14,6 +18,7 @@ export class Brick extends Block {
 			pos,
 			goid: GOID.Brick,
 		});
+		this.breakSound.pos(pos.x, pos.y);
 	}
 	static commonConstructor(
 		pos: Vec2,
@@ -37,9 +42,17 @@ export class Brick extends Block {
 		}
 
 		if (this.hitSide == 1) return false;
-		if (player.powerState < PowerState.Big) return true;
+		if (player.powerState < PowerState.Big) {
+			this.bumpSound.play();
+			return true;
+		}
 
+		this.breakSound.play();
 		world.removeEntity(this.id);
 		return false;
+	}
+	remove(world: World, force?: boolean): boolean {
+		if (!force) this.breakSound.play();
+		return super.remove(world, force);
 	}
 }

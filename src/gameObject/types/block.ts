@@ -33,6 +33,10 @@ export class Block extends PhysicsObject {
 	swapDirection = false;
 	hitSensor!: Fixture;
 	animDirection = 1;
+	bumpSound = new Howl({
+		src: ["./sounds/bump.wav"],
+		volume: 1,
+	});
 	constructor(opt: BlockOptions) {
 		super({
 			bodyType: "static",
@@ -49,6 +53,7 @@ export class Block extends PhysicsObject {
 		this.sprite.x = spritePos.x;
 		this.sprite.y = spritePos.y;
 		this.defaultSpritePos = new Vec2(spritePos.x, spritePos.y);
+		this.bumpSound.pos(this.pos.x, this.pos.y);
 	}
 	static renderDrag(startPos: Vec2, currPos: Vec2, container: Container): void {
 		const drawStartPos = getPosAtGrid(startPos);

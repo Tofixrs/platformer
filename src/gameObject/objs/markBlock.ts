@@ -98,9 +98,15 @@ export class MarkBlock extends Block {
 			if (player.powerState < PowerState.Big) return false;
 			if (!player.actionStates.includes(ActionState.GroundPound)) return false;
 		}
-		if (!this.item) return true;
+		if (!this.item) {
+			this.bumpSound.play();
+			return true;
+		}
 		const item = getClassFromID(this.item);
-		if (!item) return true;
+		if (!item) {
+			this.bumpSound.play();
+			return true;
+		}
 
 		const pos = this.pos.clone();
 		pos.y -= -this.hitSide! * 0.75;
