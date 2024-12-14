@@ -7,3 +7,12 @@
 html {
 	overflow: hidden;
 }
+
+.screen-orientation {
+	place-items: center;
+	display: none;
+}
+
+.screen-orientation.visible {
+	display: grid;
+}

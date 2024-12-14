@@ -10,6 +10,7 @@ import { Level } from "@worlds/level";
 import { LevelSelect } from "@worlds/levelSelect/levelSelect";
 import { Campaign } from "@worlds/campaign/campaign";
 import { initI18n } from "@lib/i18n/i18n";
+import orientation from "./orientation";
 
 const levelData = await (await fetch("./levels/1-1.json")).text();
 
@@ -29,6 +30,7 @@ export class Game {
 		await this.graphics.preload();
 		await initI18n();
 		Actions.init();
+		orientation.init();
 
 		this.worldController = new WorldController(
 			this.graphics.stage,

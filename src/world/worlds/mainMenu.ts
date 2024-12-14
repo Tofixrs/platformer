@@ -22,8 +22,7 @@ export class MainMenu extends World {
 							content: Sprite.from("title"),
 							styles: {
 								position: "center",
-								padding: 100,
-								paddingBottom: 300,
+								paddingBottom: 200,
 							},
 						},
 						{
@@ -44,6 +43,8 @@ export class MainMenu extends World {
 					],
 					styles: {
 						position: "center",
+						maxHeight: "80%",
+						maxWidth: "80%",
 					},
 				},
 				{
@@ -100,6 +101,7 @@ export class MainMenu extends World {
 						position: "top",
 						margin: 10,
 						zIndex: 9999999,
+						maxHeight: "10%",
 					},
 				},
 			],
