@@ -59,6 +59,10 @@ export class Player extends Entity {
 		src: ["./sounds/powerup.wav"],
 		volume: 1,
 	});
+	deathSound = new Howl({
+		src: ["./sounds/death.wav"],
+		volume: 1,
+	});
 	powerState: PState = PowerState.Small;
 	invTimer = new Timer(1, true);
 	anims = {
@@ -202,6 +206,7 @@ export class Player extends Entity {
 			this.dieVel = 1000;
 			this.diePos = undefined;
 			world.pause = true;
+			this.deathSound.play();
 			return false;
 		} else {
 			super.remove(world, force);
@@ -216,7 +221,7 @@ export class Player extends Entity {
 			this.dieAcc -= 10000 * dt;
 			this.sprite.y -= this.dieVel * dt;
 
-			if (this.sprite.y - 500 > this.diePos.y) {
+			if (this.sprite.y - 500 > this.diePos.y && !this.deathSound.playing()) {
 				world.removeEntity(this.id, true);
 				this.die = false;
 			}
@@ -290,6 +295,7 @@ export class Player extends Entity {
 		this.handleGroundPound();
 		this.jumpSound.pos(this.pos.x, this.pos.y);
 		this.powerUpSound.pos(this.pos.x, this.pos.y);
+		this.deathSound.pos(this.pos.x, this.pos.y);
 	}
 	handleWalk(dt: number) {
 		if (this.actionStates.includes(ActionState.Locked)) return;
