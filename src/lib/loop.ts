@@ -12,21 +12,27 @@ export class Loop {
 	update: (dt: number) => void;
 	fixedUpdate?: () => void;
 	pause = false;
+	lastPause = false;
 	constructor({ tick, update, fixedUpdate }: LoopOpt) {
 		this.update = update;
 		this.tick = tick ? tick : this.tick;
 		this.fixedUpdate = fixedUpdate;
-		window.addEventListener("focus", () => (this.pause = false));
+		window.addEventListener("focus", () => {
+			this.pause = false;
+			this.lastPause = true;
+		});
 		window.addEventListener("blur", () => (this.pause = true));
 	}
 	run() {
 		window.requestAnimationFrame((t) => this.loop(t));
 	}
 	loop(t: number) {
-		if (this.pause) {
+		if (!this.pause && this.lastPause) {
+			this.lastPause = false;
 			this.lastTime = performance.now();
 			return window.requestAnimationFrame((t) => this.loop(t));
 		}
+		if (this.pause) return window.requestAnimationFrame((t) => this.loop(t));
 		const dt = (t - this.lastTime) / 1000;
 		this.lastTime = t;
 		if (this.fixedUpdate) {
