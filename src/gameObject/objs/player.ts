@@ -59,6 +59,10 @@ export class Player extends Entity {
 		src: ["./sounds/powerup.wav"],
 		volume: 1,
 	});
+	dmgSound = new Howl({
+		src: ["./sounds/dmg.wav"],
+		volume: 1,
+	});
 	deathSound = new Howl({
 		src: ["./sounds/death.wav"],
 		volume: 1,
@@ -197,6 +201,7 @@ export class Player extends Entity {
 		if (!this.invTimer.done()) return false;
 		if (this.powerState > PowerState.Small && !force) {
 			this.setPState(PowerState.Small, world);
+			this.dmgSound.play();
 			this.invTimer.reset();
 			return false;
 		} else if (!force || (force && anim)) {
