@@ -11,15 +11,22 @@ export class Loop {
 	tick = 1 / 60;
 	update: (dt: number) => void;
 	fixedUpdate?: () => void;
+	pause = false;
 	constructor({ tick, update, fixedUpdate }: LoopOpt) {
 		this.update = update;
 		this.tick = tick ? tick : this.tick;
 		this.fixedUpdate = fixedUpdate;
+		window.addEventListener("focus", () => (this.pause = false));
+		window.addEventListener("blur", () => (this.pause = true));
 	}
 	run() {
 		window.requestAnimationFrame((t) => this.loop(t));
 	}
 	loop(t: number) {
+		if (this.pause) {
+			this.lastTime = performance.now();
+			return window.requestAnimationFrame((t) => this.loop(t));
+		}
 		const dt = (t - this.lastTime) / 1000;
 		this.lastTime = t;
 		if (this.fixedUpdate) {

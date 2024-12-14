@@ -31,13 +31,6 @@ export class World {
 			attributeFilter: ["width", "height"],
 		});
 
-		window.addEventListener("focus", () => {
-			this.pause = false;
-		});
-		window.addEventListener("blur", () => {
-			this.pause = true;
-		});
-
 		this.c.addChild(this.top);
 		this.c.addChild(this.bottom);
 		this.c.addChild(this.main);
