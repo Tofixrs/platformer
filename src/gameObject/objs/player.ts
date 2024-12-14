@@ -203,6 +203,7 @@ export class Player extends Entity {
 			this.setPState(PowerState.Small, world);
 			this.dmgSound.play();
 			this.invTimer.reset();
+			this.sprite.alpha = 0.5;
 			return false;
 		} else if (!force || (force && anim)) {
 			this.setAnim("die");
@@ -272,6 +273,10 @@ export class Player extends Entity {
 		this.handleMove(dt);
 
 		this.invTimer.tick(dt);
+		if (this.invTimer.doneOnece()) {
+			this.sprite.alpha = 1;
+
+		}
 	}
 	followCam(world: World, dt: number) {
 		const moveDown = window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
@@ -590,6 +595,7 @@ export class Player extends Entity {
 		this.currentAnim = anim;
 		this.anims[anim].x = this.sprite.x;
 		this.anims[anim].y = this.sprite.y;
+		this.anims[anim].alpha = this.sprite.alpha;
 		this.sprite = this.anims[anim];
 		this.sprite.visible = true;
 	}
