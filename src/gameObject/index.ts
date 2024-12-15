@@ -13,6 +13,7 @@ export const PropType = {
 	number: "number",
 	goid: "goid",
 	boolean: "boolean",
+	string: "string",
 } as const;
 
 export type PType = (typeof PropType)[keyof typeof PropType];
@@ -88,6 +89,7 @@ export const GOID = {
 	Coin: "coin",
 	Spike: "spike",
 	Sushroom: "sushroom",
+	Pipe: "pipe",
 } as const;
 
 type GOIOKeys = keyof typeof GOID;
