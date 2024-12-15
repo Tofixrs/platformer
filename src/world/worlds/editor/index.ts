@@ -57,8 +57,14 @@ export class Editor extends World {
 		this.lives = this._lives;
 	}
 	update(dt: number): void {
-		if (Actions.click("test") && !this.ui.dontInput) {
+		if (Actions.click("test")) {
 			this.setTesting(!this.testing);
+		}
+		if (Actions.click("trash")) {
+			this.ui.switchErase();
+		}
+		if (Actions.click("copy")) {
+			this.ui.copy();
 		}
 
 		if (this.isTesting(dt)) return;

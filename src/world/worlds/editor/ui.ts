@@ -9,19 +9,28 @@ import { Storage } from "@lib/storage";
 import { Window } from "@lib/ui/Window";
 import { SmallButton } from "@lib/ui/small_button";
 import i18next from "i18next";
+import { Actions } from "@lib/input";
 
 export class EditorUi extends Screen {
 	selected?: GameObjectID;
 	dontPlace = false;
-	dontInput = false;
 	erase = false;
 	worldRef: Editor;
 	input!: Input;
 	levelData?: string;
 	propertyValue: PropertyValue[] = [];
 	pinWindow = new PinWindow(this);
+	trashButton: SmallButton;
 	constructor(editor: Editor) {
 		super("Editor");
+		this.trashButton = new SmallButton({
+			text: "🗑️",
+			hoverText: i18next.t("erase"),
+			hoverContainer: this,
+			onClick: (self) => {
+				this.switchErase();
+			},
+		});
 		this.worldRef = editor;
 		this.addTop();
 		this.addProps();
@@ -88,14 +97,7 @@ export class EditorUi extends Screen {
 								},
 							},
 							{
-								content: new SmallButton({
-									text: "🗑️",
-									hoverText: i18next.t("erase"),
-									hoverContainer: this,
-									onClick: () => {
-										this.switchErase();
-									},
-								}),
+								content: this.trashButton,
 								styles: {
 									paddingLeft: 5,
 								},
@@ -161,6 +163,7 @@ export class EditorUi extends Screen {
 	switchErase() {
 		this.erase = !this.erase;
 		this.dontPlace = true;
+		this.trashButton.setActive(!this.trashButton.forceActive);
 	}
 	switchLoad() {
 		navigator.clipboard.readText().then((v) => {
@@ -208,11 +211,11 @@ export class EditorUi extends Screen {
 				return v.text == `Input ${prop.name}`;
 			}) as Text;
 			input.addEventListener("pointerdown", () => {
-				this.dontInput = true;
+				Actions.lock = true;
 				this.dontPlace = true;
 			});
 			input.onEnter.connect((v) => {
-				this.dontInput = false;
+				Actions.lock = false;
 				switch (prop.type) {
 					case PropType.number: {
 						const isNumber = !isNaN(Number(v));
