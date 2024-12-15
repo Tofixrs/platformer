@@ -353,14 +353,14 @@ export class Player extends Entity {
 		if (this.actionStates.includes(ActionState.GroundPound)) return;
 		const shouldCrouch = Actions.hold("crouch");
 		if (this.actionStates.includes(ActionState.Crouch) && !shouldCrouch) {
-			this.mainFix.m_shape = this.bigShape;
-			this.sensorShape.m_vertices = this.bigSensorShape.m_vertices;
+			this.setBigHitbox(true);
 			this.body.setAwake(true);
+			this.body.resetMassData();
 		}
 		if (!this.actionStates.includes(ActionState.Crouch) && shouldCrouch) {
-			this.mainFix.m_shape = this.smallShape;
-			this.sensorShape.m_vertices = this.smallSensorShape.m_vertices;
+			this.setBigHitbox(false);
 			this.body.setAwake(true);
+			this.body.resetMassData();
 		}
 		if (this.checkActionState(ActionState.Crouch, shouldCrouch)) return;
 	}
@@ -382,11 +382,13 @@ export class Player extends Entity {
 			this.body.setAngle(0);
 			this.body.setAwake(true);
 			this.sensorShape.m_vertices = this.bigSensorShape.m_vertices;
+			this.body.resetMassData();
 		}
 		if (!this.actionStates.includes(ActionState.Roll) && shouldRoll) {
 			this.body.setAwake(true);
 			this.body.setFixedRotation(false);
 			this.sensorShape.m_vertices = this.rollSensorShape.m_vertices;
+			this.body.resetMassData();
 		}
 		if (this.checkActionState(ActionState.Roll, shouldRoll)) return;
 
@@ -627,7 +629,8 @@ export class Player extends Entity {
 		this.body.setFixedRotation(true);
 
 		this.density = yes ? 1 : 2;
-		if (this.mainFix) this.mainFix.m_density = this.density;
+		if (this.mainFix) this.mainFix.setDensity(this.density);
+		this.body.resetMassData();
 		this.mainFix.m_shape = yes ? this.bigShape : this.smallShape;
 		this.shape = this.mainFix.m_shape;
 		this.sensorShape.m_vertices = yes
