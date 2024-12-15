@@ -355,12 +355,10 @@ export class Player extends Entity {
 		if (this.actionStates.includes(ActionState.Crouch) && !shouldCrouch) {
 			this.setBigHitbox(true);
 			this.body.setAwake(true);
-			this.body.resetMassData();
 		}
 		if (!this.actionStates.includes(ActionState.Crouch) && shouldCrouch) {
 			this.setBigHitbox(false);
 			this.body.setAwake(true);
-			this.body.resetMassData();
 		}
 		if (this.checkActionState(ActionState.Crouch, shouldCrouch)) return;
 	}
@@ -382,13 +380,11 @@ export class Player extends Entity {
 			this.body.setAngle(0);
 			this.body.setAwake(true);
 			this.sensorShape.m_vertices = this.bigSensorShape.m_vertices;
-			this.body.resetMassData();
 		}
 		if (!this.actionStates.includes(ActionState.Roll) && shouldRoll) {
 			this.body.setAwake(true);
 			this.body.setFixedRotation(false);
 			this.sensorShape.m_vertices = this.rollSensorShape.m_vertices;
-			this.body.resetMassData();
 		}
 		if (this.checkActionState(ActionState.Roll, shouldRoll)) return;
 
@@ -644,6 +640,7 @@ export class Player extends Entity {
 		const sprPos = planckToPixi(pos);
 		this.sprite.x = sprPos.x;
 		this.sprite.y = sprPos.y;
+		this.body.resetMassData();
 	}
 	checkGround(contact: Contact) {
 		const fixA = contact.getFixtureA();
