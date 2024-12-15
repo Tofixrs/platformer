@@ -34,7 +34,7 @@ export class Entity extends PhysicsObject {
 		const lerpedPos = lerp2D(
 			this.lastState?.pos,
 			planckToPixi(this.pos),
-			(dt / World.physicsStepTime),
+			dt / World.physicsStepTime,
 		);
 		const lerpedAngle = lerp(this.lastState.angle, this.body!.getAngle(), 1);
 		this.sprite.x = lerpedPos.x;

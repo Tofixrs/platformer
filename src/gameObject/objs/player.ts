@@ -111,6 +111,7 @@ export class Player extends Entity {
 	diveShape = capsule(new Vec2(0.23, 0.45), Vec2.zero(), Math.PI / 2);
 	sensorShape = new Box(0.2, 0.05, new Vec2(0, 0.2));
 	smallSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.2));
+	rollSensorShape = capsule(new Vec2(0.25, 0.25));
 	bigSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.45));
 	sensorDiveShape = new Box(0.4, 0.1, new Vec2(0, 0.2));
 	static props: Property[] = [
@@ -275,7 +276,6 @@ export class Player extends Entity {
 		this.invTimer.tick(dt);
 		if (this.invTimer.doneOnece()) {
 			this.sprite.alpha = 1;
-
 		}
 	}
 	followCam(world: World, dt: number) {
@@ -378,18 +378,23 @@ export class Player extends Entity {
 		if (this.actionStates.includes(ActionState.Dive)) return;
 		if (this.actionStates.includes(ActionState.GroundPound)) return;
 		const shouldRoll =
-			Actions.hold("roll") && this.actionStates.includes(ActionState.Crouch);
+			Actions.hold("roll") &&
+			this.actionStates.includes(ActionState.Crouch) &&
+			(Actions.hold("left") || Actions.hold("right"));
 		if (this.actionStates.includes(ActionState.Roll) && !shouldRoll) {
 			this.body.setFixedRotation(true);
 			this.body.setAngle(0);
 			this.body.setAwake(true);
+			this.sensor.m_shape = this.smallSensorShape;
 		}
 		if (!this.actionStates.includes(ActionState.Roll) && shouldRoll) {
 			this.body.setAwake(true);
 			this.body.setFixedRotation(false);
+			this.sensor.m_shape = this.rollSensorShape;
 		}
 		if (this.checkActionState(ActionState.Roll, shouldRoll)) return;
 
+		if (!this.onGround) return;
 		this.body?.applyForceToCenter(new Vec2(0, 25 * dt), true);
 		this.body?.applyForce(
 			new Vec2(this.direction * this.rollForce * dt, 0),

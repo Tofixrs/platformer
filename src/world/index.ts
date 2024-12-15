@@ -13,7 +13,7 @@ export class World {
 	bottom = new Container({ zIndex: -10 });
 	c = new Container();
 	entities: GameObject[] = [];
-	static physicsStepTime = 1 / 60;
+	static physicsStepTime = 1 / 40;
 	pause: boolean = false;
 	colorMatrixTimer = new Timer(10);
 	colorMatrixDegrees = 0;
@@ -90,7 +90,7 @@ export class World {
 	}
 	fixedUpdate(): void {
 		if (this.pause) return;
-		this.p.step(World.physicsStepTime, 6, 2);
+		this.p.step(World.physicsStepTime, 6, 3);
 		this.entities.forEach((e) => e.fixedUpdate());
 	}
 	recenter(screen: Rectangle) {

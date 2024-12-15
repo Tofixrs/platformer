@@ -21,6 +21,7 @@ export class Game {
 	loop: Loop = new Loop({
 		update: (dt) => this.update(dt),
 		fixedUpdate: () => this.fixedUpdate(),
+		tick: 1 / 40,
 	});
 	constructor() {
 		Actions.debug = Game.debug;
