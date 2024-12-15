@@ -5,6 +5,7 @@ export class Actions {
 	static inputs: Map<string, string[]> = Storage.getMap("inputs");
 	static clicked: Map<string, boolean> = new Map();
 	static debug = false;
+	static lock = false;
 	static bind(name: string, keys: string[]) {
 		this.actions.set(name, false);
 		for (const key of keys) {
@@ -61,6 +62,8 @@ export class Actions {
 		{ name: "test", binds: ["p"] },
 		{ name: "run", binds: ["shift"] },
 		{ name: "debug", binds: ["`"] },
+		{ name: "trash", binds: ["x"] },
+		{ name: "copyLevel", binds: ["c"] },
 	];
 	static init() {
 		//@ts-expect-error
@@ -75,6 +78,25 @@ export class Actions {
 			if (Actions.isBound(name)) return;
 			Actions.bind(name, binds);
 		});
+
+		window.addEventListener("keydown", (ev) => {
+			if (this.lock) return;
+			const actions = this.inputs.get(ev.key.toLowerCase()) || [];
+			for (const action of actions) {
+				this.actions.set(action, true);
+				if (this.debug)
+					console.log(`Pressed: ${action} with key ${ev.key.toLowerCase()}`);
+			}
+		});
+
+		window.addEventListener("keyup", (ev) => {
+			const actions = this.inputs.get(ev.key.toLowerCase()) || [];
+			for (const action of actions) {
+				this.actions.set(action, false);
+				if (this.debug)
+					console.log(`Unpressed: ${action} with key ${ev.key.toLowerCase()}`);
+			}
+		});
 	}
 	static reset() {
 		this.inputs = new Map();
@@ -84,21 +106,3 @@ export class Actions {
 		});
 	}
 }
-
-window.addEventListener("keydown", (ev) => {
-	const actions = Actions.inputs.get(ev.key.toLowerCase()) || [];
-	for (const action of actions) {
-		Actions.actions.set(action, true);
-		if (Actions.debug)
-			console.log(`Pressed: ${action} with key ${ev.key.toLowerCase()}`);
-	}
-});
-
-window.addEventListener("keyup", (ev) => {
-	const actions = Actions.inputs.get(ev.key.toLowerCase()) || [];
-	for (const action of actions) {
-		Actions.actions.set(action, false);
-		if (Actions.debug)
-			console.log(`Unpressed: ${action} with key ${ev.key.toLowerCase()}`);
-	}
-});
