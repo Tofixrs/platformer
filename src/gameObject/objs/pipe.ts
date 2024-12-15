@@ -1,6 +1,6 @@
-import { meter } from "@lib/math/units";
+import { meter, planckToPixi } from "@lib/math/units";
 import { SerializedGO } from "@lib/serialize";
-import { getPosAtGrid } from "@worlds/editor";
+import { Editor, getGridPosAtPos, getPosAtGrid } from "@worlds/editor";
 import {
 	GameObject,
 	GOID,
@@ -18,12 +18,12 @@ import { Actions } from "@lib/input";
 
 export class Pipe extends Ground {
 	static atlas: GroundAtlas = {
-		corner: "rock",
-		corner_both: "rock",
-		side: "rock",
-		one_block: "rock",
-		center: "rock",
-		side_both: "rock",
+		corner: "",
+		corner_both: "",
+		side: "",
+		one_block: "",
+		center: "",
+		side_both: "",
 	};
 	rotation: number;
 	player?: Player;
@@ -65,7 +65,10 @@ export class Pipe extends Ground {
 			this.waitUntilNextEntry = false;
 		}
 		if (this.waitUntilNextEntry) return;
-		if (!Actions.hold("crouch")) return;
+		if (this.rotation == 0 && !Actions.hold("crouch")) return;
+		if (this.rotation == 2 && !Actions.hold("jump")) return;
+		if (this.rotation == 1 && !Actions.hold("right")) return;
+		if (this.rotation == 3 && !Actions.hold("left")) return;
 
 		const exitPipePos = this.exitPipe.pos.clone();
 		const s = this.exitPipe.shape as PolygonShape;
@@ -73,15 +76,22 @@ export class Pipe extends Ground {
 		const h = Math.abs(s.m_vertices[3].y - s.m_vertices[1].y);
 
 		const offset = {
-			true: () => new Vec2(this.exitPipe!.rotation == 1 ? w / 2 : -(w / 2), 0),
-			false: () => new Vec2(0, this.exitPipe!.rotation == 2 ? h / 2 : -(h / 2)),
+			true: () =>
+				new Vec2(this.exitPipe!.rotation == 1 ? w / 2 + 1 : -(w / 2) - 1, 0),
+			false: () =>
+				new Vec2(0, this.exitPipe!.rotation == 2 ? h / 2 + 1 : -(h / 2) - 1),
 		}[String(this.exitPipe.rotation == 1 || this.exitPipe.rotation == 3)]!();
 		exitPipePos.x += offset.x;
 		exitPipePos.y += offset.y;
 		this.exitPipe.waitUntilNextEntry = true;
 		this.player.body.setPosition(exitPipePos);
 	}
-	static renderDrag(startPos: Vec2, currPos: Vec2, container: Container): void {
+	static renderDrag(
+		startPos: Vec2,
+		currPos: Vec2,
+		container: Container,
+		rotation?: number,
+	): void {
 		const drawStartPos = getPosAtGrid(startPos);
 		const drawEndPos = getPosAtGrid(currPos);
 
@@ -89,27 +99,119 @@ export class Pipe extends Ground {
 		const h = Math.ceil(Math.abs(drawEndPos.y - drawStartPos.y) / 32) * 32;
 		const wR = h > w ? 1 * meter : w;
 		const hR = h > w ? h : 1 * meter;
-		const size = new Vec2(wR, hR);
+		let r = rotation ?? (w > h ? 1 : 2);
 
-		const spr = new TilingSprite({
-			tileScale: { x: 2, y: 2 },
-			texture: Texture.from("rock"),
-			width: size.x,
-			height: size.y,
-		});
-		if (drawEndPos.x - drawStartPos.x < 0) {
+		if (drawStartPos.x > drawEndPos.x) {
 			container.x = h > w ? drawStartPos.x - 1 * meter : drawStartPos.x - w;
+			if (!rotation) r = 3;
 		}
-		if (drawEndPos.y - drawStartPos.y < 0) {
+		if (drawStartPos.y > drawEndPos.y) {
 			container.y = w > h ? drawStartPos.y - 1 * meter : drawStartPos.y - h;
+			if (!rotation) r = 0;
 		}
-		container.addChild(spr);
+		if (r == 0) {
+			const bottom = new TilingSprite({
+				texture: Texture.from("pipe_bottom"),
+				width: h > w ? wR : wR - Editor.gridSize * 2,
+				height: h > w ? hR - Editor.gridSize * 2 : hR,
+				y: Editor.gridSize * 2,
+			});
+			const top = new TilingSprite({
+				texture: Texture.from("pipe_top"),
+				width: 64,
+				height: 32,
+			});
+
+			container.addChild(bottom, top);
+		} else if (r == 1) {
+			const bottom = new TilingSprite({
+				texture: Texture.from("pipe_bottom"),
+				rotation: -Math.PI / 2,
+				height: h > w ? wR : wR - Editor.gridSize * 2,
+				width: h > w ? hR - Editor.gridSize * 2 : hR,
+				y: meter,
+			});
+
+			const top = new TilingSprite({
+				texture: Texture.from("pipe_top"),
+				rotation: -Math.PI / 2,
+				height: Editor.gridSize * 2,
+				width: Editor.gridSize * 4,
+				x: wR - Editor.gridSize * 2,
+				y: Editor.gridSize * 4,
+			});
+
+			container.addChild(bottom, top);
+		} else if (r == 2) {
+			const bottom = new TilingSprite({
+				texture: Texture.from("pipe_bottom"),
+				rotation: Math.PI,
+				width: h > w ? wR : wR - Editor.gridSize * 2,
+				height: h > w ? hR - Editor.gridSize * 2 : hR,
+				y: hR - 32,
+				x: 64,
+			});
+			const top = new TilingSprite({
+				rotation: Math.PI,
+				texture: Texture.from("pipe_top"),
+				width: 64,
+				height: 32,
+				y: hR,
+				x: 64,
+			});
+			container.addChild(bottom, top);
+		} else if (r == 3) {
+			const bottom = new TilingSprite({
+				texture: Texture.from("pipe_bottom"),
+				rotation: Math.PI / 2,
+				height: h > w ? wR : wR - Editor.gridSize * 2,
+				width: h > w ? hR - Editor.gridSize * 2 : hR,
+				x: wR,
+			});
+
+			const top = new TilingSprite({
+				texture: Texture.from("pipe_top"),
+				rotation: Math.PI / 2,
+				height: Editor.gridSize * 2,
+				width: Editor.gridSize * 4,
+				x: 32,
+			});
+
+			container.addChild(bottom, top);
+		}
 	}
 	create(world: World): void {
-		super.create(world);
-		const s = this.shape as PolygonShape;
-		const w = Math.abs(s.m_vertices[3].x - s.m_vertices[0].x);
-		const h = Math.abs(s.m_vertices[3].y - s.m_vertices[1].y);
+		this.body = world.p.createBody({
+			position: this.pos,
+			fixedRotation: this.fixedRotation,
+			type: this.bodyType,
+		});
+
+		this.body.createFixture({
+			density: this.density,
+			shape: this.shape,
+			friction: this.friction,
+			filterCategoryBits: 10,
+			userData: {
+				goid: this.goid,
+				id: this.id,
+			},
+		});
+		const shape = this.shape as PolygonShape;
+
+		const pos = planckToPixi(this.body.getPosition());
+		const w = Math.abs(shape.m_vertices[2].x) + Math.abs(shape.m_vertices[0].x);
+		const h = Math.abs(shape.m_vertices[0].y) + Math.abs(shape.m_vertices[1].y);
+		const size = planckToPixi(new Vec2(w, h));
+		this.cont.x = pos.x - size.x / 2;
+		this.cont.y = pos.y - size.y / 2;
+		const gridPos = getGridPosAtPos(new Vec2(this.cont.x, this.cont.y));
+		const gridEndPos = getGridPosAtPos(
+			new Vec2(this.cont.x + size.x, this.cont.y + size.y),
+		);
+		Pipe.renderDrag(gridPos, gridEndPos, this.cont, this.rotation);
+
+		world.main.addChild(this.cont);
 
 		const offset = {
 			true: () => new Vec2(this.rotation == 1 ? w / 2 : -(w / 2), 0),
@@ -118,7 +220,7 @@ export class Pipe extends Ground {
 
 		this.playerSensor = this.body.createFixture({
 			isSensor: true,
-			shape: new Box(0.45, 0.25, offset, this.rotation * (Math.PI / 2)),
+			shape: new Box(0.45, 0.1, offset, this.rotation * (Math.PI / 2)),
 		});
 		world.p.on("begin-contact", (contact) => {
 			const fixA = contact.getFixtureA();

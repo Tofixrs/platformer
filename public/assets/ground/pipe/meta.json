@@ -1,0 +1,19 @@
+{
+	"frames": {
+		"pipe_top": {
+			"frame": { "x": 0, "y": 0, "w": 128, "h": 64 }
+		},
+		"pipe_bottom": {
+			"frame": { "x": 0, "y": 64, "w": 128, "h": 64 }
+		}
+	},
+	"meta": {
+		"image": "pipe.png",
+		"format": "RGBA8888",
+		"scale": 2,
+		"size": {
+			"w": 128,
+			"h": 128
+		}
+	}
+}
