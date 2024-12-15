@@ -34,7 +34,7 @@ export type PlayerAnims = keyof Player["anims"];
 export class Player extends Entity {
 	walkForce = 500;
 	runForce = 600;
-	rollForce = 1000;
+	rollForce = 700;
 	longJumpVertForce = 1500;
 	jumpForce = -10000;
 	diveForce = 350;
@@ -354,16 +354,12 @@ export class Player extends Entity {
 		const shouldCrouch = Actions.hold("crouch");
 		if (this.actionStates.includes(ActionState.Crouch) && !shouldCrouch) {
 			this.mainFix.m_shape = this.bigShape;
-			this.sensorShape.m_vertices.forEach((v) => {
-				v.y += 0.25;
-			});
+			this.sensorShape.m_vertices = this.bigSensorShape.m_vertices;
 			this.body.setAwake(true);
 		}
 		if (!this.actionStates.includes(ActionState.Crouch) && shouldCrouch) {
 			this.mainFix.m_shape = this.smallShape;
-			this.sensorShape.m_vertices.forEach((v) => {
-				v.y -= 0.25;
-			});
+			this.sensorShape.m_vertices = this.smallSensorShape.m_vertices;
 			this.body.setAwake(true);
 		}
 		if (this.checkActionState(ActionState.Crouch, shouldCrouch)) return;
