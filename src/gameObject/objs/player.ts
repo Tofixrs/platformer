@@ -385,7 +385,7 @@ export class Player extends Entity {
 			this.body.setFixedRotation(true);
 			this.body.setAngle(0);
 			this.body.setAwake(true);
-			this.sensor.m_shape = this.smallSensorShape;
+			this.sensor.m_shape = this.bigSensorShape;
 		}
 		if (!this.actionStates.includes(ActionState.Roll) && shouldRoll) {
 			this.body.setAwake(true);
