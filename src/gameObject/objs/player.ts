@@ -385,12 +385,12 @@ export class Player extends Entity {
 			this.body.setFixedRotation(true);
 			this.body.setAngle(0);
 			this.body.setAwake(true);
-			this.sensor.m_shape = this.bigSensorShape;
+			this.sensorShape.m_vertices = this.bigSensorShape.m_vertices;
 		}
 		if (!this.actionStates.includes(ActionState.Roll) && shouldRoll) {
 			this.body.setAwake(true);
 			this.body.setFixedRotation(false);
-			this.sensor.m_shape = this.rollSensorShape;
+			this.sensorShape.m_vertices = this.rollSensorShape.m_vertices;
 		}
 		if (this.checkActionState(ActionState.Roll, shouldRoll)) return;
 
@@ -606,6 +606,10 @@ export class Player extends Entity {
 	}
 	setPState(state: PState, world: World, pause: boolean = true) {
 		this.setBigHitbox(state >= PowerState.Big);
+		this.actionStates = this.actionStates.filter(
+			(v) =>
+				v == ActionState.Run || v == ActionState.Walk || v == ActionState.Jump,
+		);
 		world.pause = pause;
 		if (pause) {
 			this.dmg = true;
@@ -623,7 +627,8 @@ export class Player extends Entity {
 		this.powerState = state;
 	}
 	setBigHitbox(yes: boolean) {
-		if (this.mainFix.m_shape == (yes ? this.bigShape : this.smallShape)) return;
+		this.body.setAngle(0);
+		this.body.setFixedRotation(true);
 
 		this.density = yes ? 1 : 2;
 		if (this.mainFix) this.mainFix.m_density = this.density;

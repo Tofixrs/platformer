@@ -96,7 +96,7 @@ export class Block extends PhysicsObject {
 		});
 		this.hitSensor = this.body.createFixture({
 			isSensor: true,
-			shape: new Box(0.15, 0.28),
+			shape: new Box(0.25, 0.33),
 		});
 		world.p.on("begin-contact", (contact) => {
 			this.onBegin(contact);
