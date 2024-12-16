@@ -320,13 +320,13 @@ class PinWindow extends Window<{
 			GOID.Player,
 			GOID.Goomba,
 			GOID.Koopa,
-			GOID.Mushroom,
+			GOID.Spike,
+			GOID.Coin,
+			GOID.Pipe,
 			GOID.MarkBlock,
 			GOID.Brick,
-			GOID.Grass,
 			GOID.Rock,
-			GOID.Ice,
-			GOID.DeathPlane,
+			GOID.Flag,
 		]);
 
 		super({ title: "pins", data: { pins: topPinned, editorUiRef } });

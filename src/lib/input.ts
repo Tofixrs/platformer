@@ -64,6 +64,16 @@ export class Actions {
 		{ name: "debug", binds: ["`"] },
 		{ name: "trash", binds: ["x"] },
 		{ name: "copyLevel", binds: ["c"] },
+		{ name: "pin1", binds: ["1"] },
+		{ name: "pin2", binds: ["2"] },
+		{ name: "pin3", binds: ["3"] },
+		{ name: "pin4", binds: ["4"] },
+		{ name: "pin5", binds: ["5"] },
+		{ name: "pin6", binds: ["6"] },
+		{ name: "pin7", binds: ["7"] },
+		{ name: "pin8", binds: ["8"] },
+		{ name: "pin9", binds: ["9"] },
+		{ name: "pin10", binds: ["10"] },
 	];
 	static init() {
 		//@ts-expect-error

@@ -49,5 +49,15 @@
 	"orientation": "Please rotate your device",
 	"unpause": "Unpause",
 	"exit": "Exit",
-	"pause": "Pause"
+	"pause": "Pause",
+	"pin1": "Pick object 1",
+	"pin2": "Pick object 2",
+	"pin3": "Pick object 3",
+	"pin4": "Pick object 4",
+	"pin5": "Pick object 5",
+	"pin6": "Pick object 6",
+	"pin7": "Pick object 7",
+	"pin8": "Pick object 8",
+	"pin9": "Pick object 9",
+	"pin10": "Pick object 10"
 }

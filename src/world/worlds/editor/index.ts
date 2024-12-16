@@ -67,6 +67,11 @@ export class Editor extends World {
 			this.ui.copy();
 		}
 
+		for (let i = 1; i <= 10; i++) {
+			if (!Actions.click(`pin${i}`)) continue;
+			this.ui.onSelectedPin(this.ui.pinWindow.topPinned[i - 1]);
+		}
+
 		if (this.isTesting(dt)) return;
 
 		this.ui.onUpdate(dt);

@@ -49,5 +49,15 @@
 	"orientation": "Proszę obrócić urządzenie",
 	"unpause": "Wznów",
 	"exit": "Wyjdź",
-	"pause": "Pauza"
+	"pause": "Pauza",
+	"pin1": "Wybierz 1 przypięty objekt",
+	"pin2": "Wybierz 2 przypięty objekt",
+	"pin3": "Wybierz 3 przypięty objekt",
+	"pin4": "Wybierz 4 przypięty objekt",
+	"pin5": "Wybierz 5 przypięty objekt",
+	"pin6": "Wybierz 5 przypięty objekt",
+	"pin7": "Wybierz 6 przypięty objekt",
+	"pin8": "Wybierz 8 przypięty objekt",
+	"pin9": "Wybierz 9 przypięty objekt",
+	"pin10": "Wybierz 10 przypięty objekt"
 }
