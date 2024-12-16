@@ -41,7 +41,7 @@ export class MarkBlock extends Block {
 		anim.play();
 
 		super({
-			friction: 0.2,
+			friction: 0.75,
 			sprite: anim,
 			pos,
 			goid: GOID.MarkBlock,

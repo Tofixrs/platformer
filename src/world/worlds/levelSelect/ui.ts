@@ -29,7 +29,7 @@ export class LevelWindow extends Window<{
 			hoverText: i18next.t("bestTime", {
 				time: formatTime(time),
 			}),
-			hoverContainer: time == -1 ? undefined : top,
+			hoverContainer: top,
 			onClick: () => this.worldController.set("campaign"),
 			textStyle: {
 				fontSize: 40,

@@ -32,14 +32,26 @@ export class Pipe extends Ground {
 	exit?: string;
 	checkedPipe = false;
 	waitUntilNextEntry = false;
+	exitOnly = false;
 	static props: Property[] = [
 		{
 			name: "exit",
 			type: PropType.string,
 			defaultValue: "",
 		},
+		{
+			name: "exitOnly",
+			type: PropType.boolean,
+			defaultValue: "false",
+		},
 	];
-	constructor(pos: Vec2, shape: Shape, rotation: number, exit?: string) {
+	constructor(
+		pos: Vec2,
+		shape: Shape,
+		rotation: number,
+		exit?: string,
+		exitOnly: boolean = false,
+	) {
 		super({
 			pos,
 			friction: 0.75,
@@ -48,9 +60,11 @@ export class Pipe extends Ground {
 		});
 		this.rotation = rotation;
 		this.exit = exit;
+		this.exitOnly = exitOnly;
 	}
 	update(_dt: number, world: World): void {
 		super.update(_dt, world);
+		if (this.exitOnly) return;
 		if (!this.exit) return;
 		if (!this.checkedPipe) {
 			const pipe = world.entities.find(
@@ -85,6 +99,12 @@ export class Pipe extends Ground {
 		exitPipePos.y += offset.y;
 		this.exitPipe.waitUntilNextEntry = true;
 		this.player.body.setPosition(exitPipePos);
+
+		const moveDown = window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
+		const exitPipePosPixi = planckToPixi(exitPipePos);
+		this.player.sprite.x = exitPipePosPixi.x;
+		this.player.sprite.y = exitPipePosPixi.y;
+		world.main.pivot.set(exitPipePosPixi.x, exitPipePosPixi.y - moveDown);
 	}
 	static renderDrag(
 		startPos: Vec2,
@@ -230,6 +250,7 @@ export class Pipe extends Ground {
 			isSensor: true,
 			shape: new Box(0.45, 0.1, offset, this.rotation * (Math.PI / 2)),
 		});
+		if (this.exitOnly || !this.exit) return;
 		world.p.on("begin-contact", (contact) => {
 			const fixA = contact.getFixtureA();
 			const fixB = contact.getFixtureB();
@@ -288,7 +309,14 @@ export class Pipe extends Ground {
 		}
 
 		const exit = props?.find((v) => v.name == "exit");
-		return new Pipe(pos, new Box(wR / 2, hR / 2), rotation, exit?.value);
+		const exitOnly = props?.find((v) => v.name == "exitOnly")?.value == "true";
+		return new Pipe(
+			pos,
+			new Box(wR / 2, hR / 2),
+			rotation,
+			exit?.value,
+			exitOnly,
+		);
 	}
 	serialize(): SerializedGO {
 		return {
@@ -298,6 +326,7 @@ export class Pipe extends Ground {
 				shapeVerts: (this.shape as PolygonShape).m_vertices,
 				rotation: this.rotation,
 				exit: this.exit,
+				exitOnly: this.exitOnly,
 			},
 		};
 	}
@@ -309,6 +338,7 @@ export class Pipe extends Ground {
 			shape,
 			obj.data.rotation,
 			obj.data.exit,
+			obj.data.exitOnly,
 		);
 	}
 }

@@ -13,7 +13,7 @@ export class Brick extends Block {
 	});
 	constructor(pos: Vec2) {
 		super({
-			friction: 0.2,
+			friction: 0.75,
 			sprite: Sprite.from("brick"),
 			pos,
 			goid: GOID.Brick,
