@@ -67,8 +67,8 @@ export class Pipe extends Ground {
 		if (this.waitUntilNextEntry) return;
 		if (this.rotation == 0 && !Actions.hold("crouch")) return;
 		if (this.rotation == 2 && !Actions.hold("jump")) return;
-		if (this.rotation == 1 && !Actions.hold("right")) return;
-		if (this.rotation == 3 && !Actions.hold("left")) return;
+		if (this.rotation == 1 && !Actions.hold("left")) return;
+		if (this.rotation == 3 && !Actions.hold("right")) return;
 
 		const exitPipePos = this.exitPipe.pos.clone();
 		const s = this.exitPipe.shape as PolygonShape;
