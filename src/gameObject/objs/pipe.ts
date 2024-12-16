@@ -97,17 +97,17 @@ export class Pipe extends Ground {
 
 		const w = Math.ceil(Math.abs(drawEndPos.x - drawStartPos.x) / 32) * 32;
 		const h = Math.ceil(Math.abs(drawEndPos.y - drawStartPos.y) / 32) * 32;
-		const wR = h > w ? 1 * meter : w;
-		const hR = h > w ? h : 1 * meter;
+		const wR = h > w ? 1 * meter : Math.max(w, 64);
+		const hR = h > w ? Math.max(h, 64) : 1 * meter;
 		let r = rotation ?? (w > h ? 1 : 2);
 
 		if (drawStartPos.x > drawEndPos.x) {
 			container.x = h > w ? drawStartPos.x - 1 * meter : drawStartPos.x - w;
-			if (!rotation) r = 3;
+			if (!rotation && r == 1) r = 3;
 		}
 		if (drawStartPos.y > drawEndPos.y) {
 			container.y = w > h ? drawStartPos.y - 1 * meter : drawStartPos.y - h;
-			if (!rotation) r = 0;
+			if (!rotation && r == 2) r = 0;
 		}
 		if (r == 0) {
 			const bottom = new TilingSprite({
@@ -116,6 +116,10 @@ export class Pipe extends Ground {
 				height: h > w ? hR - Editor.gridSize * 2 : hR,
 				y: Editor.gridSize * 2,
 			});
+			if (wR == 64 && hR == 64) {
+				bottom.width = 64;
+				bottom.height = 32;
+			}
 			const top = new TilingSprite({
 				texture: Texture.from("pipe_top"),
 				width: 64,
@@ -159,6 +163,10 @@ export class Pipe extends Ground {
 				y: hR,
 				x: 64,
 			});
+			if (wR == 64 && hR == 64) {
+				bottom.width = 64;
+				bottom.height = 32;
+			}
 			container.addChild(bottom, top);
 		} else if (r == 3) {
 			const bottom = new TilingSprite({
@@ -258,18 +266,18 @@ export class Pipe extends Ground {
 		const h = Math.abs(s.m_vertices[3].y - s.m_vertices[1].y);
 		const wA = w + (w % 0.5);
 		const hA = h + (h % 0.5);
-		const wR = h > w ? 1 : wA;
-		const hR = h > w ? hA : 1;
+		const wR = h > w ? 1 : Math.max(wA, 1);
+		const hR = h > w ? Math.max(hA, 1) : 1;
 		let rotation = w > h ? 1 : 2;
 		if (startPos.x > currPos.x) {
 			pos.x -= (w % 0.5) / 2;
-			rotation = 3;
+			if (rotation == 1) rotation = 3;
 		} else {
 			pos.x += (w % 0.5) / 2;
 		}
 		if (startPos.y > currPos.y) {
 			pos.y -= (h % 0.5) / 2;
-			rotation = 0;
+			if (rotation == 2) rotation = 0;
 		} else {
 			pos.y += (h % 0.5) / 2;
 		}
