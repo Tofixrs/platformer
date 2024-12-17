@@ -153,6 +153,7 @@ export class Player extends Entity {
 		this.anims.crouch.anchor.set(0.5, 0.75);
 		this.anims.dive.anchor.set(0.5, 0.5);
 		this.powerState = powerState;
+		this.anims.die.anchor.set(0.5, 0.5);
 	}
 	static commonConstructor(
 		pos: Vec2,

@@ -32,7 +32,7 @@ export class Level extends World {
 		name?: string,
 	) {
 		super(graphics);
-		this.ui = new LevelUi(worldController);
+		this.ui = new LevelUi(worldController, this);
 		this.top.addChild(this.ui);
 		this.data = data;
 		this.load();
@@ -137,10 +137,12 @@ export class LevelUi extends Screen {
 	});
 	pauseWindow: PauseWindow;
 	worldController: WorldController;
-	constructor(worldController: WorldController) {
+	constructor(worldController: WorldController, level: Level) {
 		super("level");
 		this.worldController = worldController;
-		this.pauseWindow = new PauseWindow(worldController, "mainMenu");
+		this.pauseWindow = new PauseWindow(worldController, "mainMenu", () =>
+			level.load(),
+		);
 		this.addTop();
 		this.addPause();
 	}

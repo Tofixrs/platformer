@@ -136,6 +136,7 @@ export class Campaign extends World {
 		this.lives = 3;
 		this.currLevel = 0;
 		this.time = 0;
+		this.coins = 0;
 		this.campaignTime = 0;
 		this.playerPState = undefined;
 		this.colorMatrixDegrees = 0;

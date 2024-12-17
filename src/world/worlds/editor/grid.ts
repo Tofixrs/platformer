@@ -3,7 +3,7 @@ import { Graphics as Draw, Rectangle } from "pixi.js";
 import { Editor } from ".";
 
 export class Grid {
-	draw = new Draw();
+	draw = new Draw({ zIndex: -3 });
 	constructor(pivot: Vec2, screen: Rectangle) {
 		this.render(pivot, screen);
 	}

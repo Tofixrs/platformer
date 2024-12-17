@@ -1,4 +1,4 @@
-import { meter, planckToPixi } from "@lib/math/units";
+import { meter, planckToPixi, planckToPixi1D } from "@lib/math/units";
 import { SerializedGO } from "@lib/serialize";
 import { Editor, getGridPosAtPos, getPosAtGrid } from "@worlds/editor";
 import {
@@ -9,9 +9,9 @@ import {
 	PropType,
 } from "gameObject";
 import { Ground, GroundAtlas } from "gameObject/types/ground";
-import { Container, Texture, TilingSprite } from "pixi.js";
+import { Container, Sprite, Texture, TilingSprite } from "pixi.js";
 import { Box, Fixture, Polygon, PolygonShape, Shape, Vec2 } from "planck";
-import { Player } from "./player";
+import { Player, PowerState } from "./player";
 import { World } from "world";
 import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { Actions } from "@lib/input";
@@ -33,6 +33,9 @@ export class Pipe extends Ground {
 	checkedPipe = false;
 	waitUntilNextEntry = false;
 	exitOnly = false;
+	player_small = Sprite.from("player_small_stand");
+	player_big_crouch = Sprite.from("player_big_crouch");
+	player_big_stand = Sprite.from("player_big_stand");
 	static props: Property[] = [
 		{
 			name: "exit",
@@ -61,6 +64,28 @@ export class Pipe extends Ground {
 		this.rotation = rotation;
 		this.exit = exit;
 		this.exitOnly = exitOnly;
+		this.player_small.anchor.set(0.5, 0.5);
+		this.player_small.zIndex = -2;
+		this.player_small.visible = false;
+
+		this.player_big_crouch.anchor.set(0.5, 0.5);
+		this.player_big_crouch.visible = false;
+		this.player_big_crouch.zIndex = -2;
+
+		this.player_big_stand.anchor.set(0.5, 0.5);
+		this.player_big_stand.scale.set(0.125, 0.75);
+		this.player_big_stand.visible = false;
+		this.player_big_stand.zIndex = -2;
+		this.player_big_crouch.label = "Pipe: player_big_crouch";
+		this.player_small.label = "Pipe: player_small_stand";
+		this.player_big_stand.label = "Pipe: player_big_stand";
+	}
+	remove(world: World): boolean {
+		world.main.removeChild(this.player_small);
+		world.main.removeChild(this.player_big_stand);
+		world.main.removeChild(this.player_big_crouch);
+
+		return super.remove(world);
 	}
 	update(_dt: number, world: World): void {
 		super.update(_dt, world);
@@ -84,8 +109,94 @@ export class Pipe extends Ground {
 		if (this.rotation == 1 && !Actions.hold("left")) return;
 		if (this.rotation == 3 && !Actions.hold("right")) return;
 
-		const exitPipePos = this.exitPipe.pos.clone();
-		const s = this.exitPipe.shape as PolygonShape;
+		world.pause = true;
+		this.player.sprite.visible = false;
+		if (this.player.powerState > PowerState.Small && this.rotation == 0) {
+			const pipePosX = planckToPixi1D(this.pos.x);
+			this.player_big_crouch.scale.x = this.player.direction;
+			this.player_big_crouch.position = this.player.sprite.position;
+			this.player_big_crouch.position.x = pipePosX;
+			this.player_big_crouch.visible = true;
+		} else if (
+			this.player.powerState > PowerState.Small &&
+			this.rotation != 0
+		) {
+			const pipePosY = planckToPixi1D(this.pos.y);
+			this.player_big_stand.scale.x = this.player.direction;
+			this.player_big_stand.position = this.player.sprite.position;
+			this.player_big_stand.position.y = pipePosY;
+			this.player_big_stand.visible = true;
+		} else {
+			const pipePosY = planckToPixi1D(this.pos.y);
+			this.player_small.scale.x = this.player.direction;
+			this.player_small.position = this.player.sprite.position;
+			this.player_small.position.y = pipePosY;
+			this.player_small.visible = true;
+		}
+	}
+	pausedUpdate(dt: number, world: World): void {
+		if (!this.player) return;
+		if (this.rotation == 0) {
+			const animYPos =
+				this.player?.powerState > PowerState.Small
+					? this.player_big_crouch.y
+					: this.player_small.y;
+
+			if (this.player?.sprite.position.y + 100 < animYPos) {
+				this.tpPlayer(world);
+				this.player_big_crouch.visible = false;
+				this.player_small.visible = false;
+				this.player.sprite.visible = true;
+				world.pause = false;
+				return;
+			}
+
+			this.player_big_crouch.y += 100 * dt;
+			this.player_small.y += 100 * dt;
+			return;
+		}
+		if (this.rotation == 3) {
+			const animXPos =
+				this.player?.powerState > PowerState.Small
+					? this.player_big_stand.x
+					: this.player_small.x;
+
+			if (this.player?.sprite.position.x + 100 < animXPos) {
+				this.tpPlayer(world);
+				this.player_big_stand.visible = false;
+				this.player_small.visible = false;
+				this.player.sprite.visible = true;
+				world.pause = false;
+				return;
+			}
+
+			this.player_big_stand.x += 100 * dt;
+			this.player_small.x += 100 * dt;
+			return;
+		}
+		if (this.rotation == 1) {
+			const animXPos =
+				this.player?.powerState > PowerState.Small
+					? this.player_big_stand.x
+					: this.player_small.x;
+
+			if (this.player?.sprite.position.x - 100 > animXPos) {
+				this.tpPlayer(world);
+				this.player_big_stand.visible = false;
+				this.player_small.visible = false;
+				this.player.sprite.visible = true;
+				world.pause = false;
+				return;
+			}
+
+			this.player_big_stand.x -= 100 * dt;
+			this.player_small.x -= 100 * dt;
+			return;
+		}
+	}
+	tpPlayer(world: World) {
+		const exitPipePos = this.exitPipe!.pos.clone();
+		const s = this.exitPipe!.shape as PolygonShape;
 		const w = Math.abs(s.m_vertices[3].x - s.m_vertices[0].x);
 		const h = Math.abs(s.m_vertices[3].y - s.m_vertices[1].y);
 
@@ -94,16 +205,16 @@ export class Pipe extends Ground {
 				new Vec2(this.exitPipe!.rotation == 1 ? w / 2 + 1 : -(w / 2) - 1, 0),
 			false: () =>
 				new Vec2(0, this.exitPipe!.rotation == 2 ? h / 2 + 1 : -(h / 2) - 1),
-		}[String(this.exitPipe.rotation == 1 || this.exitPipe.rotation == 3)]!();
+		}[String(this.exitPipe!.rotation == 1 || this.exitPipe!.rotation == 3)]!();
 		exitPipePos.x += offset.x;
 		exitPipePos.y += offset.y;
-		this.exitPipe.waitUntilNextEntry = true;
-		this.player.body.setPosition(exitPipePos);
+		this.exitPipe!.waitUntilNextEntry = true;
+		this.player!.body.setPosition(exitPipePos);
 
 		const moveDown = window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
 		const exitPipePosPixi = planckToPixi(exitPipePos);
-		this.player.sprite.x = exitPipePosPixi.x;
-		this.player.sprite.y = exitPipePosPixi.y;
+		this.player!.sprite.x = exitPipePosPixi.x;
+		this.player!.sprite.y = exitPipePosPixi.y;
 		world.main.pivot.set(exitPipePosPixi.x, exitPipePosPixi.y - moveDown);
 	}
 	static renderDrag(
@@ -250,6 +361,10 @@ export class Pipe extends Ground {
 			isSensor: true,
 			shape: new Box(0.45, 0.1, offset, this.rotation * (Math.PI / 2)),
 		});
+
+		world.main.addChild(this.player_big_crouch);
+		world.main.addChild(this.player_big_stand);
+		world.main.addChild(this.player_small);
 		if (this.exitOnly || !this.exit) return;
 		world.p.on("begin-contact", (contact) => {
 			const fixA = contact.getFixtureA();
