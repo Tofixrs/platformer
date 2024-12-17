@@ -896,7 +896,7 @@
 			],
 			"rotation": 0,
 			"exit": "cave_exit",
-			"exitOnly": false
+			"exitOnly": true
 		}
 	},
 	{
