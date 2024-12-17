@@ -33,6 +33,7 @@ export class Pipe extends Ground {
 	checkedPipe = false;
 	waitUntilNextEntry = false;
 	exitOnly = false;
+	tped = false;
 	player_small = Sprite.from("player_small_stand");
 	player_big_crouch = Sprite.from("player_big_crouch");
 	player_big_stand = Sprite.from("player_big_stand");
@@ -73,7 +74,6 @@ export class Pipe extends Ground {
 		this.player_big_crouch.zIndex = -2;
 
 		this.player_big_stand.anchor.set(0.5, 0.5);
-		this.player_big_stand.scale.set(0.125, 0.75);
 		this.player_big_stand.visible = false;
 		this.player_big_stand.zIndex = -2;
 		this.player_big_crouch.label = "Pipe: player_big_crouch";
@@ -121,20 +121,109 @@ export class Pipe extends Ground {
 			this.player.powerState > PowerState.Small &&
 			this.rotation != 0
 		) {
-			const pipePosY = planckToPixi1D(this.pos.y);
+			const pipePosX = planckToPixi1D(this.pos.x);
 			this.player_big_stand.scale.x = this.player.direction;
 			this.player_big_stand.position = this.player.sprite.position;
-			this.player_big_stand.position.y = pipePosY;
+			this.player_big_stand.position.x = pipePosX;
 			this.player_big_stand.visible = true;
 		} else {
-			const pipePosY = planckToPixi1D(this.pos.y);
+			const pipePos = planckToPixi(this.pos);
 			this.player_small.scale.x = this.player.direction;
 			this.player_small.position = this.player.sprite.position;
-			this.player_small.position.y = pipePosY;
 			this.player_small.visible = true;
+			if (this.rotation == 0 || this.rotation == 2) {
+				this.player_small.position.x = pipePos.x;
+			} else {
+				this.player_small.position.y = pipePos.y;
+			}
 		}
 	}
 	pausedUpdate(dt: number, world: World): void {
+		if (!this.player) return;
+		if (!this.tped) this.animEnter(dt, world);
+		if (this.tped) this.animExit(dt, world);
+	}
+	animExit(dt: number, world: World) {
+		if (!this.player) return;
+		if (!this.exitPipe) return;
+		if (this.exitPipe.rotation == 0) {
+			const animYPos =
+				this.player?.powerState > PowerState.Small
+					? this.player_big_stand.y
+					: this.player_small.y;
+
+			if (this.player?.sprite.position.y - 20 > animYPos) {
+				this.tped = false;
+				world.pause = false;
+				this.player_big_stand.visible = false;
+				this.player_small.visible = false;
+				this.player.sprite.visible = true;
+				return;
+			}
+
+			this.player_big_stand.y -= 100 * dt;
+			this.player_small.y -= 100 * dt;
+			return;
+		}
+		if (this.exitPipe.rotation == 3) {
+			const animXPos =
+				this.player?.powerState > PowerState.Small
+					? this.player_big_stand.x
+					: this.player_small.x;
+
+			if (this.player?.sprite.position.x - 10 > animXPos) {
+				this.tped = false;
+				world.pause = false;
+				this.player_big_stand.visible = false;
+				this.player_small.visible = false;
+				this.player.sprite.visible = true;
+				return;
+			}
+
+			this.player_big_stand.x -= 100 * dt;
+			this.player_small.x -= 100 * dt;
+			return;
+		}
+		if (this.exitPipe.rotation == 1) {
+			const animXPos =
+				this.player?.powerState > PowerState.Small
+					? this.player_big_stand.x
+					: this.player_small.x;
+
+			if (this.player?.sprite.position.x + 10 < animXPos) {
+				this.tped = false;
+				world.pause = false;
+				this.player_big_stand.visible = false;
+				this.player_small.visible = false;
+				this.player.sprite.visible = true;
+				return;
+			}
+
+			this.player_big_stand.x += 100 * dt;
+			this.player_small.x += 100 * dt;
+			return;
+		}
+		if (this.exitPipe.rotation == 2) {
+			const animYPos =
+				this.player?.powerState > PowerState.Small
+					? this.player_big_stand.y
+					: this.player_small.y;
+
+			if (this.player?.sprite.position.y + 25 < animYPos) {
+				this.tped = false;
+				world.pause = false;
+				this.player_big_stand.visible = false;
+				this.player_small.visible = false;
+				this.player.sprite.visible = true;
+				return;
+			}
+
+			this.player_big_stand.y += 100 * dt;
+			this.player_small.y += 100 * dt;
+			return;
+		}
+	}
+	animEnter(dt: number, world: World) {
 		if (!this.player) return;
 		if (this.rotation == 0) {
 			const animYPos =
@@ -144,10 +233,7 @@ export class Pipe extends Ground {
 
 			if (this.player?.sprite.position.y + 100 < animYPos) {
 				this.tpPlayer(world);
-				this.player_big_crouch.visible = false;
-				this.player_small.visible = false;
-				this.player.sprite.visible = true;
-				world.pause = false;
+				this.tped = true;
 				return;
 			}
 
@@ -163,10 +249,7 @@ export class Pipe extends Ground {
 
 			if (this.player?.sprite.position.x + 100 < animXPos) {
 				this.tpPlayer(world);
-				this.player_big_stand.visible = false;
-				this.player_small.visible = false;
-				this.player.sprite.visible = true;
-				world.pause = false;
+				this.tped = true;
 				return;
 			}
 
@@ -182,15 +265,28 @@ export class Pipe extends Ground {
 
 			if (this.player?.sprite.position.x - 100 > animXPos) {
 				this.tpPlayer(world);
-				this.player_big_stand.visible = false;
-				this.player_small.visible = false;
-				this.player.sprite.visible = true;
-				world.pause = false;
+				this.tped = true;
 				return;
 			}
 
 			this.player_big_stand.x -= 100 * dt;
 			this.player_small.x -= 100 * dt;
+			return;
+		}
+		if (this.rotation == 2) {
+			const animYPos =
+				this.player?.powerState > PowerState.Small
+					? this.player_big_stand.y
+					: this.player_small.y;
+
+			if (this.player?.sprite.position.y - 100 > animYPos) {
+				this.tpPlayer(world);
+				this.tped = true;
+				return;
+			}
+
+			this.player_big_stand.y -= 100 * dt;
+			this.player_small.y -= 100 * dt;
 			return;
 		}
 	}
@@ -202,19 +298,43 @@ export class Pipe extends Ground {
 
 		const offset = {
 			true: () =>
-				new Vec2(this.exitPipe!.rotation == 1 ? w / 2 + 1 : -(w / 2) - 1, 0),
+				new Vec2(
+					this.exitPipe!.rotation == 1 ? w / 2 + 0.25 : -(w / 2) - 0.25,
+					0,
+				),
 			false: () =>
-				new Vec2(0, this.exitPipe!.rotation == 2 ? h / 2 + 1 : -(h / 2) - 1),
+				new Vec2(
+					0,
+					this.exitPipe!.rotation == 2 ? h / 2 + 0.25 : -(h / 2) - 0.25,
+				),
 		}[String(this.exitPipe!.rotation == 1 || this.exitPipe!.rotation == 3)]!();
 		exitPipePos.x += offset.x;
 		exitPipePos.y += offset.y;
 		this.exitPipe!.waitUntilNextEntry = true;
 		this.player!.body.setPosition(exitPipePos);
 
-		const moveDown = window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
-		const exitPipePosPixi = planckToPixi(exitPipePos);
+		const exitPipePosPixi = planckToPixi(this.player!.body.getPosition());
 		this.player!.sprite.x = exitPipePosPixi.x;
 		this.player!.sprite.y = exitPipePosPixi.y;
+		const spriteOffset = {
+			0: new Vec2(0, 100),
+			1: new Vec2(100, 0),
+			2: new Vec2(0, -100),
+			3: new Vec2(-100, 0),
+		}[this.rotation]!;
+		this.player_big_stand.position.x = exitPipePosPixi.x + spriteOffset.x;
+		this.player_big_stand.position.y = exitPipePosPixi.y + spriteOffset.y;
+		this.player_big_crouch.position.x = exitPipePosPixi.x + spriteOffset.x;
+		this.player_big_crouch.position.y = exitPipePosPixi.y + spriteOffset.y;
+		this.player_small.position.x = exitPipePosPixi.x + spriteOffset.x;
+		this.player_small.position.y = exitPipePosPixi.y + spriteOffset.y;
+
+		const big = this.player!.powerState > PowerState.Small;
+		this.player_big_stand.visible = big;
+		this.player_small.visible = !big;
+		this.player_big_crouch.visible = false;
+
+		const moveDown = window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
 		world.main.pivot.set(exitPipePosPixi.x, exitPipePosPixi.y - moveDown);
 	}
 	static renderDrag(
