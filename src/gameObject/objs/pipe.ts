@@ -15,6 +15,7 @@ import { Player, PowerState } from "./player";
 import { World } from "world";
 import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { Actions } from "@lib/input";
+import { Paralax } from "./paralax";
 
 export class Pipe extends Ground {
 	static atlas: GroundAtlas = {
@@ -341,6 +342,9 @@ export class Pipe extends Ground {
 
 		const moveDown = window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
 		world.main.pivot.set(exitPipePosPixi.x, exitPipePosPixi.y - moveDown);
+		(world.entities.find((v) => v.goid == GOID.Paralax) as Paralax)?.updatePos(
+			world.main.pivot,
+		);
 	}
 	static renderDrag(
 		startPos: Vec2,

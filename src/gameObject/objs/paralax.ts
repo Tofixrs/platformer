@@ -1,6 +1,6 @@
 import { SerializedGO } from "@lib/serialize";
 import { GameObject, GOID, Property, PropertyValue } from "gameObject";
-import { Texture, TilingSprite } from "pixi.js";
+import { ObservablePoint, Texture, TilingSprite } from "pixi.js";
 import { Box, Shape, Vec2 } from "planck";
 import { World } from "world";
 
@@ -60,8 +60,11 @@ export class Paralax extends GameObject {
 	}
 	update(_dt: number, world: World): void {
 		super.update(_dt, world);
-		this.fg.pivot.x = world.main.pivot.x / 5;
-		this.bg.pivot.x = world.main.pivot.x / 10;
+		this.updatePos(world.main.pivot);
+	}
+	updatePos(pivot: ObservablePoint) {
+		this.fg.pivot.x = pivot.x / 5;
+		this.bg.pivot.x = pivot.x / 10;
 	}
 	create(world: World): void {
 		world.bottom.addChild(this.bg);
