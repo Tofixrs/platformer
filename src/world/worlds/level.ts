@@ -15,6 +15,7 @@ import { Content } from "@pixi/layout";
 import { BigButton } from "@lib/ui/big_button";
 import { Actions } from "@lib/input";
 import { List } from "@pixi/ui";
+import { Player } from "@gameObjs/player";
 
 export class Level extends World {
 	loaded = false;
@@ -96,6 +97,13 @@ export class Level extends World {
 		const ent = deserializeWorld(this.data);
 		ent.forEach((v) => {
 			this.addEntity(v);
+			if (v.goid == GOID.Player) {
+				const p = v as Player;
+				const moveDown =
+					window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
+				this.main.pivot = p.sprite.position;
+				this.main.pivot.y -= moveDown;
+			}
 		});
 	}
 	recenter(screen: Rectangle): void {

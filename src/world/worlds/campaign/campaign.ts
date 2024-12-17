@@ -197,10 +197,15 @@ export class Campaign extends World {
 		ent.forEach((v) => {
 			this.addEntity(v);
 			if (v.goid == GOID.Player) {
+				const p = v as Player;
+				const moveDown =
+					window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
+				this.main.pivot = p.sprite.position;
+				this.main.pivot.y -= moveDown;
 				if (this.playerPState) {
-					(v as Player).setPState(this.playerPState, this, false);
+					p.setPState(this.playerPState, this, false);
 				}
-				this.player = v as Player;
+				this.player = p;
 			}
 		});
 	}
