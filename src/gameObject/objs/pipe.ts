@@ -316,12 +316,17 @@ export class Pipe extends Ground {
 		const exitPipePosPixi = planckToPixi(this.player!.body.getPosition());
 		this.player!.sprite.x = exitPipePosPixi.x;
 		this.player!.sprite.y = exitPipePosPixi.y;
+
+		this.player!.lastState = {
+			pos: exitPipePosPixi,
+			angle: 0,
+		};
 		const spriteOffset = {
 			0: new Vec2(0, 100),
 			1: new Vec2(100, 0),
 			2: new Vec2(0, -100),
-			3: new Vec2(-100, 0),
-		}[this.rotation]!;
+			3: new Vec2(100, 0),
+		}[this.exitPipe!.rotation]!;
 		this.player_big_stand.position.x = exitPipePosPixi.x + spriteOffset.x;
 		this.player_big_stand.position.y = exitPipePosPixi.y + spriteOffset.y;
 		this.player_big_crouch.position.x = exitPipePosPixi.x + spriteOffset.x;
