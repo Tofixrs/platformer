@@ -110,7 +110,8 @@ export class Block extends PhysicsObject {
 	}
 	update(dt: number, world: World): void {
 		if (this.hit) {
-			this.anim = this.onHit(world);
+			const player = world.entities.find((v) => v.id == this.hitID) as Player;
+			this.anim = this.onHit(world, player);
 			this.animDirection = this.hitSide!;
 			this.hit = false;
 			this.hitID = undefined;
@@ -162,8 +163,7 @@ export class Block extends PhysicsObject {
 		this.hitID = user.id;
 		this.hitSide = -Math.ceil(contact.getManifold().localNormal.y);
 	}
-	onHit(world: World): boolean {
-		const player = world.entities.find((v) => v.id == this.hitID) as Player;
+	onHit(world: World, player: Player): boolean {
 		const vel = player.body.getLinearVelocity();
 		player.body.setLinearVelocity(new Vec2(vel.x, 0));
 		player.actionStates = player.actionStates.filter(

@@ -29,9 +29,9 @@ export class Brick extends Block {
 	): GameObject {
 		return new Brick(pos);
 	}
-	onHit(world: World): boolean {
-		super.onHit(world);
-		const player = world.entities.find((v) => v.id == this.hitID) as Player;
+	onHit(world: World, player: Player): boolean {
+		super.onHit(world, player);
+		if (player.actionStates.includes(ActionState.Dive)) return false;
 		if (
 			this.hitSide == 1 &&
 			player.actionStates.includes(ActionState.GroundPound)

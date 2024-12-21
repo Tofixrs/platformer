@@ -91,10 +91,10 @@ export class MarkBlock extends Block {
 		super.create(world);
 		world.main.addChild(this.hitSprite);
 	}
-	onHit(world: World): boolean {
-		super.onHit(world);
+	onHit(world: World, player: Player): boolean {
+		super.onHit(world, player);
+		if (player.actionStates.includes(ActionState.Dive)) return false;
 		if (this.hitSide == 1) {
-			const player = world.entities.find((v) => this.hitID == v.id) as Player;
 			if (player.powerState < PowerState.Big) return false;
 			if (!player.actionStates.includes(ActionState.GroundPound)) return false;
 		}
