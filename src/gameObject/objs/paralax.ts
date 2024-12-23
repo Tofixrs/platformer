@@ -1,7 +1,7 @@
 import { SerializedGO } from "@lib/serialize";
 import { GameObject, GOID, Property, PropertyValue } from "gameObject";
 import { ObservablePoint, Texture, TilingSprite } from "pixi.js";
-import { Box, Shape, Vec2 } from "planck";
+import { Body, Box, Shape, Vec2, Vec3 } from "planck";
 import { World } from "world";
 
 export const Backgrounds = {
@@ -15,6 +15,7 @@ export class Paralax extends GameObject {
 	static maxInstances?: number | undefined = 1;
 	bg: TilingSprite;
 	fg: TilingSprite;
+	body!: Body; //only to display hitbox so you can delete
 	backgrounds: Record<Background, { bg: string; fg: string }> = {
 		[Backgrounds.Normal]: {
 			bg: "normal_bg",
@@ -31,14 +32,15 @@ export class Paralax extends GameObject {
 	};
 	static props: Property[] = [
 		{
-			name: "background",
+			name: "paralaxBg",
 			type: "number",
 			defaultValue: "1",
+			descriptionKey: "paralaxDesc",
 		},
 	];
-	constructor(background?: Background) {
+	constructor(background?: Background, pos?: Vec2) {
 		super({
-			pos: Vec2.zero(),
+			pos: pos || Vec2.zero(),
 			goid: GOID.Paralax,
 			shape: new Box(1, 1),
 		});
@@ -69,10 +71,26 @@ export class Paralax extends GameObject {
 	create(world: World): void {
 		world.bottom.addChild(this.bg);
 		world.bottom.addChild(this.fg);
+		this.body = world.p.createBody({
+			position: this.pos,
+			fixedRotation: true,
+			type: "static",
+		});
+
+		this.body.createFixture({
+			density: 0,
+			shape: this.shape,
+			friction: 0,
+			userData: {
+				goid: this.goid,
+				id: this.id,
+			},
+		});
 	}
 	remove(world: World, _force?: boolean): boolean {
 		world.bottom.removeChild(this.bg);
 		world.bottom.removeChild(this.fg);
+		world.p.destroyBody(this.body);
 		return true;
 	}
 	serialize(): SerializedGO {
@@ -85,13 +103,13 @@ export class Paralax extends GameObject {
 		return new Paralax(_obj.data);
 	}
 	static commonConstructor(
-		_pos: Vec2,
+		pos: Vec2,
 		_shape: Shape,
 		_startPos: Vec2,
 		_currPos: Vec2,
 		props?: PropertyValue[],
 	): GameObject {
-		const bg = props?.find((v) => v.name == "background");
-		return new Paralax(Number(bg?.value) as Background);
+		const bg = props?.find((v) => v.name == "paralaxbBg");
+		return new Paralax(Number(bg?.value) as Background, pos);
 	}
 }

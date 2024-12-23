@@ -10,6 +10,7 @@ import { Window } from "@lib/ui/Window";
 import { SmallButton } from "@lib/ui/small_button";
 import i18next from "i18next";
 import { Actions } from "@lib/input";
+import { Tooltip } from "@lib/ui/tooltip";
 
 export class EditorUi extends Screen {
 	selected?: GameObjectID;
@@ -207,9 +208,27 @@ export class EditorUi extends Screen {
 		const props = getClassFromID(this.selected).props;
 
 		for (const prop of props) {
-			const text = new Text({ text: prop.name });
+			if (prop.hide) continue;
+			const text = new Text({ text: i18next.t(prop.name) });
+			const l = new Layout({ styles: { width: "100%", height: 60 } });
+			propsContent.push(l);
+
+			if (prop.descriptionKey) {
+				const tooltip = new Tooltip({
+					text: i18next.t(prop.descriptionKey),
+				});
+				this.addChild(tooltip);
+
+				l.eventMode = "dynamic";
+
+				l.addEventListener("mouseenter", () => {
+					tooltip.visible = true;
+				});
+				l.addEventListener("pointerout", () => {
+					tooltip.visible = false;
+				});
+			}
 			const defaultPlaceholder = i18next.t("input", {
-				name: prop.name,
 				type: i18next.t(prop.type),
 			});
 			if (prop.type != "boolean") {
@@ -222,6 +241,7 @@ export class EditorUi extends Screen {
 					nineSliceSprite: [160, 27, 160, 27],
 					placeholder: defaultPlaceholder,
 					addMask: true,
+					value: prop.defaultValue,
 				});
 				const placeholder = input.children.find((v) => {
 					if (!(v instanceof Text)) return false;
@@ -253,30 +273,22 @@ export class EditorUi extends Screen {
 						this.propertyValue[find].value = v;
 					}
 				});
-				propsContent.push(
-					new Layout({
-						content: {
-							text: {
-								content: text,
-								styles: {
-									position: "centerLeft",
-									maxWidth: "50%",
-								},
-							},
-							input: {
-								content: input,
-								styles: {
-									position: "centerRight",
-									width: "50%",
-								},
-							},
-						},
+				l.addContent({
+					text: {
+						content: text,
 						styles: {
-							width: "100%",
-							height: 60,
+							position: "centerLeft",
+							maxWidth: "50%",
 						},
-					}),
-				);
+					},
+					input: {
+						content: input,
+						styles: {
+							position: "centerRight",
+							width: "50%",
+						},
+					},
+				});
 			} else {
 				const checkbox = new CheckBox({
 					style: {
@@ -297,31 +309,23 @@ export class EditorUi extends Screen {
 						this.propertyValue[find].value = String(checked);
 					}
 				});
-				propsContent.push(
-					new Layout({
-						content: {
-							text: {
-								content: text,
-								styles: {
-									position: "centerLeft",
-									maxWidth: "50%",
-								},
-							},
-							input: {
-								content: checkbox,
-								styles: {
-									position: "centerRight",
-									width: "50%",
-									maxHeight: "100%",
-								},
-							},
-						},
+				l.addContent({
+					text: {
+						content: text,
 						styles: {
-							width: "100%",
-							height: 60,
+							position: "centerLeft",
+							maxWidth: "50%",
 						},
-					}),
-				);
+					},
+					input: {
+						content: checkbox,
+						styles: {
+							position: "centerRight",
+							width: "50%",
+							maxHeight: "100%",
+						},
+					},
+				});
 			}
 		}
 
@@ -340,7 +344,9 @@ export class EditorUi extends Screen {
 				icon,
 				defaultIconScale: 5,
 				tooltipOptions: {
-					text: i18next.t(this.pinWindow.topPinned[i]),
+					text:
+						i18next.t(this.pinWindow.topPinned[i]) +
+						` (ID: ${this.pinWindow.topPinned[i]})`,
 				},
 				hoverContainer: this,
 			});
@@ -422,7 +428,7 @@ class PinWindow extends Window<{
 				icon,
 				defaultIconScale: 5,
 				tooltipOptions: {
-					text: i18next.t(pin.pins[i]),
+					text: i18next.t(pin.pins[i]) + ` (ID: ${pin.pins[i]})`,
 				},
 				hoverContainer: pin.editorUiRef,
 				hoverView: null,
@@ -449,7 +455,7 @@ class PinWindow extends Window<{
 				hoverView: null,
 				icon: Sprite.from(`${v}_pin`),
 				tooltipOptions: {
-					text: i18next.t(v),
+					text: i18next.t(v) + ` (ID: ${v})`,
 				},
 				hoverContainer: editorUiRef,
 				defaultIconScale: 5,
@@ -487,10 +493,16 @@ class PinWindow extends Window<{
 		);
 
 		p2Btn.setActive(false);
-		pBtn.tooltip!.text.text = i18next.t(this._topPinned[this.selectedPin!]);
-		p2Btn.tooltip!.text.text = i18next.t(this._topPinned[this.selectedPin!]);
+		pBtn.tooltip!.text.text =
+			i18next.t(this._topPinned[this.selectedPin!]) +
+			` (ID: ${this._topPinned[this.selectedPin!]})`;
+		p2Btn.tooltip!.text.text =
+			i18next.t(this._topPinned[this.selectedPin!]) +
+			` (ID: ${this._topPinned[this.selectedPin!]})`;
 		(p2Btn.iconView as Sprite).texture = Texture.from(
 			this._topPinned[this.selectedPin!] + "_pin",
 		);
+		pBtn.tooltip?.refresh();
+		p2Btn.tooltip?.refresh();
 	}
 }

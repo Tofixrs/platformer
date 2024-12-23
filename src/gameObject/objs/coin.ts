@@ -13,7 +13,7 @@ export class Coin extends Entity {
 	swapDirection = false;
 	defaultSpritePos: Vec2;
 	static props: Property[] = [
-		{ name: "instant", defaultValue: "0", type: "number" },
+		{ name: "instant", defaultValue: "0", type: "number", hide: true },
 	];
 	coinSound = new Howl({
 		src: ["./sounds/coin.mp3"],

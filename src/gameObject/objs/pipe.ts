@@ -40,9 +40,10 @@ export class Pipe extends Ground {
 	player_big_stand = Sprite.from("player_big_stand");
 	static props: Property[] = [
 		{
-			name: "exit",
+			name: "exitName",
 			type: PropType.string,
 			defaultValue: "",
+			descriptionKey: "exitNameDesc",
 		},
 		{
 			name: "exitOnly",
@@ -552,7 +553,7 @@ export class Pipe extends Ground {
 			pos.y -= startPos.y > currPos.y ? -(hA / 2 - 0.5) : hA / 2 - 0.5;
 		}
 
-		const exit = props?.find((v) => v.name == "exit");
+		const exit = props?.find((v) => v.name == "exitName");
 		const exitOnly = props?.find((v) => v.name == "exitOnly")?.value == "true";
 		return new Pipe(
 			pos,

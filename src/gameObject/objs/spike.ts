@@ -17,6 +17,7 @@ export class Spike extends PhysicsObject {
 			type: "boolean",
 			name: "instakill",
 			defaultValue: "false",
+			descriptionKey: "instakillDesc",
 		},
 	];
 	static instakillTexture = "spike_instakill";

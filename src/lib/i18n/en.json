@@ -60,9 +60,21 @@
 	"pin8": "Pick object 8",
 	"pin9": "Pick object 9",
 	"pin10": "Pick object 10",
-	"input": "Input: {{name}} ({{type}})",
+	"input": "Input {{type}}:",
 	"string": "Text",
 	"boolean": "Boolean",
 	"goid": "GObject ID",
-	"number": "Number"
+	"number": "Number",
+	"pState": "Marian's power: ",
+	"pStateDesc": "Marian's power\n1: small\n2: nig",
+	"exitOnly": "Exit only:",
+	"exitName": "Exit name:",
+	"exitNameDesc": "Exit name. If two pipes have the same exit name they are linked",
+	"directionDesc": "Direction of the enemy\n1: right\n-1: left",
+	"instakillDesc": "Should the spikes kill ignoring Marian's power",
+	"markBlockDesc": "ID of the item inside the item box",
+	"paralaxDesc": "Background id:\n1: surface\n2: cave\n3: cogs",
+	"itemInside": "Item inside: ",
+	"direction": "Direction: ",
+	"paralaxBg": "Background id: "
 }

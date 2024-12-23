@@ -1,6 +1,6 @@
 import { capsule } from "@lib/shape";
 import { Timer } from "@lib/ticker";
-import { GameObject, GOID, Property, PropertyValue } from "gameObject";
+import { GameObject, GOID, PropertyValue } from "gameObject";
 import { Enemy } from "gameObject/types/enemy";
 import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { Sprite, Texture } from "pixi.js";
@@ -26,13 +26,6 @@ export class Koopa extends Enemy {
 		src: ["./sounds/kick.wav"],
 		volume: 1,
 	});
-	static props: Property[] = [
-		{
-			type: "number",
-			name: "direction",
-			defaultValue: "-1",
-		},
-	];
 	constructor(pos: Vec2, direction?: number) {
 		super({
 			pos,

@@ -22,6 +22,8 @@ export interface Property {
 	name: string;
 	type: PType;
 	defaultValue: string; //yes im gonna have to parse those pain
+	descriptionKey?: string;
+	hide?: boolean;
 }
 export interface PropertyValue {
 	name: string;

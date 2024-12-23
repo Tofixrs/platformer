@@ -119,6 +119,7 @@ export class Player extends Entity {
 			type: "number",
 			name: "pState",
 			defaultValue: "1",
+			descriptionKey: "pStateDesc",
 		},
 	];
 	constructor(pos: Vec2, powerState: PState) {

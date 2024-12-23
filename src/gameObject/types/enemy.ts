@@ -1,6 +1,6 @@
 import { Box, Fixture, Shape, Vec2, WorldManifold } from "planck";
 import { Entity } from "./entity";
-import { GameObject, GameObjectID, PropType } from "gameObject";
+import { GameObject, GameObjectID, Property, PropType } from "gameObject";
 import { Sprite } from "pixi.js";
 import { World } from "world";
 import { PhysObjUserData } from "./physicsObject";
@@ -32,6 +32,14 @@ export class Enemy extends Entity {
 		src: ["./sounds/stomp.wav"],
 		volume: 1,
 	});
+	static props: Property[] = [
+		{
+			type: "number",
+			name: "direction",
+			defaultValue: "-1",
+			descriptionKey: "directionDesc",
+		},
+	];
 	constructor({
 		pos,
 		friction,

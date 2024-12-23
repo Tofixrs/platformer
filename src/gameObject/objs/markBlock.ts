@@ -18,7 +18,12 @@ import { SerializedGO } from "@lib/serialize";
 export class MarkBlock extends Block {
 	static dragTexture: Texture<TextureSource<any>> = Texture.from("brick");
 	static props: Property[] = [
-		{ name: "item", type: PropType.goid, defaultValue: "" },
+		{
+			name: "itemInside",
+			type: PropType.goid,
+			defaultValue: "",
+			descriptionKey: "markBlockDesc",
+		},
 	];
 	item?: GameObjectID;
 	static draggable: boolean = false;
@@ -60,7 +65,7 @@ export class MarkBlock extends Block {
 		_currPos: Vec2,
 		props?: PropertyValue[],
 	): GameObject {
-		const item = props?.find((v) => v.name == "item");
+		const item = props?.find((v) => v.name == "itemInside");
 		return new MarkBlock(pos, item?.value as GameObjectID);
 	}
 	update(dt: number, world: World): void {

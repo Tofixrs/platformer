@@ -15,13 +15,6 @@ export class Goomba extends Enemy {
 	rightWallSensor!: Fixture;
 	leftWallSensor!: Fixture;
 	speed = 4;
-	static props: Property[] = [
-		{
-			type: "number",
-			name: "direction",
-			defaultValue: "-1",
-		},
-	];
 	constructor(pos: Vec2, direction?: number) {
 		const anim = new AnimatedSprite([
 			Texture.from("goomba_1"),
