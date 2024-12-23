@@ -1,10 +1,10 @@
-import { Content } from "@pixi/layout";
+import { Content, Layout } from "@pixi/layout";
 import { Input, ScrollBox } from "@pixi/ui";
 import { Screen } from "@ui/screen";
-import { GameObjectID, GOID, PropertyValue, PropType } from "gameObject";
-import { Sprite, Text, Texture } from "pixi.js";
+import { GameObjectID, GOID, PropertyValue } from "gameObject";
+import { Container, Sprite, Text, Texture } from "pixi.js";
 import { Editor } from ".";
-import { getClassFromID } from "gameObject/utils";
+import { getClassFromID, validateProp } from "gameObject/utils";
 import { Storage } from "@lib/storage";
 import { Window } from "@lib/ui/Window";
 import { SmallButton } from "@lib/ui/small_button";
@@ -27,7 +27,7 @@ export class EditorUi extends Screen {
 			text: "🗑️",
 			hoverText: i18next.t("erase"),
 			hoverContainer: this,
-			onClick: (self) => {
+			onClick: () => {
 				this.switchErase();
 			},
 		});
@@ -141,7 +141,7 @@ export class EditorUi extends Screen {
 				content: this.props,
 				styles: {
 					position: "centerRight",
-					margin: 5,
+					marginRight: 150,
 					height: "50%",
 					width: "20%",
 				},
@@ -191,21 +191,22 @@ export class EditorUi extends Screen {
 		this.propertyValue = [];
 	}
 	get props() {
-		const propsContent: Content = [];
+		const propsContent: Layout[] = [];
 		if (!this.selected) return propsContent;
 
 		const props = getClassFromID(this.selected).props;
 
 		for (const prop of props) {
 			const input = new Input({
-				bg: Sprite.from("big_button"),
+				bg: "input",
 				textStyle: {
 					fill: "white",
-					fontSize: 100,
+					fontSize: 20,
 				},
-				placeholder: `Input ${prop.name}`,
+				nineSliceSprite: [160, 27, 160, 27],
+				placeholder: `Input ${prop.name} (${prop.type})`,
+				addMask: true,
 			});
-			input.scale = 0.2;
 			const placeholder = input.children.find((v) => {
 				if (!(v instanceof Text)) return false;
 				return v.text == `Input ${prop.name}`;
@@ -216,29 +217,14 @@ export class EditorUi extends Screen {
 			});
 			input.onEnter.connect((v) => {
 				Actions.lock = false;
-				switch (prop.type) {
-					case PropType.number: {
-						const isNumber = !isNaN(Number(v));
-						if (isNumber) break;
-						placeholder.text = "Invalid number";
-						input.value = "";
+				if (!validateProp({ value: v, type: prop.type, name: prop.name })) {
+					input.value = "";
+					placeholder.text = "Invalid input";
 
-						return;
-					}
-					case PropType.goid: {
-						if (getClassFromID(v as GameObjectID)) break;
-						placeholder.text = "Invalid gameObject";
-						input.value = "";
-
-						return;
-					}
-					case PropType.boolean: {
-						const valid = v == "true" || v == "false" || v == "1" || v == "0";
-						if (valid) break;
-						placeholder.text = "Invalid format";
-						input.value = "";
-						return;
-					}
+					setTimeout(() => {
+						placeholder.text = `Input ${prop.name} (${prop.type})`;
+					}, 2000);
+					return;
 				}
 				const find = this.propertyValue.findIndex((v) => v.name == prop.name);
 				if (find == -1) {
@@ -253,27 +239,30 @@ export class EditorUi extends Screen {
 			});
 
 			const text = new Text({ text: prop.name });
-			propsContent.push({
-				content: [
-					{
-						content: text,
-						styles: {
-							display: "inline-block",
-							maxWidth: "50%",
+			propsContent.push(
+				new Layout({
+					content: {
+						text: {
+							content: text,
+							styles: {
+								position: "centerLeft",
+								maxWidth: "50%",
+							},
+						},
+						input: {
+							content: input,
+							styles: {
+								position: "centerRight",
+								width: "50%",
+							},
 						},
 					},
-					{
-						content: input,
-						styles: {
-							maxWidth: "50%",
-							display: "inline-block",
-						},
+					styles: {
+						width: "100%",
+						height: 60,
 					},
-				],
-				styles: {
-					display: "block",
-				},
-			});
+				}),
+			);
 		}
 
 		return propsContent;

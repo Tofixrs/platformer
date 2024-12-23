@@ -26,6 +26,7 @@
 		},
 		"deathPlane_pin": { "frame": { "x": 770, "y": 345, "w": 32, "h": 32 } },
 		"paralax_pin": { "frame": { "x": 803, "y": 345, "w": 32, "h": 32 } },
+		"input": { "frame": { "x": 835, "y": 345, "w": 320, "h": 54 } },
 		"slider_bg": { "frame": { "x": 0, "y": 514, "w": 256, "h": 128 } },
 		"slider_slider": { "frame": { "x": 0, "y": 643, "w": 256, "h": 128 } },
 		"slider_point": { "frame": { "x": 257, "y": 514, "w": 32, "h": 32 } }

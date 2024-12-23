@@ -1,9 +1,15 @@
+import {
+	GameObject,
+	GameObjectID,
+	GOID,
+	PropertyValue,
+	PropType,
+} from "gameObject";
 import { Goomba } from "@gameObjs/goomba";
 import { Grass } from "@gameObjs/grass";
 import { Ice } from "@gameObjs/ice";
 import { Koopa } from "@gameObjs/koopa";
 import { Player } from "@gameObjs/player";
-import { GameObject, GameObjectID, GOID } from "gameObject";
 import { Brick } from "@gameObjs/brick";
 import { Mushroom } from "@gameObjs/mushroom";
 import { MarkBlock } from "@gameObjs/markBlock";
@@ -87,5 +93,26 @@ export function getClassFromID(id: GameObjectID): typeof GameObject {
 			//@ts-expect-error
 			return Pipe;
 		}
+	}
+}
+
+export function validateProp(prop: PropertyValue): boolean {
+	switch (prop.type) {
+		case PropType.number: {
+			return !isNaN(Number(prop.value));
+		}
+		case PropType.goid: {
+			return getClassFromID(prop.value as GameObjectID) != undefined;
+		}
+		case PropType.boolean: {
+			return (
+				prop.value == "true" ||
+				prop.value == "false" ||
+				prop.value == "1" ||
+				prop.value == "0"
+			);
+		}
+		default:
+			return true;
 	}
 }
