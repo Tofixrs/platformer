@@ -52,10 +52,12 @@ export class MainMenu extends World {
 						{
 							content: new SmallButton({
 								text: "⚙️",
-								hoverText: i18next.t("settings"),
+								tooltipOptions: {
+									text: i18next.t("settings"),
+								},
 								hoverContainer: this.top,
 								onClick(self) {
-									self.hover.visible = false;
+									self.tooltip!.visible = false;
 									worldController.set("settings");
 								},
 							}),
@@ -66,14 +68,16 @@ export class MainMenu extends World {
 						{
 							content: new SmallButton({
 								text: "▶️",
-								hoverText: i18next.t("levelLoad"),
+								tooltipOptions: {
+									text: i18next.t("levelLoad"),
+								},
 								hoverContainer: this.top,
 								onClick: (self) => {
 									navigator.clipboard.readText().then((v) => {
 										const level = new Level(graphics, v, worldController);
 										worldController.add("level", level);
 										worldController.set("level");
-										self.hover.visible = false;
+										self.tooltip!.visible = false;
 									});
 								},
 							}),
@@ -84,10 +88,12 @@ export class MainMenu extends World {
 						{
 							content: new SmallButton({
 								text: "🔧",
-								hoverText: i18next.t("editor"),
+								tooltipOptions: {
+									text: i18next.t("editor"),
+								},
 								hoverContainer: this.top,
 								onClick(self) {
-									self.hover.visible = false;
+									self.tooltip!.visible = false;
 									worldController.set("editor");
 								},
 							}),

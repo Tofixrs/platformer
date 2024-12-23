@@ -33,10 +33,12 @@ export class Settings extends World {
 		});
 		const close = new SmallButton({
 			text: "❌",
-			hoverText: i18next.t("back"),
+			tooltipOptions: {
+				text: i18next.t("back"),
+			},
 			hoverContainer: this.top,
 			onClick: (self) => {
-				self.hover.visible = false;
+				self.tooltip!.visible = false;
 				worldController.set("mainMenu");
 			},
 		});
@@ -166,7 +168,9 @@ class BindTab extends Window<{ scroll: ScrollBox; top: Container }> {
 					content: [
 						new SmallButton({
 							text: "🗑️",
-							hoverText: i18next.t("reset"),
+							tooltipOptions: {
+								text: i18next.t("reset"),
+							},
 							hoverContainer: data.top,
 							onClick: () => {
 								Actions.reset();

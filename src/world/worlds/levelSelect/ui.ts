@@ -26,9 +26,11 @@ export class LevelWindow extends Window<{
 		const time = Storage.getNum("campaign-bestTime", -1);
 		const button = new BigButton({
 			text: i18next.t("replay"),
-			hoverText: i18next.t("bestTime", {
-				time: formatTime(time),
-			}),
+			tooltipOptions: {
+				text: i18next.t("bestTime", {
+					time: formatTime(time),
+				}),
+			},
 			hoverContainer: top,
 			onClick: () => this.worldController.set("campaign"),
 			textStyle: {
@@ -90,10 +92,12 @@ export class LevelWindow extends Window<{
 								content: [
 									new SmallButton({
 										text: "❌",
-										hoverText: i18next.t("back"),
+										tooltipOptions: {
+											text: i18next.t("back"),
+										},
 										hoverContainer: this.top,
 										onClick: (self) => {
-											self.hover.visible = false;
+											self.tooltip!.visible = false;
 											this.worldController.set("mainMenu");
 										},
 									}),
@@ -123,7 +127,7 @@ export class LevelWindow extends Window<{
 		const time = Storage.getNum("campaign-bestTime", -1);
 		this.scroll.removeItems();
 		this.scroll.addItems(this.levels);
-		this.campaignButton.hoverText.text = i18next.t("bestTime", {
+		this.campaignButton.tooltip!.text.text = i18next.t("bestTime", {
 			time: formatTime(time),
 		});
 	}
@@ -136,10 +140,12 @@ export class LevelWindow extends Window<{
 				sprites.push(
 					new SmallButton({
 						text: levelData.levels[i].name,
-						hoverText: i18next.t("bestTime", { time: formatTime(time) }),
+						tooltipOptions: {
+							text: i18next.t("bestTime", { time: formatTime(time) }),
+						},
 						hoverContainer: time == -1 ? undefined : this.top,
 						onClick: (self) => {
-							self.hover.visible = false;
+							self.tooltip!.visible = false;
 							this.worldController.set(levelData.levels[i].name);
 						},
 					}),
@@ -148,10 +154,12 @@ export class LevelWindow extends Window<{
 				sprites.push(
 					new SmallButton({
 						text: "🔒",
-						hoverText: i18next.t("locked"),
+						tooltipOptions: {
+							text: i18next.t("locked"),
+						},
 						hoverContainer: this.top,
 						onClick: (self) => {
-							self.hover.visible = false;
+							self.tooltip!.visible = false;
 						},
 					}),
 				);

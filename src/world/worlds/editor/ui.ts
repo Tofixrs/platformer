@@ -25,7 +25,9 @@ export class EditorUi extends Screen {
 		super("Editor");
 		this.trashButton = new SmallButton({
 			text: "🗑️",
-			hoverText: i18next.t("erase"),
+			tooltipOptions: {
+				text: i18next.t("erase"),
+			},
 			hoverContainer: this,
 			onClick: () => {
 				this.switchErase();
@@ -46,10 +48,12 @@ export class EditorUi extends Screen {
 							{
 								content: new SmallButton({
 									text: "⬇️",
-									hoverText: i18next.t("moreGOS"),
+									tooltipOptions: {
+										text: i18next.t("moreGOS"),
+									},
 									hoverContainer: this,
 									onClick: (self) => {
-										self.hover.visible = false;
+										self.tooltip!.visible = false;
 										this.switchPinWindow();
 									},
 								}),
@@ -68,10 +72,12 @@ export class EditorUi extends Screen {
 							{
 								content: new SmallButton({
 									text: "🔄",
-									hoverText: i18next.t("levelLoad"),
+									tooltipOptions: {
+										text: i18next.t("levelLoad"),
+									},
 									hoverContainer: this,
 									onClick: (self) => {
-										self.hover.visible = false;
+										self.tooltip!.visible = false;
 										this.switchLoad();
 									},
 								}),
@@ -82,13 +88,15 @@ export class EditorUi extends Screen {
 							{
 								content: new SmallButton({
 									text: "📋",
-									hoverText: i18next.t("copyLevel"),
+									tooltipOptions: {
+										text: i18next.t("copyLevel"),
+									},
 									hoverContainer: this,
 									onClick: (self) => {
 										this.copy();
-										self.hoverText.text = i18next.t("copied");
+										self.tooltip!.text.text = i18next.t("copied");
 										setTimeout(() => {
-											self.hoverText.text = i18next.t("copyLevel");
+											self.tooltip!.text.text = i18next.t("copyLevel");
 										}, 2000);
 									},
 								}),
@@ -105,10 +113,12 @@ export class EditorUi extends Screen {
 							{
 								content: new SmallButton({
 									text: "❌",
-									hoverText: i18next.t("back"),
+									tooltipOptions: {
+										text: i18next.t("back"),
+									},
 									hoverContainer: this,
 									onClick: (self) => {
-										self.hover.visible = false;
+										self.tooltip!.visible = false;
 										this.worldRef.worldControllerRef.set("mainMenu");
 									},
 								}),
@@ -329,7 +339,9 @@ export class EditorUi extends Screen {
 				hoverView: null,
 				icon,
 				defaultIconScale: 5,
-				hoverText: i18next.t(this.pinWindow.topPinned[i]),
+				tooltipOptions: {
+					text: i18next.t(this.pinWindow.topPinned[i]),
+				},
 				hoverContainer: this,
 			});
 			btn.onPress.connect(() =>
@@ -409,12 +421,14 @@ class PinWindow extends Window<{
 			const btn = new SmallButton({
 				icon,
 				defaultIconScale: 5,
-				hoverText: i18next.t(pin.pins[i]),
+				tooltipOptions: {
+					text: i18next.t(pin.pins[i]),
+				},
 				hoverContainer: pin.editorUiRef,
 				hoverView: null,
 				defaultView: "editor_pin",
 				onClick: (self) => {
-					self.hover.visible = false;
+					self.tooltip!.visible = false;
 					self.setActive(true);
 					this.selectedPin = i;
 				},
@@ -434,7 +448,9 @@ class PinWindow extends Window<{
 				defaultView: "editor_pin",
 				hoverView: null,
 				icon: Sprite.from(`${v}_pin`),
-				hoverText: i18next.t(v),
+				tooltipOptions: {
+					text: i18next.t(v),
+				},
 				hoverContainer: editorUiRef,
 				defaultIconScale: 5,
 				scale: 0.5,
@@ -443,7 +459,7 @@ class PinWindow extends Window<{
 						this.editorUiRef.onSelectedPin(v);
 						const pinWindow = this.editorUiRef.getChildByID("pinWindow");
 						pinWindow!.visible = false;
-						self.hover.visible = false;
+						self.tooltip!.visible = false;
 						return;
 					}
 
@@ -471,8 +487,8 @@ class PinWindow extends Window<{
 		);
 
 		p2Btn.setActive(false);
-		pBtn.hoverText.text = i18next.t(this._topPinned[this.selectedPin!]);
-		p2Btn.hoverText.text = i18next.t(this._topPinned[this.selectedPin!]);
+		pBtn.tooltip!.text.text = i18next.t(this._topPinned[this.selectedPin!]);
+		p2Btn.tooltip!.text.text = i18next.t(this._topPinned[this.selectedPin!]);
 		(p2Btn.iconView as Sprite).texture = Texture.from(
 			this._topPinned[this.selectedPin!] + "_pin",
 		);
