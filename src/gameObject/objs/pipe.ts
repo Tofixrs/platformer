@@ -325,7 +325,7 @@ export class Pipe extends Ground {
 		};
 		const spriteOffset = {
 			0: new Vec2(0, 100),
-			1: new Vec2(100, 0),
+			1: new Vec2(-100, 0),
 			2: new Vec2(0, -100),
 			3: new Vec2(100, 0),
 		}[this.exitPipe!.rotation]!;
