@@ -1,5 +1,5 @@
 import { Content, Layout } from "@pixi/layout";
-import { Input, ScrollBox } from "@pixi/ui";
+import { CheckBox, Input, ScrollBox } from "@pixi/ui";
 import { Screen } from "@ui/screen";
 import { GameObjectID, GOID, PropertyValue } from "gameObject";
 import { Container, Sprite, Text, Texture } from "pixi.js";
@@ -197,72 +197,122 @@ export class EditorUi extends Screen {
 		const props = getClassFromID(this.selected).props;
 
 		for (const prop of props) {
-			const input = new Input({
-				bg: "input",
-				textStyle: {
-					fill: "white",
-					fontSize: 20,
-				},
-				nineSliceSprite: [160, 27, 160, 27],
-				placeholder: `Input ${prop.name} (${prop.type})`,
-				addMask: true,
-			});
-			const placeholder = input.children.find((v) => {
-				if (!(v instanceof Text)) return false;
-				return v.text == `Input ${prop.name}`;
-			}) as Text;
-			input.addEventListener("pointerdown", () => {
-				Actions.lock = true;
-				this.dontPlace = true;
-			});
-			input.onEnter.connect((v) => {
-				Actions.lock = false;
-				if (!validateProp({ value: v, type: prop.type, name: prop.name })) {
-					input.value = "";
-					placeholder.text = "Invalid input";
-
-					setTimeout(() => {
-						placeholder.text = `Input ${prop.name} (${prop.type})`;
-					}, 2000);
-					return;
-				}
-				const find = this.propertyValue.findIndex((v) => v.name == prop.name);
-				if (find == -1) {
-					this.propertyValue.push({
-						value: v,
-						type: prop.type,
-						name: prop.name,
-					});
-				} else {
-					this.propertyValue[find].value = v;
-				}
-			});
-
 			const text = new Text({ text: prop.name });
-			propsContent.push(
-				new Layout({
-					content: {
-						text: {
-							content: text,
-							styles: {
-								position: "centerLeft",
-								maxWidth: "50%",
+			const defaultPlaceholder = i18next.t("input", {
+				name: prop.name,
+				type: i18next.t(prop.type),
+			});
+			if (prop.type != "boolean") {
+				const input = new Input({
+					bg: "input",
+					textStyle: {
+						fill: "white",
+						fontSize: 20,
+					},
+					nineSliceSprite: [160, 27, 160, 27],
+					placeholder: defaultPlaceholder,
+					addMask: true,
+				});
+				const placeholder = input.children.find((v) => {
+					if (!(v instanceof Text)) return false;
+					return v.text == defaultPlaceholder;
+				}) as Text;
+				input.addEventListener("pointerdown", () => {
+					Actions.lock = true;
+					this.dontPlace = true;
+				});
+				input.onEnter.connect((v) => {
+					Actions.lock = false;
+					if (!validateProp({ value: v, type: prop.type, name: prop.name })) {
+						input.value = "";
+						placeholder.text = "Invalid input";
+
+						setTimeout(() => {
+							placeholder.text = defaultPlaceholder;
+						}, 2000);
+						return;
+					}
+					const find = this.propertyValue.findIndex((v) => v.name == prop.name);
+					if (find == -1) {
+						this.propertyValue.push({
+							value: v,
+							type: prop.type,
+							name: prop.name,
+						});
+					} else {
+						this.propertyValue[find].value = v;
+					}
+				});
+				propsContent.push(
+					new Layout({
+						content: {
+							text: {
+								content: text,
+								styles: {
+									position: "centerLeft",
+									maxWidth: "50%",
+								},
+							},
+							input: {
+								content: input,
+								styles: {
+									position: "centerRight",
+									width: "50%",
+								},
 							},
 						},
-						input: {
-							content: input,
-							styles: {
-								position: "centerRight",
-								width: "50%",
+						styles: {
+							width: "100%",
+							height: 60,
+						},
+					}),
+				);
+			} else {
+				const checkbox = new CheckBox({
+					style: {
+						unchecked: "editor_pin",
+						checked: "checkbox_on",
+					},
+				});
+				checkbox.onCheck.connect((checked) => {
+					this.dontPlace = true;
+					const find = this.propertyValue.findIndex((v) => v.name == prop.name);
+					if (find == -1) {
+						this.propertyValue.push({
+							value: String(checked),
+							type: prop.type,
+							name: prop.name,
+						});
+					} else {
+						this.propertyValue[find].value = String(checked);
+					}
+				});
+				propsContent.push(
+					new Layout({
+						content: {
+							text: {
+								content: text,
+								styles: {
+									position: "centerLeft",
+									maxWidth: "50%",
+								},
+							},
+							input: {
+								content: checkbox,
+								styles: {
+									position: "centerRight",
+									width: "50%",
+									maxHeight: "100%",
+								},
 							},
 						},
-					},
-					styles: {
-						width: "100%",
-						height: 60,
-					},
-				}),
-			);
+						styles: {
+							width: "100%",
+							height: 60,
+						},
+					}),
+				);
+			}
 		}
 
 		return propsContent;

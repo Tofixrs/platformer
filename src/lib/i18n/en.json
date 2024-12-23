@@ -59,5 +59,10 @@
 	"pin7": "Pick object 7",
 	"pin8": "Pick object 8",
 	"pin9": "Pick object 9",
-	"pin10": "Pick object 10"
+	"pin10": "Pick object 10",
+	"input": "Input: {{name}} ({{type}})",
+	"string": "Text",
+	"boolean": "Boolean",
+	"goid": "GObject ID",
+	"number": "Number"
 }

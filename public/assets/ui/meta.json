@@ -21,6 +21,9 @@
 		"small_button_hover": {
 			"frame": { "x": 257, "y": 257, "w": 256, "h": 256 }
 		},
+		"checkbox_on": {
+			"frame": { "x": 513, "y": 256, "w": 256, "h": 256 }
+		},
 		"title": {
 			"frame": { "x": 770, "y": 0, "w": 969, "h": 343 }
 		},

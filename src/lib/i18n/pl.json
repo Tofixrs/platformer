@@ -59,5 +59,10 @@
 	"pin7": "Wybierz 6 przypięty objekt",
 	"pin8": "Wybierz 8 przypięty objekt",
 	"pin9": "Wybierz 9 przypięty objekt",
-	"pin10": "Wybierz 10 przypięty objekt"
+	"pin10": "Wybierz 10 przypięty objekt",
+	"input": "Wpisz: {{name}} ({{type}})",
+	"string": "Tekst",
+	"boolean": "1 lub 0",
+	"goid": "ID Objektu",
+	"number": "Liczba"
 }
