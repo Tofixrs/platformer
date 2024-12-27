@@ -19,6 +19,7 @@ export class World {
 	colorMatrixDegrees = 0;
 	colorMatrixBrightness = 0.5;
 	colorMatrixBrightnessDir = 1;
+	tick = 0;
 	constructor(graphics: Graphics) {
 		this.main.x = graphics.renderer.screen.width / 2;
 		this.main.y = graphics.renderer.screen.height / 2;
@@ -92,6 +93,7 @@ export class World {
 		if (this.pause) return;
 		this.p.step(World.physicsStepTime, 6, 3);
 		this.entities.forEach((e) => e.fixedUpdate());
+		this.tick += 1;
 	}
 	recenter(screen: Rectangle) {
 		this.main.x = screen.width / 2;

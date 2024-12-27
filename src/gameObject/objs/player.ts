@@ -114,6 +114,7 @@ export class Player extends Entity {
 	rollSensorShape = capsule(new Vec2(0.25, 0.25));
 	bigSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.45));
 	sensorDiveShape = new Box(0.4, 0.1, new Vec2(0, 0.2));
+	refreshTouchTick?: number;
 	static props: Property[] = [
 		{
 			type: "number",
@@ -275,6 +276,10 @@ export class Player extends Entity {
 		this.handleAnim();
 		this.handleMove(dt);
 
+		if (world.tick >= this.refreshTouchTick!) {
+			this.touchedGrounds = [];
+			this.refreshTouchTick = undefined;
+		}
 		this.invTimer.tick(dt);
 		if (this.invTimer.doneOnece()) {
 			this.sprite.alpha = 1;
@@ -683,6 +688,11 @@ export class Player extends Entity {
 				pState: this.powerState,
 			},
 		};
+	}
+	recheckGround() {
+		for (let contact; contact; contact = this.body.getContactList()) {
+			this.checkGround(contact.contact);
+		}
 	}
 	static deserialize(obj: SerializedGO): GameObject {
 		return new Player(

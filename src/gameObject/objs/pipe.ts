@@ -107,7 +107,7 @@ export class Pipe extends Ground {
 			!Actions.hold("crouch") &&
 			!Actions.hold("jump") &&
 			!Actions.hold("left") &&
-			Actions.hold("right")
+			!Actions.hold("right")
 		) {
 			this.waitUntilNextEntry = false;
 		}
@@ -119,6 +119,7 @@ export class Pipe extends Ground {
 
 		world.pause = true;
 		this.player.sprite.visible = false;
+		this.player.refreshTouchTick = world.tick + 2;
 		if (this.player.powerState > PowerState.Small && this.rotation == 0) {
 			const pipePosX = planckToPixi1D(this.pos.x);
 			this.player_big_crouch.scale.x = this.player.direction;
@@ -328,6 +329,7 @@ export class Pipe extends Ground {
 		const exitPipePosPixi = planckToPixi(this.player!.body.getPosition());
 		this.player!.sprite.x = exitPipePosPixi.x;
 		this.player!.sprite.y = exitPipePosPixi.y;
+		this.player!.touchedGrounds = [];
 
 		this.player!.lastState = {
 			pos: exitPipePosPixi,
@@ -466,7 +468,7 @@ export class Pipe extends Ground {
 			type: this.bodyType,
 		});
 
-		this.body.createFixture({
+		this.mainFix = this.body.createFixture({
 			density: this.density,
 			shape: this.shape,
 			friction: this.friction,
