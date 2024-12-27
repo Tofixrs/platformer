@@ -44,7 +44,7 @@ export class Level extends World {
 		this.name = name;
 	}
 	update(dt: number): void {
-		if (Actions.click("back") && !this.pause) {
+		if (Actions.click("back") && this.ui.pauseWindow.visible == this.pause) {
 			this.pause = !this.pause;
 			this.ui.pauseWindow.visible = this.pause;
 		}

@@ -91,7 +91,10 @@ export class Editor extends World {
 	}
 	isTesting(dt: number) {
 		if (!this.testing) return false;
-		if (Actions.click("back")) {
+		if (
+			Actions.click("back") &&
+			this.gameUi.pauseWindow.visible == this.pause
+		) {
 			this.pause = !this.pause;
 			this.gameUi.pauseWindow.visible = this.pause;
 		}
