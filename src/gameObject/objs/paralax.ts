@@ -60,16 +60,18 @@ export class Paralax extends GameObject {
 		this.background = background || this.background;
 		this.bg = new TilingSprite({
 			texture: Texture.from(this.backgrounds[this.background].bg),
-			width: 192000,
+			width: 384000,
 			height: 1080,
 			zIndex: -12,
+			x: -192000,
 			label: "bg",
 		});
 		this.fg = new TilingSprite({
 			texture: Texture.from(this.backgrounds[this.background].fg),
-			width: 192000,
+			width: 384000,
 			height: 1080,
 			zIndex: -11,
+			x: -192000,
 			label: "fg",
 		});
 	}
@@ -91,7 +93,6 @@ export class Paralax extends GameObject {
 		const count = world.entities.filter((v) => v.goid == GOID.Paralax).length;
 		this.bg.zIndex = -2138 + 2 * count;
 		this.fg.zIndex = -2137 + 2 * count;
-		console.log(this.bg.zIndex);
 		this.body = world.p.createBody({
 			position: this.pos,
 			fixedRotation: true,
