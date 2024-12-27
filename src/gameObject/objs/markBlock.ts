@@ -24,13 +24,20 @@ export class MarkBlock extends Block {
 			defaultValue: "",
 			descriptionKey: "markBlockDesc",
 		},
+		{
+			name: "invis",
+			type: PropType.boolean,
+			defaultValue: "true",
+			descriptionKey: "invisDesc",
+		},
 	];
 	item?: GameObjectID;
 	static draggable: boolean = false;
 	animSprite: AnimatedSprite;
 	hitSprite = Sprite.from("mark_hit");
 	currSprite: "anim" | "hit" = "anim";
-	constructor(pos: Vec2, item?: GameObjectID) {
+	invis = true;
+	constructor(pos: Vec2, item?: GameObjectID, invis: boolean = true) {
 		const anim = new AnimatedSprite([
 			Texture.from("mark_anim_1"),
 			Texture.from("mark_anim_1"),
@@ -57,6 +64,7 @@ export class MarkBlock extends Block {
 		this.hitSprite.x = this.animSprite.x;
 		this.hitSprite.y = this.animSprite.y;
 		this.hitSprite.anchor.set(0.5, 0.5);
+		this.invis = invis;
 	}
 	static commonConstructor(
 		pos: Vec2,
@@ -66,7 +74,12 @@ export class MarkBlock extends Block {
 		props?: PropertyValue[],
 	): GameObject {
 		const item = props?.find((v) => v.name == "itemInside");
-		return new MarkBlock(pos, item?.value as GameObjectID);
+		const invis = props?.find((v) => v.name == "invis")?.value;
+		return new MarkBlock(
+			pos,
+			item?.value as GameObjectID,
+			invis == "true" || invis == "1",
+		);
 	}
 	update(dt: number, world: World): void {
 		super.update(dt, world);
@@ -95,6 +108,7 @@ export class MarkBlock extends Block {
 	create(world: World): void {
 		super.create(world);
 		world.main.addChild(this.hitSprite);
+		this.animSprite.visible = !this.invis;
 	}
 	onHit(world: World, player: Player): boolean {
 		super.onHit(world, player);
@@ -134,6 +148,7 @@ export class MarkBlock extends Block {
 			data: {
 				pos: this.pos,
 				item: this.item,
+				invis: this.invis,
 			},
 		};
 	}
@@ -141,6 +156,7 @@ export class MarkBlock extends Block {
 		return new MarkBlock(
 			new Vec2(obj.data.pos.x, obj.data.pos.y),
 			obj.data.item,
+			obj.data.invis,
 		);
 	}
 }
