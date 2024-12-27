@@ -186,6 +186,11 @@ export class Campaign extends World {
 	}
 	load() {
 		this.time = 0;
+		this.c.filters = [];
+		this.colorMatrixDegrees = 0;
+		this.colorMatrixBrightness = 0.5;
+		this.colorMatrixBrightnessDir = 1;
+		this.colorMatrixTimer.reset();
 		if (!this.levels[this.currLevel]) {
 			this.won();
 			return;

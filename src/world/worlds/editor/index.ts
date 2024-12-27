@@ -204,6 +204,11 @@ export class Editor extends World {
 		this.data = serializeWorld(this);
 	}
 	load() {
+		this.c.filters = [];
+		this.colorMatrixDegrees = 0;
+		this.colorMatrixBrightness = 0.5;
+		this.colorMatrixBrightnessDir = 1;
+		this.colorMatrixTimer.reset();
 		this.time = 0;
 		this.coins = 0;
 		for (let i = this.entities.length - 1; i != -1; i--) {
