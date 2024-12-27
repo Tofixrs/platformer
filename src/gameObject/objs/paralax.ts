@@ -81,6 +81,7 @@ export class Paralax extends GameObject {
 			density: 0,
 			shape: this.shape,
 			friction: 0,
+			isSensor: true,
 			userData: {
 				goid: this.goid,
 				id: this.id,
