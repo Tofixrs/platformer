@@ -102,7 +102,13 @@ export class Pipe extends Ground {
 		}
 		if (!this.exitPipe) return;
 		if (!this.player) return;
-		if (this.waitUntilNextEntry && !Actions.hold("crouch")) {
+		if (
+			this.waitUntilNextEntry &&
+			!Actions.hold("crouch") &&
+			!Actions.hold("jump") &&
+			!Actions.hold("left") &&
+			Actions.hold("right")
+		) {
 			this.waitUntilNextEntry = false;
 		}
 		if (this.waitUntilNextEntry) return;
@@ -160,6 +166,7 @@ export class Pipe extends Ground {
 				this.player_big_stand.visible = false;
 				this.player_small.visible = false;
 				this.player.sprite.visible = true;
+				this.player = undefined;
 				return;
 			}
 
@@ -179,6 +186,7 @@ export class Pipe extends Ground {
 				this.player_big_stand.visible = false;
 				this.player_small.visible = false;
 				this.player.sprite.visible = true;
+				this.player = undefined;
 				return;
 			}
 
@@ -198,6 +206,7 @@ export class Pipe extends Ground {
 				this.player_big_stand.visible = false;
 				this.player_small.visible = false;
 				this.player.sprite.visible = true;
+				this.player = undefined;
 				return;
 			}
 
@@ -217,6 +226,7 @@ export class Pipe extends Ground {
 				this.player_big_stand.visible = false;
 				this.player_small.visible = false;
 				this.player.sprite.visible = true;
+				this.player = undefined;
 				return;
 			}
 
