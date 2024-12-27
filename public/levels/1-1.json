@@ -9,26 +9,30 @@
 	{ "_type": "brick", "data": { "pos": { "x": 18, "y": 0.25 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 15.5, "y": 0.25 }, "item": "coin" }
+		"data": { "pos": { "x": 15.5, "y": 0.25 }, "item": "coin", "invis": false }
 	},
 	{ "_type": "brick", "data": { "pos": { "x": 18.5, "y": 0.25 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 19, "y": 0.25 }, "item": "mushroom" }
+		"data": {
+			"pos": { "x": 19, "y": 0.25 },
+			"item": "mushroom",
+			"invis": false
+		}
 	},
 	{ "_type": "brick", "data": { "pos": { "x": 19.5, "y": 0.25 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 20, "y": 0.25 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 20.5, "y": 0.25 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 21, "y": 0.25 }, "item": "coin" }
+		"data": { "pos": { "x": 21, "y": 0.25 }, "item": "coin", "invis": false }
 	},
 	{ "_type": "brick", "data": { "pos": { "x": 21.5, "y": 0.25 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 22, "y": 0.25 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 22.5, "y": 0.25 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 20, "y": -2.75 }, "item": "coin" }
+		"data": { "pos": { "x": 20, "y": -2.75 }, "item": "coin", "invis": false }
 	},
 	{
 		"_type": "pipe",
@@ -74,7 +78,7 @@
 	},
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 48.5, "y": 0.25 }, "item": "1up" }
+		"data": { "pos": { "x": 48.5, "y": 0.25 }, "item": "1up", "invis": false }
 	},
 	{
 		"_type": "rock",
@@ -92,7 +96,11 @@
 	{ "_type": "brick", "data": { "pos": { "x": 61.5, "y": 0.25 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 62, "y": 0.25 }, "item": "mushroom" }
+		"data": {
+			"pos": { "x": 62, "y": 0.25 },
+			"item": "mushroom",
+			"invis": false
+		}
 	},
 	{ "_type": "brick", "data": { "pos": { "x": 62.5, "y": 0.25 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 63, "y": 0.25 } } },
@@ -381,7 +389,7 @@
 	{ "_type": "brick", "data": { "pos": { "x": 78, "y": -2.75 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 78.5, "y": -2.75 }, "item": "coin" }
+		"data": { "pos": { "x": 78.5, "y": -2.75 }, "item": "coin", "invis": false }
 	},
 	{
 		"_type": "goomba",
@@ -411,19 +419,23 @@
 	{ "_type": "brick", "data": { "pos": { "x": 85.5, "y": 0.25 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 90, "y": 0.25 }, "item": "coin" }
+		"data": { "pos": { "x": 90, "y": 0.25 }, "item": "coin", "invis": false }
 	},
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 92.5, "y": 0.25 }, "item": "coin" }
+		"data": { "pos": { "x": 92.5, "y": 0.25 }, "item": "coin", "invis": false }
 	},
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 95, "y": 0.25 }, "item": "coin" }
+		"data": { "pos": { "x": 95, "y": 0.25 }, "item": "coin", "invis": false }
 	},
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 92.5, "y": -2.75 }, "item": "mushroom" }
+		"data": {
+			"pos": { "x": 92.5, "y": -2.75 },
+			"item": "mushroom",
+			"invis": false
+		}
 	},
 	{ "_type": "brick", "data": { "pos": { "x": 100.5, "y": 0.25 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 101, "y": 0.25 } } },
@@ -434,27 +446,19 @@
 	{ "_type": "brick", "data": { "pos": { "x": 105.5, "y": -2.75 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 106, "y": -2.75 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 106, "y": -2.75 } } },
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 106.75, "y": -2.75 },
-			"shapeVerts": [
-				{ "x": 0.5, "y": -0.25 },
-				{ "x": 0.5, "y": 0.25 },
-				{ "x": -0.5, "y": 0.25 },
-				{ "x": -0.5, "y": -0.25 }
-			]
-		}
-	},
 	{ "_type": "brick", "data": { "pos": { "x": 111, "y": -2.75 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 111.5, "y": -2.75 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 112, "y": -2.75 }, "item": "coin" }
+		"data": { "pos": { "x": 112, "y": -2.75 }, "item": "coin", "invis": false }
 	},
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 112.5, "y": -2.75 }, "item": "coin" }
+		"data": {
+			"pos": { "x": 112.5, "y": -2.75 },
+			"item": "coin",
+			"invis": false
+		}
 	},
 	{ "_type": "brick", "data": { "pos": { "x": 113, "y": -2.75 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 113.5, "y": -2.75 } } },
@@ -920,7 +924,7 @@
 	{ "_type": "brick", "data": { "pos": { "x": 151, "y": 0.25 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 151.5, "y": 0.25 }, "item": "coin" }
+		"data": { "pos": { "x": 151.5, "y": 0.25 }, "item": "coin", "invis": false }
 	},
 	{ "_type": "brick", "data": { "pos": { "x": 152, "y": 0.25 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 152.5, "y": 0.25 } } },
@@ -1073,6 +1077,19 @@
 			"bg": 2,
 			"pos": { "x": 4, "y": 30.875 },
 			"visibility": { "x": -1013, "y": 1494 }
+		}
+	},
+	{
+		"_type": "spike",
+		"data": {
+			"verts": [
+				{ "x": 1.25, "y": -0.25 },
+				{ "x": 1.25, "y": 0.25 },
+				{ "x": -1.25, "y": 0.25 },
+				{ "x": -1.25, "y": -0.25 }
+			],
+			"pos": { "x": 121, "y": 2.75 },
+			"instakill": true
 		}
 	}
 ]
