@@ -1,28 +1,28 @@
 import { Container, Graphics as Draw } from "pixi.js";
 import { World } from ".";
+import { Graphics } from "graphics";
 
 export class WorldController {
 	worlds: Map<string, World> = new Map();
 	currentWorld: string = "";
-	worldContainer = new Container();
-	debug: Draw;
-	constructor(stage: Container, debug: Draw) {
-		stage.addChild(this.worldContainer);
-		this.debug = debug;
-		this.debug.zIndex = 21;
+	graphicsRef: Graphics;
+	constructor(graphics: Graphics) {
+		this.graphicsRef = graphics;
 	}
 	add(name: string, world: World) {
 		this.worlds.set(name, world);
 	}
 	set(name: string) {
 		if (this.world) {
-			this.worldContainer.removeChild(this.world.c);
-			this.world.main.removeChild(this.debug);
+			this.world.main.removeChild(this.graphicsRef.debugDraw);
 		}
 		this.currentWorld = name;
 		if (this.world) {
-			this.worldContainer.addChild(this.world.c);
-			this.world.main.addChild(this.debug);
+			this.graphicsRef.stage = this.world.c;
+
+			//@ts-expect-error
+			globalThis.__PIXI_STAGE__ = this.world.c;
+			this.world.main.addChild(this.graphicsRef.debugDraw);
 			this.world.onSet();
 		}
 	}

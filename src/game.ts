@@ -33,10 +33,7 @@ export class Game {
 		Actions.init();
 		orientation.init();
 
-		this.worldController = new WorldController(
-			this.graphics.stage,
-			this.graphics.debugDraw,
-		);
+		this.worldController = new WorldController(this.graphics);
 		const mainMenu = new MainMenu(this.graphics, this.worldController);
 		this.worldController.add("mainMenu", mainMenu);
 

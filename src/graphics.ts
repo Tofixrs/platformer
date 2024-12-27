@@ -13,7 +13,7 @@ import { planckToPixi } from "@lib/math/units";
 import { Game } from "game";
 
 export class Graphics<R extends Renderer = Renderer> {
-	debugDraw = new Draw();
+	debugDraw = new Draw({ zIndex: 21 });
 	stage = new Container();
 	renderer!: R;
 	fpsElem: Text = new Text({ text: "0" });
