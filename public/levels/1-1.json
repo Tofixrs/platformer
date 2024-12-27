@@ -5,7 +5,7 @@
 		"_type": "goomba",
 		"data": { "pos": { "x": 21, "y": 2.75 }, "direction": -1 }
 	},
-	{ "_type": "paralax", "data": 1 },
+	{ "_type": "paralax", "data": { "bg": 1, "pos": { "x": 0, "y": 0 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 18, "y": 0.25 } } },
 	{
 		"_type": "markBlock",
@@ -1066,5 +1066,13 @@
 	{
 		"_type": "goomba",
 		"data": { "pos": { "x": 41.25, "y": 2.75 }, "direction": -1 }
+	},
+	{
+		"_type": "paralax",
+		"data": {
+			"bg": 2,
+			"pos": { "x": 4, "y": 30.875 },
+			"visibility": { "x": -1013, "y": 1494 }
+		}
 	}
 ]

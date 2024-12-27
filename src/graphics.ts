@@ -75,7 +75,7 @@ export class Graphics<R extends Renderer = Renderer> {
 		this.renderer.resize(globalThis.innerWidth, globalThis.innerHeight);
 	}
 	debugRender(world: World, dt: number) {
-		this.fpsElem.text = Math.floor(1 / dt);
+		this.fpsElem.text = `fps: ${Math.floor(1 / dt)} pivot: (${world.main.pivot.x}, ${world.main.pivot.y})`;
 		this.debugDraw.clear();
 
 		for (let body = world.p.getBodyList(); body; body = body?.getNext()) {

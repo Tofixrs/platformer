@@ -43,7 +43,7 @@ export class Settings extends World {
 			},
 		});
 		const tabBtns = [audio, bindBtn];
-		this.addEntity(new Paralax(Backgrounds.Settings));
+		this.addEntity(new Paralax(Vec2.zero(), Backgrounds.Settings));
 
 		this.layout = new Layout({
 			content: {

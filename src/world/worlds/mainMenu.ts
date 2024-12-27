@@ -9,6 +9,7 @@ import { Paralax } from "@gameObjs/paralax";
 import { SmallButton } from "@lib/ui/small_button";
 import i18next from "i18next";
 import { GOID } from "gameObject";
+import { Vec2 } from "planck/with-testbed";
 
 export class MainMenu extends World {
 	layout: Layout;
@@ -118,7 +119,7 @@ export class MainMenu extends World {
 		});
 		this.top.addChild(this.layout);
 		this.recenter(graphics.renderer.screen);
-		this.addEntity(new Paralax());
+		this.addEntity(new Paralax(Vec2.zero()));
 	}
 	//hack lol
 	onSet(): void {
