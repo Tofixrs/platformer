@@ -484,15 +484,15 @@ export class Player extends Entity {
 	}
 	checkMaxVel() {
 		const maxVel = this.actionStates.map((v) => {
-			if (v == ActionState.Roll) return new Vec2(12.5, -15);
+			if (v == ActionState.Roll) return new Vec2(13.5, -15);
 			if (v == ActionState.LongJump) return new Vec2(30, -15);
 			if (v == ActionState.Dive) return new Vec2(20, -15);
-			if (v == ActionState.Run) return new Vec2(10, -22.5);
+			if (v == ActionState.Run) return new Vec2(10, -16.5);
 
 			return new Vec2(6, -15);
 		});
 		const maxX = Math.max(...maxVel.map((v) => v.x), 5);
-		const maxY = Math.max(...maxVel.map((v) => v.y), -15);
+		const maxY = Math.min(...maxVel.map((v) => v.y), -15);
 		this.maxVel.x = maxX;
 		this.maxVel.y = maxY;
 
