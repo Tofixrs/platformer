@@ -106,6 +106,25 @@ export class EditorUi extends Screen {
 								},
 							},
 							{
+								content: new SmallButton({
+									text: "💣",
+									tooltipOptions: {
+										text: i18next.t("wipe"),
+									},
+									hoverContainer: this,
+									onClick: (self) => {
+										this.copy();
+										self.tooltip!.visible = false;
+										this.worldRef.data = "";
+										this.worldRef.load();
+									},
+								}),
+								styles: {
+									paddingLeft: 5,
+									paddingRight: 10,
+								},
+							},
+							{
 								content: this.trashButton,
 								styles: {
 									paddingLeft: 5,
