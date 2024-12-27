@@ -355,8 +355,8 @@ export class Pipe extends Ground {
 
 		const moveDown = window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
 		world.main.pivot.set(exitPipePosPixi.x, exitPipePosPixi.y - moveDown);
-		(world.entities.find((v) => v.goid == GOID.Paralax) as Paralax)?.updatePos(
-			world.main.pivot,
+		(world.entities.filter((v) => v.goid == GOID.Paralax) as Paralax[]).forEach(
+			(v) => v.updatePos(world.main.pivot),
 		);
 	}
 	static renderDrag(
