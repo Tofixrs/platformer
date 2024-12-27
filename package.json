@@ -12,7 +12,7 @@
 		"@types/howler": "^2.2.12",
 		"@types/node": "^22.10.2",
 		"typescript": "^5.7.2",
-		"vite": "^6.0.3",
+		"vite": "^6.0.6",
 		"vite-plugin-checker": "^0.8.0",
 		"vite-tsconfig-paths": "^5.1.4"
 	},
@@ -20,8 +20,8 @@
 		"@pixi/layout": "^2.0.1",
 		"@pixi/ui": "^2.2.0",
 		"howler": "^2.2.4",
-		"i18next": "^24.1.0",
-		"pixi.js": "^8.6.4",
-		"planck": "^1.1.2"
+		"i18next": "^24.2.0",
+		"pixi.js": "^8.6.6",
+		"planck": "^1.2.0"
 	}
 }
