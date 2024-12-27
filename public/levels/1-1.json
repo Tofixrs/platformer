@@ -1,861 +1,139 @@
 [
+	{ "_type": "player", "data": { "pos": { "x": 0, "y": 2.5 }, "pState": 1 } },
+	{ "_type": "brick", "data": { "pos": { "x": 17.5, "y": 0.25 } } },
 	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 6.75, "y": 11.5 },
-			"shapeVerts": [
-				{ "x": 5.25, "y": -11.25 },
-				{ "x": 5.25, "y": 11.25 },
-				{ "x": -5.25, "y": 11.25 },
-				{ "x": -5.25, "y": -11.25 }
-			]
-		}
+		"_type": "goomba",
+		"data": { "pos": { "x": 21, "y": 2.75 }, "direction": -1 }
 	},
+	{ "_type": "paralax", "data": { "bg": 1, "pos": { "x": 0, "y": 0 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 18, "y": 0.25 } } },
 	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 30, "y": 19.25 },
-			"shapeVerts": [
-				{ "x": 18, "y": -3.5 },
-				{ "x": 18, "y": 3.5 },
-				{ "x": -18, "y": 3.5 },
-				{ "x": -18, "y": -3.5 }
-			]
-		}
+		"_type": "markBlock",
+		"data": { "pos": { "x": 15.5, "y": 0.25 }, "item": "coin", "invis": false }
 	},
-	{
-		"_type": "paralax",
-		"data": { "bg": 1, "pos": { "x": 30.75, "y": 10.25 } }
-	},
-	{
-		"_type": "player",
-		"data": { "pos": { "x": 12.25, "y": 15.25 }, "pState": 1 }
-	},
-	{
-		"_type": "koopa",
-		"data": { "pos": { "x": 21.75, "y": 15.5 }, "direction": -1 }
-	},
-	{
-		"_type": "koopa",
-		"data": { "pos": { "x": 20.25, "y": 15.5 }, "direction": -1 }
-	},
-	{
-		"_type": "koopa",
-		"data": { "pos": { "x": 19, "y": 15.5 }, "direction": -1 }
-	},
-	{ "_type": "brick", "data": { "pos": { "x": 23.75, "y": 13 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 24.25, "y": 13 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 24.75, "y": 13 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 25.25, "y": 13 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 25.75, "y": 13 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 26.25, "y": 13 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 26.75, "y": 13 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 27.25, "y": 13 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 27.75, "y": 13 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 28.25, "y": 13 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 25.75, "y": 10 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 26.25, "y": 10 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 26.75, "y": 10 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 24.25, "y": 10 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 18.5, "y": 0.25 } } },
 	{
 		"_type": "markBlock",
 		"data": {
-			"pos": { "x": 27.25, "y": 10 },
+			"pos": { "x": 19, "y": 0.25 },
 			"item": "mushroom",
 			"invis": false
 		}
 	},
-	{ "_type": "brick", "data": { "pos": { "x": 24.75, "y": 10 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 25.25, "y": 10 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 19.5, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 20, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 20.5, "y": 0.25 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 25.25, "y": 7.5 }, "item": "coin", "invis": true }
+		"data": { "pos": { "x": 21, "y": 0.25 }, "item": "coin", "invis": false }
 	},
+	{ "_type": "brick", "data": { "pos": { "x": 21.5, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 22, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 22.5, "y": 0.25 } } },
 	{
 		"_type": "markBlock",
-		"data": { "pos": { "x": 25.25, "y": 5 }, "item": "coin", "invis": true }
-	},
-	{
-		"_type": "markBlock",
-		"data": { "pos": { "x": 25.25, "y": 2.25 }, "item": "coin", "invis": true }
-	},
-	{
-		"_type": "markBlock",
-		"data": { "pos": { "x": 25.25, "y": -0.25 }, "item": "coin", "invis": true }
-	},
-	{
-		"_type": "markBlock",
-		"data": { "pos": { "x": 25.25, "y": -2.75 }, "item": "1up", "invis": true }
-	},
-	{
-		"_type": "markBlock",
-		"data": { "pos": { "x": 25.75, "y": 7.5 }, "item": "coin", "invis": true }
-	},
-	{
-		"_type": "markBlock",
-		"data": { "pos": { "x": 25.75, "y": 5 }, "item": "coin", "invis": true }
-	},
-	{
-		"_type": "markBlock",
-		"data": { "pos": { "x": 25.75, "y": 2.25 }, "item": "coin", "invis": true }
-	},
-	{
-		"_type": "markBlock",
-		"data": { "pos": { "x": 25.75, "y": -0.25 }, "item": "coin", "invis": true }
-	},
-	{
-		"_type": "markBlock",
-		"data": { "pos": { "x": 25.75, "y": -2.75 }, "item": "coin", "invis": true }
+		"data": { "pos": { "x": 20, "y": -2.75 }, "item": "coin", "invis": false }
 	},
 	{
 		"_type": "pipe",
 		"data": {
-			"pos": { "x": 25.5, "y": -10.75 },
+			"pos": { "x": 26.25, "y": 2.5 },
 			"shapeVerts": [
-				{ "x": 0.5, "y": -6 },
-				{ "x": 0.5, "y": 6 },
-				{ "x": -0.5, "y": 6 },
-				{ "x": -0.5, "y": -6 }
+				{ "x": 0.5, "y": -0.5 },
+				{ "x": 0.5, "y": 0.5 },
+				{ "x": -0.5, "y": 0.5 },
+				{ "x": -0.5, "y": -0.5 }
 			],
-			"rotation": 2,
-			"exit": "coins",
+			"rotation": 0,
 			"exitOnly": false
 		}
 	},
 	{
-		"_type": "rock",
+		"_type": "pipe",
 		"data": {
-			"pos": { "x": 6.5, "y": -16.5 },
+			"pos": { "x": 32.25, "y": 2 },
 			"shapeVerts": [
-				{ "x": 5.5, "y": -16.75 },
-				{ "x": 5.5, "y": 16.75 },
-				{ "x": -5.5, "y": 16.75 },
-				{ "x": -5.5, "y": -16.75 }
-			]
+				{ "x": 0.5, "y": -1 },
+				{ "x": 0.5, "y": 1 },
+				{ "x": -0.5, "y": 1 },
+				{ "x": -0.5, "y": -1 }
+			],
+			"rotation": 0,
+			"exitOnly": false
 		}
+	},
+	{
+		"_type": "pipe",
+		"data": {
+			"pos": { "x": 37.25, "y": 1.75 },
+			"shapeVerts": [
+				{ "x": 0.5, "y": -1.25 },
+				{ "x": 0.5, "y": 1.25 },
+				{ "x": -0.5, "y": 1.25 },
+				{ "x": -0.5, "y": -1.25 }
+			],
+			"rotation": 0,
+			"exitOnly": false
+		}
+	},
+	{
+		"_type": "markBlock",
+		"data": { "pos": { "x": 48.5, "y": 0.25 }, "item": "1up", "invis": false }
 	},
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 1.25, "y": 11.5 },
+			"pos": { "x": 62.5, "y": 15.5 },
 			"shapeVerts": [
-				{ "x": 0.25, "y": -11.25 },
-				{ "x": 0.25, "y": 11.25 },
-				{ "x": -0.25, "y": 11.25 },
-				{ "x": -0.25, "y": -11.25 }
+				{ "x": 7.75, "y": -12.5 },
+				{ "x": 7.75, "y": 12.5 },
+				{ "x": -7.75, "y": 12.5 },
+				{ "x": -7.75, "y": -12.5 }
 			]
 		}
 	},
+	{ "_type": "brick", "data": { "pos": { "x": 61, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 61.5, "y": 0.25 } } },
 	{
-		"_type": "rock",
+		"_type": "markBlock",
 		"data": {
-			"pos": { "x": -14, "y": -5.25 },
-			"shapeVerts": [
-				{ "x": 15, "y": -28 },
-				{ "x": 15, "y": 28 },
-				{ "x": -15, "y": 28 },
-				{ "x": -15, "y": -28 }
-			]
+			"pos": { "x": 62, "y": 0.25 },
+			"item": "mushroom",
+			"invis": false
 		}
+	},
+	{ "_type": "brick", "data": { "pos": { "x": 62.5, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 63, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 63.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 64, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 64.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 65, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 65.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 66, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 66.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 67, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 67.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 68, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 68.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 69, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 69.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 70, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 70.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 71, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 71.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 72, "y": -2.75 } } },
+	{
+		"_type": "goomba",
+		"data": { "pos": { "x": 64.25, "y": -3.25 }, "direction": -1 }
 	},
 	{
 		"_type": "goomba",
-		"data": { "pos": { "x": 26, "y": 12 }, "direction": -1 }
-	},
-	{
-		"_type": "spike",
-		"data": {
-			"verts": [
-				{ "x": 2, "y": -0.25 },
-				{ "x": 2, "y": 0.25 },
-				{ "x": -2, "y": 0.25 },
-				{ "x": -2, "y": -0.25 }
-			],
-			"pos": { "x": 34.5, "y": 15.5 },
-			"instakill": false
-		}
-	},
-	{
-		"_type": "spike",
-		"data": {
-			"verts": [
-				{ "x": 0.75, "y": -0.25 },
-				{ "x": 0.75, "y": 0.25 },
-				{ "x": -0.75, "y": 0.25 },
-				{ "x": -0.75, "y": -0.25 }
-			],
-			"pos": { "x": 38.75, "y": 15.5 },
-			"instakill": true
-		}
-	},
-	{
-		"_type": "markBlock",
-		"data": {
-			"pos": { "x": 23.75, "y": 10 },
-			"item": "sushroom",
-			"invis": false
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 23.25, "y": 11.5 },
-			"shapeVerts": [
-				{ "x": 0.25, "y": -1.75 },
-				{ "x": 0.25, "y": 1.75 },
-				{ "x": -0.25, "y": 1.75 },
-				{ "x": -0.25, "y": -1.75 }
-			]
-		}
-	},
-	{
-		"_type": "paralax",
-		"data": {
-			"bg": 2,
-			"pos": { "x": -12.25, "y": 27.25 },
-			"visibility": { "x": -1876, "y": 1200 }
-		}
-	},
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 23 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 23.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 24 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 24.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 25 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 25.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 26 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 26.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 32 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -20.25, "y": 32.5 } } },
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": -30.25, "y": 27.75 },
-			"shapeVerts": [
-				{ "x": 9.75, "y": -5 },
-				{ "x": 9.75, "y": 5 },
-				{ "x": -9.75, "y": 5 },
-				{ "x": -9.75, "y": -5 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": -34.5, "y": 13 },
-			"shapeVerts": [
-				{ "x": 5.5, "y": -9.75 },
-				{ "x": 5.5, "y": 9.75 },
-				{ "x": -5.5, "y": 9.75 },
-				{ "x": -5.5, "y": -9.75 }
-			]
-		}
+		"data": { "pos": { "x": 66.5, "y": -3.25 }, "direction": -1 }
 	},
 	{
 		"_type": "pipe",
 		"data": {
-			"pos": { "x": -19.5, "y": 23.25 },
-			"shapeVerts": [
-				{ "x": 0.5, "y": -0.5 },
-				{ "x": 0.5, "y": 0.5 },
-				{ "x": -0.5, "y": 0.5 },
-				{ "x": -0.5, "y": -0.5 }
-			],
-			"rotation": 2,
-			"exit": "coins",
-			"exitOnly": false
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": -22.25, "y": 42.5 },
-			"shapeVerts": [
-				{ "x": 17.75, "y": -9.75 },
-				{ "x": 17.75, "y": 9.75 },
-				{ "x": -17.75, "y": 9.75 },
-				{ "x": -17.75, "y": -9.75 }
-			]
-		}
-	},
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 32.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 32 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 26.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 26 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 25.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 25 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 24.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 24 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 23.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -4.75, "y": 23 } } },
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 7.5, "y": 37.5 },
-			"shapeVerts": [
-				{ "x": 12, "y": -14.75 },
-				{ "x": 12, "y": 14.75 },
-				{ "x": -12, "y": 14.75 },
-				{ "x": -12, "y": -14.75 }
-			]
-		}
-	},
-	{ "_type": "brick", "data": { "pos": { "x": -19.75, "y": 32.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -19.25, "y": 32.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -18.75, "y": 32.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -18.25, "y": 32.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -6.75, "y": 32.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -6.25, "y": 32.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -5.75, "y": 32.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -5.25, "y": 32.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -19.25, "y": 32 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -18.75, "y": 32 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -18.25, "y": 32 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -6.75, "y": 32 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -6.25, "y": 32 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -5.75, "y": 32 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -6.25, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -6.75, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -7.25, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -7.75, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -8.25, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -8.75, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.25, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.75, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.25, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.75, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.25, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.75, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.25, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.75, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -16.25, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -16.75, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -17.25, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -17.75, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -18.25, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -18.75, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -18.25, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -17.75, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -17.25, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -16.75, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -16.25, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.75, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.25, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.75, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.25, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.75, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.25, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.75, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.25, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -8.75, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -8.25, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -7.75, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -7.25, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -6.75, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -17.75, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -17.25, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -16.75, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -16.25, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.75, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.25, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.75, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.25, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.75, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.25, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.75, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.25, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.75, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.25, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.75, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.25, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -8.75, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -8.25, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -7.75, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -7.25, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -17.25, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -16.75, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -16.25, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.75, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.25, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.75, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.25, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.75, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.25, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.75, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.25, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.75, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.25, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.75, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.25, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -8.75, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -8.25, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -7.75, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -16.75, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -16.25, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.75, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.25, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.75, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.25, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.75, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.25, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.75, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.25, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.75, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.25, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.75, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.25, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -8.75, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -8.25, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -16.25, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.75, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.25, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.75, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.25, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.75, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.25, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.75, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.25, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.75, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.25, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.75, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.25, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.75, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.25, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -8.75, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.75, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.25, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.75, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.25, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.75, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.25, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.75, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.25, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.75, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.25, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.75, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.25, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.75, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.25, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -15.25, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.75, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.25, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.75, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.25, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.75, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.25, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.75, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.25, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.75, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.25, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -9.75, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.75, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.25, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.75, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.25, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.75, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.25, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.75, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.25, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.75, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.25, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -14.25, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.75, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.25, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.75, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.25, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.75, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.25, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -10.75, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.75, "y": 26.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.25, "y": 26.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.75, "y": 26.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.25, "y": 26.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.75, "y": 26.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.25, "y": 26.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -13.25, "y": 26 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.75, "y": 26 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.25, "y": 26 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -11.75, "y": 26 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.75, "y": 25.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": -12.25, "y": 25.5 } } },
-	{ "_type": "coin", "data": { "x": -12.25, "y": 29.5 } },
-	{ "_type": "coin", "data": { "x": -12.75, "y": 29.5 } },
-	{ "_type": "coin", "data": { "x": -12.5, "y": 30 } },
-	{ "_type": "coin", "data": { "x": -12.75, "y": 30.5 } },
-	{ "_type": "coin", "data": { "x": -12.25, "y": 30.5 } },
-	{ "_type": "coin", "data": { "x": -12.5, "y": 31 } },
-	{ "_type": "coin", "data": { "x": -12.75, "y": 31.5 } },
-	{ "_type": "coin", "data": { "x": -12.25, "y": 31.5 } },
-	{ "_type": "coin", "data": { "x": -12.5, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -12.25, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -12.75, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -13.25, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -11.75, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -11.25, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -13.75, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -13.5, "y": 31.5 } },
-	{ "_type": "coin", "data": { "x": -13.25, "y": 31 } },
-	{ "_type": "coin", "data": { "x": -13.75, "y": 31 } },
-	{ "_type": "coin", "data": { "x": -11.75, "y": 31 } },
-	{ "_type": "coin", "data": { "x": -11.25, "y": 31 } },
-	{ "_type": "coin", "data": { "x": -11.5, "y": 31.5 } },
-	{ "_type": "coin", "data": { "x": -11.5, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -13.5, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -14.25, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -14.75, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -14.5, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -15.5, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -15.25, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -15.75, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -16.5, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -16.25, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -16.75, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -17.5, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -17.25, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -17.75, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -10.5, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -10.25, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -10.75, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -9.5, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -9.25, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -9.75, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -8.5, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -8.75, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -8.25, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -7.5, "y": 32.5 } },
-	{ "_type": "coin", "data": { "x": -7.75, "y": 32 } },
-	{ "_type": "coin", "data": { "x": -7.25, "y": 32 } },
-	{
-		"_type": "pipe",
-		"data": {
-			"pos": { "x": -5.5, "y": 31.25 },
-			"shapeVerts": [
-				{ "x": 0.5, "y": -0.5 },
-				{ "x": 0.5, "y": 0.5 },
-				{ "x": -0.5, "y": 0.5 },
-				{ "x": -0.5, "y": -0.5 }
-			],
-			"rotation": 0,
-			"exit": "coins_exit",
-			"exitOnly": false
-		}
-	},
-	{ "_type": "brick", "data": { "pos": { "x": -5.25, "y": 32 } } },
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 45.5, "y": 15.5 },
-			"shapeVerts": [
-				{ "x": 2.5, "y": -0.25 },
-				{ "x": 2.5, "y": 0.25 },
-				{ "x": -2.5, "y": 0.25 },
-				{ "x": -2.5, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 45.75, "y": 15 },
-			"shapeVerts": [
-				{ "x": 2.25, "y": -0.25 },
-				{ "x": 2.25, "y": 0.25 },
-				{ "x": -2.25, "y": 0.25 },
-				{ "x": -2.25, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 46, "y": 14.5 },
-			"shapeVerts": [
-				{ "x": 2, "y": -0.25 },
-				{ "x": 2, "y": 0.25 },
-				{ "x": -2, "y": 0.25 },
-				{ "x": -2, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 46.25, "y": 14 },
-			"shapeVerts": [
-				{ "x": 1.75, "y": -0.25 },
-				{ "x": 1.75, "y": 0.25 },
-				{ "x": -1.75, "y": 0.25 },
-				{ "x": -1.75, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 46.5, "y": 13.5 },
-			"shapeVerts": [
-				{ "x": 1.5, "y": -0.25 },
-				{ "x": 1.5, "y": 0.25 },
-				{ "x": -1.5, "y": 0.25 },
-				{ "x": -1.5, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 46.75, "y": 13 },
-			"shapeVerts": [
-				{ "x": 1.25, "y": -0.25 },
-				{ "x": 1.25, "y": 0.25 },
-				{ "x": -1.25, "y": 0.25 },
-				{ "x": -1.25, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 47, "y": 12.5 },
-			"shapeVerts": [
-				{ "x": 1, "y": -0.25 },
-				{ "x": 1, "y": 0.25 },
-				{ "x": -1, "y": 0.25 },
-				{ "x": -1, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 47.25, "y": 12 },
-			"shapeVerts": [
-				{ "x": 0.75, "y": -0.25 },
-				{ "x": 0.75, "y": 0.25 },
-				{ "x": -0.75, "y": 0.25 },
-				{ "x": -0.75, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "spike",
-		"data": {
-			"verts": [
-				{ "x": 0.5, "y": -0.25 },
-				{ "x": 0.5, "y": 0.25 },
-				{ "x": -0.5, "y": 0.25 },
-				{ "x": -0.5, "y": -0.25 }
-			],
-			"pos": { "x": 47.5, "y": 11.5 },
-			"instakill": false
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 50.75, "y": 12 },
-			"shapeVerts": [
-				{ "x": 0.75, "y": -0.25 },
-				{ "x": 0.75, "y": 0.25 },
-				{ "x": -0.75, "y": 0.25 },
-				{ "x": -0.75, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 51, "y": 12.5 },
-			"shapeVerts": [
-				{ "x": 1, "y": -0.25 },
-				{ "x": 1, "y": 0.25 },
-				{ "x": -1, "y": 0.25 },
-				{ "x": -1, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 51.25, "y": 13 },
-			"shapeVerts": [
-				{ "x": 1.25, "y": -0.25 },
-				{ "x": 1.25, "y": 0.25 },
-				{ "x": -1.25, "y": 0.25 },
-				{ "x": -1.25, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 51.5, "y": 13.5 },
-			"shapeVerts": [
-				{ "x": 1.5, "y": -0.25 },
-				{ "x": 1.5, "y": 0.25 },
-				{ "x": -1.5, "y": 0.25 },
-				{ "x": -1.5, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 51.75, "y": 14 },
-			"shapeVerts": [
-				{ "x": 1.75, "y": -0.25 },
-				{ "x": 1.75, "y": 0.25 },
-				{ "x": -1.75, "y": 0.25 },
-				{ "x": -1.75, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 52, "y": 14.5 },
-			"shapeVerts": [
-				{ "x": 2, "y": -0.25 },
-				{ "x": 2, "y": 0.25 },
-				{ "x": -2, "y": 0.25 },
-				{ "x": -2, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 52.25, "y": 15 },
-			"shapeVerts": [
-				{ "x": 2.25, "y": -0.25 },
-				{ "x": 2.25, "y": 0.25 },
-				{ "x": -2.25, "y": 0.25 },
-				{ "x": -2.25, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 52.5, "y": 15.5 },
-			"shapeVerts": [
-				{ "x": 2.5, "y": -0.25 },
-				{ "x": 2.5, "y": 0.25 },
-				{ "x": -2.5, "y": 0.25 },
-				{ "x": -2.5, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "spike",
-		"data": {
-			"verts": [
-				{ "x": 0.5, "y": -0.25 },
-				{ "x": 0.5, "y": 0.25 },
-				{ "x": -0.5, "y": 0.25 },
-				{ "x": -0.5, "y": -0.25 }
-			],
-			"pos": { "x": 50.5, "y": 11.5 },
-			"instakill": false
-		}
-	},
-	{ "_type": "deathPlane", "data": { "pos": { "x": 50.25, "y": 18.25 } } },
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 64.5, "y": 19.25 },
-			"shapeVerts": [
-				{ "x": 14.5, "y": -3.5 },
-				{ "x": 14.5, "y": 3.5 },
-				{ "x": -14.5, "y": 3.5 },
-				{ "x": -14.5, "y": -3.5 }
-			]
-		}
-	},
-	{
-		"_type": "markBlock",
-		"data": { "pos": { "x": 60.75, "y": 13 }, "item": "koopa", "invis": false }
-	},
-	{
-		"_type": "markBlock",
-		"data": { "pos": { "x": 62.75, "y": 13 }, "item": "koopa", "invis": false }
-	},
-	{
-		"_type": "markBlock",
-		"data": { "pos": { "x": 64.75, "y": 13 }, "item": "koopa", "invis": false }
-	},
-	{
-		"_type": "markBlock",
-		"data": {
-			"pos": { "x": 62.75, "y": 10 },
-			"item": "mushroom",
-			"invis": false
-		}
-	},
-	{ "_type": "coin", "data": { "x": 62.75, "y": 12 } },
-	{ "_type": "coin", "data": { "x": 62.75, "y": 11 } },
-	{
-		"_type": "pipe",
-		"data": {
-			"pos": { "x": 78.5, "y": 15.25 },
-			"shapeVerts": [
-				{ "x": 0.5, "y": -0.5 },
-				{ "x": 0.5, "y": 0.5 },
-				{ "x": -0.5, "y": 0.5 },
-				{ "x": -0.5, "y": -0.5 }
-			],
-			"rotation": 0,
-			"exit": "cave",
-			"exitOnly": false
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 76.75, "y": 37.75 },
-			"shapeVerts": [
-				{ "x": 10.25, "y": -15 },
-				{ "x": 10.25, "y": 15 },
-				{ "x": -10.25, "y": 15 },
-				{ "x": -10.25, "y": -15 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 92, "y": 37.75 },
-			"shapeVerts": [
-				{ "x": 5, "y": -15 },
-				{ "x": 5, "y": 15 },
-				{ "x": -5, "y": 15 },
-				{ "x": -5, "y": -15 }
-			]
-		}
-	},
-	{
-		"_type": "pipe",
-		"data": {
-			"pos": { "x": 97.5, "y": 23.25 },
+			"pos": { "x": 0.75, "y": 28.5 },
 			"shapeVerts": [
 				{ "x": 0.5, "y": -0.5 },
 				{ "x": 0.5, "y": 0.5 },
@@ -867,244 +145,345 @@
 			"exitOnly": false
 		}
 	},
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 28.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 29.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 29.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 30.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 30.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 31.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 31.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 32.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 32.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 33.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 33.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 34.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 34.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 35.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 35.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 0, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 3.5, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 3.5, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 3.5, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 3.5, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 4, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 4, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 4, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 4, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 4.5, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 4.5, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 4.5, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 4.5, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 5, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 5, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 5, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 5, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 5.5, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 5.5, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 5.5, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 5.5, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 6, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 6, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 6, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 6, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 6.5, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 6.5, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 6.5, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 6.5, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 7, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 7, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 7, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 7, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 7.5, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 7.5, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 7.5, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 7.5, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 8, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 8, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 8, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 8, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 8.5, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 8.5, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 8.5, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 8.5, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 9, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 9, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 9, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 9, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 9.5, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 9.5, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 9.5, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 9.5, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 10, "y": 37.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 10, "y": 37.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 10, "y": 36.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 10, "y": 36.25 } } },
+	{ "_type": "coin", "data": { "x": 3.5, "y": 35.75 } },
+	{ "_type": "coin", "data": { "x": 4, "y": 35.75 } },
+	{ "_type": "coin", "data": { "x": 4.5, "y": 35.75 } },
+	{ "_type": "coin", "data": { "x": 5, "y": 35.75 } },
+	{ "_type": "coin", "data": { "x": 5.5, "y": 35.75 } },
+	{ "_type": "coin", "data": { "x": 6, "y": 35.75 } },
+	{ "_type": "coin", "data": { "x": 6.5, "y": 35.75 } },
+	{ "_type": "coin", "data": { "x": 7, "y": 35.75 } },
+	{ "_type": "coin", "data": { "x": 7.5, "y": 35.75 } },
+	{ "_type": "coin", "data": { "x": 8, "y": 35.75 } },
+	{ "_type": "coin", "data": { "x": 8.5, "y": 35.75 } },
+	{ "_type": "deathPlane", "data": { "pos": { "x": 38, "y": 8.25 } } },
+	{ "_type": "coin", "data": { "x": 9, "y": 35.75 } },
+	{ "_type": "coin", "data": { "x": 9.5, "y": 35.75 } },
+	{ "_type": "coin", "data": { "x": 10, "y": 35.75 } },
+	{ "_type": "coin", "data": { "x": 10, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 9.5, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 9, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 8.5, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 8, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 7.5, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 7, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 6.5, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 6, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 5.5, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 5, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 4.5, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 4, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 3.5, "y": 34.75 } },
+	{ "_type": "coin", "data": { "x": 4, "y": 33.75 } },
+	{ "_type": "coin", "data": { "x": 4.5, "y": 33.75 } },
+	{ "_type": "coin", "data": { "x": 5, "y": 33.75 } },
+	{ "_type": "coin", "data": { "x": 5.5, "y": 33.75 } },
+	{ "_type": "coin", "data": { "x": 6, "y": 33.75 } },
+	{ "_type": "coin", "data": { "x": 6.5, "y": 33.75 } },
+	{ "_type": "coin", "data": { "x": 7, "y": 33.75 } },
+	{ "_type": "coin", "data": { "x": 7.5, "y": 33.75 } },
+	{ "_type": "coin", "data": { "x": 8, "y": 33.75 } },
+	{ "_type": "coin", "data": { "x": 8.5, "y": 33.75 } },
+	{ "_type": "coin", "data": { "x": 9, "y": 33.75 } },
+	{ "_type": "coin", "data": { "x": 9.5, "y": 33.75 } },
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 6.5, "y": 38.25 },
+			"shapeVerts": [
+				{ "x": 6.75, "y": -0.25 },
+				{ "x": 6.75, "y": 0.25 },
+				{ "x": -6.75, "y": 0.25 },
+				{ "x": -6.75, "y": -0.25 }
+			]
+		}
+	},
 	{
 		"_type": "pipe",
 		"data": {
-			"pos": { "x": 97.5, "y": 23.25 },
+			"pos": { "x": 26.25, "y": 37.5 },
 			"shapeVerts": [
-				{ "x": 0.5, "y": -0.5 },
-				{ "x": 0.5, "y": 0.5 },
-				{ "x": -0.5, "y": 0.5 },
-				{ "x": -0.5, "y": -0.5 }
+				{ "x": 13.75, "y": -0.5 },
+				{ "x": 13.75, "y": 0.5 },
+				{ "x": -13.75, "y": 0.5 },
+				{ "x": -13.75, "y": -0.5 }
 			],
-			"rotation": 2,
-			"exit": "coins_exit",
+			"rotation": 3,
+			"exit": "cave_exit",
 			"exitOnly": false
+		}
+	},
+	{ "_type": "brick", "data": { "pos": { "x": 3.25, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 3.75, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 4.25, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 4.75, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 5.25, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 5.75, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 6.25, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 6.75, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 7.25, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 7.75, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 8.25, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 8.75, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 9.25, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 9.75, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 10.25, "y": 28.25 } } },
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 25.75, "y": 15.5 },
+			"shapeVerts": [
+				{ "x": 27, "y": -12.5 },
+				{ "x": 27, "y": 12.5 },
+				{ "x": -27, "y": 12.5 },
+				{ "x": -27, "y": -12.5 }
+			]
 		}
 	},
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 105.5, "y": 42.75 },
+			"pos": { "x": -10.75, "y": 5.5 },
 			"shapeVerts": [
-				{ "x": 8.5, "y": -10 },
-				{ "x": 8.5, "y": 10 },
-				{ "x": -8.5, "y": 10 },
-				{ "x": -8.5, "y": -10 }
+				{ "x": 10.5, "y": -33 },
+				{ "x": 10.5, "y": 33 },
+				{ "x": -10.5, "y": 33 },
+				{ "x": -10.5, "y": -33 }
+			]
+		}
+	},
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 28.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 28.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 29.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 29.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 30.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 30.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 31.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 31.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 32.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 32.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 33.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 33.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 34.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 34.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 35.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 35.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 36.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 13, "y": 36.75 } } },
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 26.75, "y": 32.5 },
+			"shapeVerts": [
+				{ "x": 13.5, "y": -4.5 },
+				{ "x": 13.5, "y": 4.5 },
+				{ "x": -13.5, "y": 4.5 },
+				{ "x": -13.5, "y": -4.5 }
 			]
 		}
 	},
 	{
-		"_type": "spike",
+		"_type": "rock",
 		"data": {
-			"verts": [
-				{ "x": 4.75, "y": -0.25 },
-				{ "x": 4.75, "y": 0.25 },
-				{ "x": -4.75, "y": 0.25 },
-				{ "x": -4.75, "y": -0.25 }
-			],
-			"pos": { "x": 105.75, "y": 32.5 },
-			"instakill": false
+			"pos": { "x": 9.5, "y": 50.5 },
+			"shapeVerts": [
+				{ "x": 30.75, "y": -12 },
+				{ "x": 30.75, "y": 12 },
+				{ "x": -30.75, "y": 12 },
+				{ "x": -30.75, "y": -12 }
+			]
 		}
 	},
-	{ "_type": "brick", "data": { "pos": { "x": 103, "y": 30.75 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 105.75, "y": 31.75 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 107.75, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 108.25, "y": 31 } } },
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 26.75, "y": 38.25 },
+			"shapeVerts": [
+				{ "x": 13.5, "y": -0.25 },
+				{ "x": 13.5, "y": 0.25 },
+				{ "x": -13.5, "y": 0.25 },
+				{ "x": -13.5, "y": -0.25 }
+			]
+		}
+	},
+	{ "_type": "brick", "data": { "pos": { "x": 76, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 76.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 77, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 77.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 78, "y": -2.75 } } },
+	{
+		"_type": "markBlock",
+		"data": { "pos": { "x": 78.5, "y": -2.75 }, "item": "coin", "invis": false }
+	},
 	{
 		"_type": "goomba",
-		"data": { "pos": { "x": 108.25, "y": 30.5 }, "direction": -1 }
+		"data": { "pos": { "x": 79.5, "y": 2.75 }, "direction": -1 }
+	},
+	{
+		"_type": "goomba",
+		"data": { "pos": { "x": 82, "y": 2.75 }, "direction": -1 }
+	},
+	{
+		"_type": "koopa",
+		"data": { "pos": { "x": 91, "y": 2.75 }, "direction": -1 }
+	},
+	{
+		"_type": "goomba",
+		"data": { "pos": { "x": 96.75, "y": 2.75 }, "direction": -1 }
+	},
+	{
+		"_type": "goomba",
+		"data": { "pos": { "x": 98.75, "y": 2.75 }, "direction": -1 }
+	},
+	{ "_type": "brick", "data": { "pos": { "x": 75.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 78.5, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 84, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 84.5, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 85, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 85.5, "y": 0.25 } } },
+	{
+		"_type": "markBlock",
+		"data": { "pos": { "x": 90, "y": 0.25 }, "item": "coin", "invis": false }
+	},
+	{
+		"_type": "markBlock",
+		"data": { "pos": { "x": 92.5, "y": 0.25 }, "item": "coin", "invis": false }
+	},
+	{
+		"_type": "markBlock",
+		"data": { "pos": { "x": 95, "y": 0.25 }, "item": "coin", "invis": false }
 	},
 	{
 		"_type": "markBlock",
 		"data": {
-			"pos": { "x": 105.75, "y": 28.75 },
+			"pos": { "x": 92.5, "y": -2.75 },
+			"item": "mushroom",
+			"invis": false
+		}
+	},
+	{ "_type": "brick", "data": { "pos": { "x": 100.5, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 101, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 103.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 104, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 104.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 105, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 105.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 106, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 106, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 111, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 111.5, "y": -2.75 } } },
+	{
+		"_type": "markBlock",
+		"data": { "pos": { "x": 112, "y": -2.75 }, "item": "coin", "invis": false }
+	},
+	{
+		"_type": "markBlock",
+		"data": {
+			"pos": { "x": 112.5, "y": -2.75 },
 			"item": "coin",
 			"invis": false
 		}
 	},
+	{ "_type": "brick", "data": { "pos": { "x": 113, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 113.5, "y": -2.75 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 112, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 112.5, "y": 0.25 } } },
 	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 123, "y": 41.25 },
-			"shapeVerts": [
-				{ "x": 9, "y": -8.5 },
-				{ "x": 9, "y": 8.5 },
-				{ "x": -9, "y": 8.5 },
-				{ "x": -9, "y": -8.5 }
-			]
-		}
-	},
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 23 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 23.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 24 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 24.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 25 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 25.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 26 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 26.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 115.75, "y": 32 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 23 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 23.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 24 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 24.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 25 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 25.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 26 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 26.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.25, "y": 32 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 23 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 23.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 24 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 24.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 25 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 25.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 26 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 26.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 116.75, "y": 32 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 23 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 23.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 24 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 24.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 25 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 25.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 26 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 26.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 27 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 28 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 28.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 29 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 29.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 30.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 31 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 31.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 117.25, "y": 32 } } },
-	{ "_type": "coin", "data": { "x": 117.75, "y": 29.5 } },
-	{ "_type": "coin", "data": { "x": 118.25, "y": 29.5 } },
-	{ "_type": "coin", "data": { "x": 118.75, "y": 29.5 } },
-	{ "_type": "coin", "data": { "x": 119.25, "y": 29.5 } },
-	{ "_type": "coin", "data": { "x": 119.75, "y": 29.5 } },
-	{ "_type": "coin", "data": { "x": 120.25, "y": 29.5 } },
-	{ "_type": "coin", "data": { "x": 120.75, "y": 29.5 } },
-	{ "_type": "coin", "data": { "x": 121.25, "y": 29.5 } },
-	{ "_type": "coin", "data": { "x": 121.75, "y": 29.5 } },
-	{ "_type": "coin", "data": { "x": 122.25, "y": 29.5 } },
-	{ "_type": "coin", "data": { "x": 122.75, "y": 29.5 } },
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 126, "y": -9 },
-			"shapeVerts": [
-				{ "x": 47, "y": -31.75 },
-				{ "x": 47, "y": 31.75 },
-				{ "x": -47, "y": 31.75 },
-				{ "x": -47, "y": -31.75 }
-			]
-		}
-	},
-	{ "_type": "coin", "data": { "x": 118.75, "y": 27 } },
-	{ "_type": "coin", "data": { "x": 119.25, "y": 27 } },
-	{ "_type": "coin", "data": { "x": 119.75, "y": 27 } },
-	{ "_type": "coin", "data": { "x": 120.25, "y": 27 } },
-	{ "_type": "coin", "data": { "x": 120.75, "y": 27 } },
-	{ "_type": "coin", "data": { "x": 121.25, "y": 27 } },
-	{ "_type": "coin", "data": { "x": 121.75, "y": 27 } },
-	{ "_type": "coin", "data": { "x": 122.25, "y": 27 } },
-	{
-		"_type": "koopa",
-		"data": { "pos": { "x": 120, "y": 32.5 }, "direction": -1 }
-	},
-	{
-		"_type": "koopa",
-		"data": { "pos": { "x": 122.25, "y": 32.5 }, "direction": -1 }
+		"_type": "goomba",
+		"data": { "pos": { "x": 106.25, "y": 2.5 }, "direction": -1 }
 	},
 	{
 		"_type": "goomba",
-		"data": { "pos": { "x": 116.5, "y": 32.5 }, "direction": -1 }
+		"data": { "pos": { "x": 107.75, "y": 2.5 }, "direction": -1 }
 	},
-	{ "_type": "brick", "data": { "pos": { "x": 118.25, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 118.75, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 119.25, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 119.75, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 120.25, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 120.75, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 121.25, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 121.75, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 122.25, "y": 27.5 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 122.75, "y": 27.5 } } },
 	{
-		"_type": "ice",
-		"data": {
-			"pos": { "x": 120.375, "y": 30.25 },
-			"shapeVerts": [
-				{ "x": 3.125, "y": -0.5 },
-				{ "x": 3.125, "y": 0.5 },
-				{ "x": -3.125, "y": 0.5 },
-				{ "x": -3.125, "y": -0.5 }
-			]
-		}
+		"_type": "goomba",
+		"data": { "pos": { "x": 110.75, "y": 2.5 }, "direction": -1 }
 	},
-	{ "_type": "deathPlane", "data": { "pos": { "x": 133.5, "y": 36.25 } } },
 	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 138, "y": 41.25 },
-			"shapeVerts": [
-				{ "x": 4, "y": -8.5 },
-				{ "x": 4, "y": 8.5 },
-				{ "x": -4, "y": 8.5 },
-				{ "x": -4, "y": -8.5 }
-			]
-		}
+		"_type": "goomba",
+		"data": { "pos": { "x": 113.25, "y": 2.25 }, "direction": -1 }
 	},
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 130.5, "y": 32.5 },
-			"shapeVerts": [
-				{ "x": 1.5, "y": -0.25 },
-				{ "x": 1.5, "y": 0.25 },
-				{ "x": -1.5, "y": 0.25 },
-				{ "x": -1.5, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 130.75, "y": 32 },
+			"pos": { "x": 118.5, "y": 1.25 },
 			"shapeVerts": [
 				{ "x": 1.25, "y": -0.25 },
 				{ "x": 1.25, "y": 0.25 },
@@ -1116,7 +495,7 @@
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 131, "y": 31.5 },
+			"pos": { "x": 118.75, "y": 0.75 },
 			"shapeVerts": [
 				{ "x": 1, "y": -0.25 },
 				{ "x": 1, "y": 0.25 },
@@ -1128,7 +507,7 @@
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 131.25, "y": 31 },
+			"pos": { "x": 119, "y": 0.25 },
 			"shapeVerts": [
 				{ "x": 0.75, "y": -0.25 },
 				{ "x": 0.75, "y": 0.25 },
@@ -1140,7 +519,7 @@
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 131.5, "y": 30.5 },
+			"pos": { "x": 119.25, "y": -0.25 },
 			"shapeVerts": [
 				{ "x": 0.5, "y": -0.25 },
 				{ "x": 0.5, "y": 0.25 },
@@ -1152,7 +531,7 @@
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 131.75, "y": 30 },
+			"pos": { "x": 119.5, "y": -0.75 },
 			"shapeVerts": [
 				{ "x": 0.25, "y": -0.25 },
 				{ "x": 0.25, "y": 0.25 },
@@ -1164,79 +543,19 @@
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 134.25, "y": 31.25 },
+			"pos": { "x": 118, "y": 2.25 },
 			"shapeVerts": [
-				{ "x": 0.25, "y": -1.5 },
-				{ "x": 0.25, "y": 1.5 },
-				{ "x": -0.25, "y": 1.5 },
-				{ "x": -0.25, "y": -1.5 }
+				{ "x": 1.75, "y": -0.25 },
+				{ "x": 1.75, "y": 0.25 },
+				{ "x": -1.75, "y": 0.25 },
+				{ "x": -1.75, "y": -0.25 }
 			]
 		}
 	},
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 134.75, "y": 31.5 },
-			"shapeVerts": [
-				{ "x": 0.25, "y": -1.25 },
-				{ "x": 0.25, "y": 1.25 },
-				{ "x": -0.25, "y": 1.25 },
-				{ "x": -0.25, "y": -1.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 135.25, "y": 31.75 },
-			"shapeVerts": [
-				{ "x": 0.25, "y": -1 },
-				{ "x": 0.25, "y": 1 },
-				{ "x": -0.25, "y": 1 },
-				{ "x": -0.25, "y": -1 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 135.75, "y": 32 },
-			"shapeVerts": [
-				{ "x": 0.25, "y": -0.75 },
-				{ "x": 0.25, "y": 0.75 },
-				{ "x": -0.25, "y": 0.75 },
-				{ "x": -0.25, "y": -0.75 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 136.25, "y": 32.25 },
-			"shapeVerts": [
-				{ "x": 0.25, "y": -0.5 },
-				{ "x": 0.25, "y": 0.5 },
-				{ "x": -0.25, "y": 0.5 },
-				{ "x": -0.25, "y": -0.5 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 136.75, "y": 32.5 },
-			"shapeVerts": [
-				{ "x": 0.25, "y": -0.25 },
-				{ "x": 0.25, "y": 0.25 },
-				{ "x": -0.25, "y": 0.25 },
-				{ "x": -0.25, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 140.5, "y": 32.5 },
+			"pos": { "x": 118.25, "y": 1.75 },
 			"shapeVerts": [
 				{ "x": 1.5, "y": -0.25 },
 				{ "x": 1.5, "y": 0.25 },
@@ -1246,138 +565,21 @@
 		}
 	},
 	{
-		"_type": "spike",
-		"data": {
-			"verts": [
-				{ "x": 1, "y": -0.25 },
-				{ "x": 1, "y": 0.25 },
-				{ "x": -1, "y": 0.25 },
-				{ "x": -1, "y": -0.25 }
-			],
-			"pos": { "x": 138, "y": 32.5 },
-			"instakill": false
-		}
-	},
-	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 140.75, "y": 32 },
+			"pos": { "x": 117.75, "y": 2.75 },
 			"shapeVerts": [
-				{ "x": 1.25, "y": -0.25 },
-				{ "x": 1.25, "y": 0.25 },
-				{ "x": -1.25, "y": 0.25 },
-				{ "x": -1.25, "y": -0.25 }
+				{ "x": 2, "y": -0.25 },
+				{ "x": 2, "y": 0.25 },
+				{ "x": -2, "y": 0.25 },
+				{ "x": -2, "y": -0.25 }
 			]
 		}
 	},
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 141, "y": 31.5 },
-			"shapeVerts": [
-				{ "x": 1, "y": -0.25 },
-				{ "x": 1, "y": 0.25 },
-				{ "x": -1, "y": 0.25 },
-				{ "x": -1, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 141.25, "y": 31 },
-			"shapeVerts": [
-				{ "x": 0.75, "y": -0.25 },
-				{ "x": 0.75, "y": 0.25 },
-				{ "x": -0.75, "y": 0.25 },
-				{ "x": -0.75, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 141.5, "y": 30.5 },
-			"shapeVerts": [
-				{ "x": 0.5, "y": -0.25 },
-				{ "x": 0.5, "y": 0.25 },
-				{ "x": -0.5, "y": 0.25 },
-				{ "x": -0.5, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 141.75, "y": 30 },
-			"shapeVerts": [
-				{ "x": 0.25, "y": -0.25 },
-				{ "x": 0.25, "y": 0.25 },
-				{ "x": -0.25, "y": 0.25 },
-				{ "x": -0.25, "y": -0.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 149.75, "y": 42 },
-			"shapeVerts": [
-				{ "x": 2.5, "y": -9.25 },
-				{ "x": 2.5, "y": 9.25 },
-				{ "x": -2.5, "y": 9.25 },
-				{ "x": -2.5, "y": -9.25 }
-			]
-		}
-	},
-	{ "_type": "brick", "data": { "pos": { "x": 148, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 148.5, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 149, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 149.5, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 150, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 150.5, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 151, "y": 30 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 151.5, "y": 30 } } },
-	{
-		"_type": "goomba",
-		"data": { "pos": { "x": 140.25, "y": 31 }, "direction": -1 }
-	},
-	{
-		"_type": "goomba",
-		"data": { "pos": { "x": 135.75, "y": 31 }, "direction": -1 }
-	},
-	{
-		"_type": "koopa",
-		"data": { "pos": { "x": 150, "y": 32.5 }, "direction": -1 }
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 160.75, "y": 42 },
-			"shapeVerts": [
-				{ "x": 5, "y": -9.25 },
-				{ "x": 5, "y": 9.25 },
-				{ "x": -5, "y": 9.25 },
-				{ "x": -5, "y": -9.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 165.5, "y": 30.5 },
-			"shapeVerts": [
-				{ "x": 0.25, "y": -2.25 },
-				{ "x": 0.25, "y": 2.25 },
-				{ "x": -0.25, "y": 2.25 },
-				{ "x": -0.25, "y": -2.25 }
-			]
-		}
-	},
-	{
-		"_type": "rock",
-		"data": {
-			"pos": { "x": 165, "y": 30.75 },
+			"pos": { "x": 122.5, "y": 1 },
 			"shapeVerts": [
 				{ "x": 0.25, "y": -2 },
 				{ "x": 0.25, "y": 2 },
@@ -1389,7 +591,7 @@
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 164.5, "y": 31 },
+			"pos": { "x": 123, "y": 1.25 },
 			"shapeVerts": [
 				{ "x": 0.25, "y": -1.75 },
 				{ "x": 0.25, "y": 1.75 },
@@ -1401,7 +603,7 @@
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 164, "y": 31.25 },
+			"pos": { "x": 123.5, "y": 1.5 },
 			"shapeVerts": [
 				{ "x": 0.25, "y": -1.5 },
 				{ "x": 0.25, "y": 1.5 },
@@ -1413,7 +615,7 @@
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 163.5, "y": 31.5 },
+			"pos": { "x": 124, "y": 1.75 },
 			"shapeVerts": [
 				{ "x": 0.25, "y": -1.25 },
 				{ "x": 0.25, "y": 1.25 },
@@ -1425,7 +627,7 @@
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 163, "y": 31.75 },
+			"pos": { "x": 124.5, "y": 2 },
 			"shapeVerts": [
 				{ "x": 0.25, "y": -1 },
 				{ "x": 0.25, "y": 1 },
@@ -1437,7 +639,7 @@
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 162.5, "y": 32 },
+			"pos": { "x": 125, "y": 2.25 },
 			"shapeVerts": [
 				{ "x": 0.25, "y": -0.75 },
 				{ "x": 0.25, "y": 0.75 },
@@ -1449,7 +651,7 @@
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 162, "y": 32.25 },
+			"pos": { "x": 125.5, "y": 2.5 },
 			"shapeVerts": [
 				{ "x": 0.25, "y": -0.5 },
 				{ "x": 0.25, "y": 0.5 },
@@ -1461,13 +663,433 @@
 	{
 		"_type": "rock",
 		"data": {
-			"pos": { "x": 161.5, "y": 32.5 },
+			"pos": { "x": 126, "y": 2.75 },
 			"shapeVerts": [
 				{ "x": 0.25, "y": -0.25 },
 				{ "x": 0.25, "y": 0.25 },
 				{ "x": -0.25, "y": 0.25 },
 				{ "x": -0.25, "y": -0.25 }
 			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 104.25, "y": 15.25 },
+			"shapeVerts": [
+				{ "x": 31, "y": -12.25 },
+				{ "x": 31, "y": 12.25 },
+				{ "x": -31, "y": 12.25 },
+				{ "x": -31, "y": -12.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 132.75, "y": 2.75 },
+			"shapeVerts": [
+				{ "x": 2.5, "y": -0.25 },
+				{ "x": 2.5, "y": 0.25 },
+				{ "x": -2.5, "y": 0.25 },
+				{ "x": -2.5, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 133, "y": 2.25 },
+			"shapeVerts": [
+				{ "x": 2.25, "y": -0.25 },
+				{ "x": 2.25, "y": 0.25 },
+				{ "x": -2.25, "y": 0.25 },
+				{ "x": -2.25, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 133.25, "y": 1.75 },
+			"shapeVerts": [
+				{ "x": 2, "y": -0.25 },
+				{ "x": 2, "y": 0.25 },
+				{ "x": -2, "y": 0.25 },
+				{ "x": -2, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 133.5, "y": 1.25 },
+			"shapeVerts": [
+				{ "x": 1.75, "y": -0.25 },
+				{ "x": 1.75, "y": 0.25 },
+				{ "x": -1.75, "y": 0.25 },
+				{ "x": -1.75, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 133.75, "y": 0.75 },
+			"shapeVerts": [
+				{ "x": 1.5, "y": -0.25 },
+				{ "x": 1.5, "y": 0.25 },
+				{ "x": -1.5, "y": 0.25 },
+				{ "x": -1.5, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 134, "y": 0.25 },
+			"shapeVerts": [
+				{ "x": 1.25, "y": -0.25 },
+				{ "x": 1.25, "y": 0.25 },
+				{ "x": -1.25, "y": 0.25 },
+				{ "x": -1.25, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 134.25, "y": -0.25 },
+			"shapeVerts": [
+				{ "x": 1, "y": -0.25 },
+				{ "x": 1, "y": 0.25 },
+				{ "x": -1, "y": 0.25 },
+				{ "x": -1, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 134.5, "y": -0.75 },
+			"shapeVerts": [
+				{ "x": 0.75, "y": -0.25 },
+				{ "x": 0.75, "y": 0.25 },
+				{ "x": -0.75, "y": 0.25 },
+				{ "x": -0.75, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 160.75, "y": 15.25 },
+			"shapeVerts": [
+				{ "x": 23.5, "y": -12.25 },
+				{ "x": 23.5, "y": 12.25 },
+				{ "x": -23.5, "y": 12.25 },
+				{ "x": -23.5, "y": -12.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 137.5, "y": 1 },
+			"shapeVerts": [
+				{ "x": 0.25, "y": -2 },
+				{ "x": 0.25, "y": 2 },
+				{ "x": -0.25, "y": 2 },
+				{ "x": -0.25, "y": -2 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 138, "y": 1.25 },
+			"shapeVerts": [
+				{ "x": 0.25, "y": -1.75 },
+				{ "x": 0.25, "y": 1.75 },
+				{ "x": -0.25, "y": 1.75 },
+				{ "x": -0.25, "y": -1.75 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 138.5, "y": 1.5 },
+			"shapeVerts": [
+				{ "x": 0.25, "y": -1.5 },
+				{ "x": 0.25, "y": 1.5 },
+				{ "x": -0.25, "y": 1.5 },
+				{ "x": -0.25, "y": -1.5 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 139, "y": 1.75 },
+			"shapeVerts": [
+				{ "x": 0.25, "y": -1.25 },
+				{ "x": 0.25, "y": 1.25 },
+				{ "x": -0.25, "y": 1.25 },
+				{ "x": -0.25, "y": -1.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 139.5, "y": 2 },
+			"shapeVerts": [
+				{ "x": 0.25, "y": -1 },
+				{ "x": 0.25, "y": 1 },
+				{ "x": -0.25, "y": 1 },
+				{ "x": -0.25, "y": -1 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 140, "y": 2.25 },
+			"shapeVerts": [
+				{ "x": 0.25, "y": -0.75 },
+				{ "x": 0.25, "y": 0.75 },
+				{ "x": -0.25, "y": 0.75 },
+				{ "x": -0.25, "y": -0.75 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 140.5, "y": 2.5 },
+			"shapeVerts": [
+				{ "x": 0.25, "y": -0.5 },
+				{ "x": 0.25, "y": 0.5 },
+				{ "x": -0.25, "y": 0.5 },
+				{ "x": -0.25, "y": -0.5 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 141, "y": 2.75 },
+			"shapeVerts": [
+				{ "x": 0.25, "y": -0.25 },
+				{ "x": 0.25, "y": 0.25 },
+				{ "x": -0.25, "y": 0.25 },
+				{ "x": -0.25, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "pipe",
+		"data": {
+			"pos": { "x": 145.75, "y": 2.5 },
+			"shapeVerts": [
+				{ "x": 0.5, "y": -0.5 },
+				{ "x": 0.5, "y": 0.5 },
+				{ "x": -0.5, "y": 0.5 },
+				{ "x": -0.5, "y": -0.5 }
+			],
+			"rotation": 0,
+			"exit": "cave_exit",
+			"exitOnly": true
+		}
+	},
+	{
+		"_type": "pipe",
+		"data": {
+			"pos": { "x": 43.25, "y": 1.75 },
+			"shapeVerts": [
+				{ "x": 0.5, "y": -1.25 },
+				{ "x": 0.5, "y": 1.25 },
+				{ "x": -0.5, "y": 1.25 },
+				{ "x": -0.5, "y": -1.25 }
+			],
+			"rotation": 0,
+			"exit": "cave",
+			"exitOnly": false
+		}
+	},
+	{ "_type": "brick", "data": { "pos": { "x": 149.5, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 150, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 150.5, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 151, "y": 0.25 } } },
+	{
+		"_type": "markBlock",
+		"data": { "pos": { "x": 151.5, "y": 0.25 }, "item": "coin", "invis": false }
+	},
+	{ "_type": "brick", "data": { "pos": { "x": 152, "y": 0.25 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 152.5, "y": 0.25 } } },
+	{
+		"_type": "goomba",
+		"data": { "pos": { "x": 153.75, "y": 2.75 }, "direction": -1 }
+	},
+	{
+		"_type": "goomba",
+		"data": { "pos": { "x": 155.25, "y": 2.75 }, "direction": -1 }
+	},
+	{
+		"_type": "pipe",
+		"data": {
+			"pos": { "x": 160.25, "y": 2.5 },
+			"shapeVerts": [
+				{ "x": 0.5, "y": -0.5 },
+				{ "x": 0.5, "y": 0.5 },
+				{ "x": -0.5, "y": 0.5 },
+				{ "x": -0.5, "y": -0.5 }
+			],
+			"rotation": 0,
+			"exitOnly": false
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 163, "y": 2.75 },
+			"shapeVerts": [
+				{ "x": 2.25, "y": -0.25 },
+				{ "x": 2.25, "y": 0.25 },
+				{ "x": -2.25, "y": 0.25 },
+				{ "x": -2.25, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 163.25, "y": 2.25 },
+			"shapeVerts": [
+				{ "x": 2, "y": -0.25 },
+				{ "x": 2, "y": 0.25 },
+				{ "x": -2, "y": 0.25 },
+				{ "x": -2, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 163.5, "y": 1.75 },
+			"shapeVerts": [
+				{ "x": 1.75, "y": -0.25 },
+				{ "x": 1.75, "y": 0.25 },
+				{ "x": -1.75, "y": 0.25 },
+				{ "x": -1.75, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 163.75, "y": 1.25 },
+			"shapeVerts": [
+				{ "x": 1.5, "y": -0.25 },
+				{ "x": 1.5, "y": 0.25 },
+				{ "x": -1.5, "y": 0.25 },
+				{ "x": -1.5, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 164, "y": 0.75 },
+			"shapeVerts": [
+				{ "x": 1.25, "y": -0.25 },
+				{ "x": 1.25, "y": 0.25 },
+				{ "x": -1.25, "y": 0.25 },
+				{ "x": -1.25, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 164.25, "y": 0.25 },
+			"shapeVerts": [
+				{ "x": 1, "y": -0.25 },
+				{ "x": 1, "y": 0.25 },
+				{ "x": -1, "y": 0.25 },
+				{ "x": -1, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 164.5, "y": -0.25 },
+			"shapeVerts": [
+				{ "x": 0.75, "y": -0.25 },
+				{ "x": 0.75, "y": 0.25 },
+				{ "x": -0.75, "y": 0.25 },
+				{ "x": -0.75, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 164.75, "y": -0.75 },
+			"shapeVerts": [
+				{ "x": 0.5, "y": -0.25 },
+				{ "x": 0.5, "y": 0.25 },
+				{ "x": -0.5, "y": 0.25 },
+				{ "x": -0.5, "y": -0.25 }
+			]
+		}
+	},
+	{
+		"_type": "rock",
+		"data": {
+			"pos": { "x": 165, "y": -1.25 },
+			"shapeVerts": [
+				{ "x": 0.25, "y": -0.25 },
+				{ "x": 0.25, "y": 0.25 },
+				{ "x": -0.25, "y": 0.25 },
+				{ "x": -0.25, "y": -0.25 }
+			]
+		}
+	},
+	{ "_type": "flag", "data": { "x": 169.5, "y": -2 } },
+	{
+		"_type": "goomba",
+		"data": { "pos": { "x": 35.75, "y": 2.75 }, "direction": -1 }
+	},
+	{
+		"_type": "goomba",
+		"data": { "pos": { "x": 39.5, "y": 2.75 }, "direction": -1 }
+	},
+	{
+		"_type": "goomba",
+		"data": { "pos": { "x": 41.25, "y": 2.75 }, "direction": -1 }
+	},
+	{
+		"_type": "paralax",
+		"data": {
+			"bg": 2,
+			"pos": { "x": 4, "y": 30.875 },
+			"visibility": { "x": -1013, "y": 1494 }
+		}
+	},
+	{
+		"_type": "spike",
+		"data": {
+			"verts": [
+				{ "x": 1.25, "y": -0.25 },
+				{ "x": 1.25, "y": 0.25 },
+				{ "x": -1.25, "y": 0.25 },
+				{ "x": -1.25, "y": -0.25 }
+			],
+			"pos": { "x": 121, "y": 2.75 },
+			"instakill": true
 		}
 	}
 ]
