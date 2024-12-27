@@ -37,7 +37,7 @@ export class MarkBlock extends Block {
 	hitSprite = Sprite.from("mark_hit");
 	currSprite: "anim" | "hit" = "anim";
 	invis = true;
-	constructor(pos: Vec2, item?: GameObjectID, invis: boolean = true) {
+	constructor(pos: Vec2, item?: GameObjectID, invis: boolean = false) {
 		const anim = new AnimatedSprite([
 			Texture.from("mark_anim_1"),
 			Texture.from("mark_anim_1"),
@@ -156,7 +156,7 @@ export class MarkBlock extends Block {
 		return new MarkBlock(
 			new Vec2(obj.data.pos.x, obj.data.pos.y),
 			obj.data.item,
-			obj.data.invis,
+			obj.data.invis != undefined && obj.data.invis,
 		);
 	}
 }
