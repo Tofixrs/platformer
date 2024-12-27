@@ -32,7 +32,10 @@ export class LevelWindow extends Window<{
 				}),
 			},
 			hoverContainer: top,
-			onClick: () => this.worldController.set("campaign"),
+			onClick: (self) => {
+				self.tooltip!.visible = false;
+				this.worldController.set("campaign");
+			},
 			textStyle: {
 				fontSize: 40,
 			},
