@@ -150,7 +150,7 @@ export class Paralax extends GameObject {
 		_currPos: Vec2,
 		props?: PropertyValue[],
 	): GameObject {
-		const bg = props?.find((v) => v.name == "paralaxbBg");
+		const bg = props?.find((v) => v.name == "paralaxBg");
 		const visibilityX = props?.find((v) => v.name == "visibilityX")?.value;
 		const visibilityY = props?.find((v) => v.name == "visibilityY")?.value;
 		const visibility =
