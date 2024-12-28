@@ -1494,5 +1494,60 @@
 			]
 		}
 	},
-	{ "_type": "flag", "data": { "x": 170, "y": 27.75 } }
+	{ "_type": "flag", "data": { "x": 170, "y": 27.75 } },
+	{
+		"_type": "koopa",
+		"data": { "pos": { "x": 68.75, "y": 15.5 }, "direction": -1 }
+	},
+	{
+		"_type": "koopa",
+		"data": { "pos": { "x": 75, "y": 15.5 }, "direction": -1 }
+	},
+	{
+		"_type": "goomba",
+		"data": { "pos": { "x": 72, "y": 15.5 }, "direction": -1 }
+	},
+	{ "_type": "brick", "data": { "pos": { "x": 67, "y": 13 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 67.5, "y": 13 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 68.5, "y": 13 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 69.5, "y": 13 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 70, "y": 13 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 70.5, "y": 10 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 71, "y": 10 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 71.5, "y": 10 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 72, "y": 10 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 72.5, "y": 10 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 74, "y": 10 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 74.5, "y": 10 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 75, "y": 10 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 75.5, "y": 10 } } },
+	{ "_type": "brick", "data": { "pos": { "x": 76, "y": 10 } } },
+	{
+		"_type": "markBlock",
+		"data": { "pos": { "x": 76, "y": 7 }, "item": "1up", "invis": true }
+	},
+	{
+		"_type": "goomba",
+		"data": { "pos": { "x": 74.5, "y": 9.5 }, "direction": 1 }
+	},
+	{
+		"_type": "goomba",
+		"data": { "pos": { "x": 72, "y": 9.5 }, "direction": -1 }
+	},
+	{
+		"_type": "markBlock",
+		"data": { "pos": { "x": 68, "y": 13 }, "item": "coin", "invis": false }
+	},
+	{
+		"_type": "markBlock",
+		"data": { "pos": { "x": 69, "y": 13 }, "item": "coin", "invis": false }
+	},
+	{
+		"_type": "markBlock",
+		"data": { "pos": { "x": 73.5, "y": 10 }, "item": "coin", "invis": false }
+	},
+	{
+		"_type": "markBlock",
+		"data": { "pos": { "x": 73, "y": 10 }, "item": "coin", "invis": false }
+	}
 ]
