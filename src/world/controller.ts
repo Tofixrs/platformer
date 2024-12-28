@@ -1,4 +1,3 @@
-import { Container, Graphics as Draw } from "pixi.js";
 import { World } from ".";
 import { Graphics } from "graphics";
 
@@ -15,6 +14,7 @@ export class WorldController {
 	set(name: string) {
 		if (this.world) {
 			this.world.main.removeChild(this.graphicsRef.debugDraw);
+			this.world.top.removeChild(this.graphicsRef.fpsElem);
 		}
 		this.currentWorld = name;
 		if (this.world) {
@@ -23,6 +23,7 @@ export class WorldController {
 			//@ts-expect-error
 			globalThis.__PIXI_STAGE__ = this.world.c;
 			this.world.main.addChild(this.graphicsRef.debugDraw);
+			this.world.top.addChild(this.graphicsRef.fpsElem);
 			this.world.onSet();
 		}
 	}
