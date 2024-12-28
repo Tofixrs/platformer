@@ -53,8 +53,8 @@ export class Actions {
 	static defaultBinds: { name: string; binds: string[] }[] = [
 		{ name: "jump", binds: ["arrowup", "w"] },
 		{ name: "crouch", binds: ["arrowdown", "s"] },
-		{ name: "left", binds: ["arrowleft", "d"] },
-		{ name: "right", binds: ["arrowright", "a"] },
+		{ name: "left", binds: ["arrowleft", "a"] },
+		{ name: "right", binds: ["arrowright", "d"] },
 		{ name: "roll", binds: ["c"] },
 		{ name: "groundpound", binds: ["x"] },
 		{ name: "dive", binds: ["v"] },
