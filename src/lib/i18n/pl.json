@@ -76,5 +76,11 @@
 	"paralaxDesc": "ID tła:\n1: powierchnia\n2: podziemie\n3: zębatki",
 	"itemInside": "Przedmiot\nw środku: ",
 	"direction": "Kierunek: ",
-	"paralaxBg": "ID tła: "
+	"paralaxBg": "ID tła: ",
+	"visibilityX": "Widzialność na osi X",
+	"visibilityY": "Widzialność na osi Y",
+	"visibilityDesc": "Jeśli pozycja na danej osi kamery jest większa od podanej wartości tło będzie widzialne\nPozwala to na kilka teł na jednym poziomie",
+	"instakill": "Mocny: ",
+	"invis": "Niewidzialny: ",
+	"invisDesc": "Czy pudełko ma być niewidzialne aż do otwarcia"
 }
