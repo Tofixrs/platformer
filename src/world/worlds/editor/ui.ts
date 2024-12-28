@@ -193,7 +193,7 @@ export class EditorUi extends Screen {
 	switchErase() {
 		this.erase = !this.erase;
 		this.dontPlace = true;
-		this.trashButton.setActive(!this.trashButton.forceActive);
+		this.trashButton.setActive(this.erase);
 	}
 	switchLoad() {
 		navigator.clipboard.readText().then((v) => {
