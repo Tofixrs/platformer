@@ -196,6 +196,7 @@ export class Koopa extends Enemy {
 			const objClass = getClassFromID(userData.goid);
 			if (
 				this.shelled &&
+				this.moving &&
 				(objClass.prototype instanceof Block ||
 					objClass.prototype instanceof Enemy)
 			) {
