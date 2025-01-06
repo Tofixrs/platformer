@@ -1,19 +1,16 @@
 import { capsule } from "@lib/shape";
-import { GameObject, GOID, Property, PropertyValue } from "gameObject";
+import { GameObject, GOID, PropertyValue } from "gameObject";
 import { Enemy } from "gameObject/types/enemy";
 import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { AnimatedSprite, Texture } from "pixi.js";
 import { Box, Contact, Fixture, Shape, Vec2 } from "planck";
 import { World } from "world";
-import { Player } from "./player";
 
 export class Goomba extends Enemy {
 	rightEdgeSensor!: Fixture;
 	leftEdgeSensor!: Fixture;
 	touchedGroundsLeft: string[] = ["hack", "hack"];
 	touchedGroundsRight: string[] = ["hack", "hack"];
-	rightWallSensor!: Fixture;
-	leftWallSensor!: Fixture;
 	speed = 4;
 	constructor(pos: Vec2, direction?: number) {
 		const anim = new AnimatedSprite([
@@ -66,25 +63,13 @@ export class Goomba extends Enemy {
 		this.rightEdgeSensor = this.body.createFixture({
 			shape: new Box(0.07, 0.1, new Vec2(0.18, 0.25)),
 			isSensor: true,
-			filterMaskBits: 10,
+			filterMaskBits: 0b1,
 		});
 
 		this.leftEdgeSensor = this.body.createFixture({
 			shape: new Box(0.07, 0.1, new Vec2(-0.18, 0.25)),
 			isSensor: true,
-			filterMaskBits: 10,
-		});
-
-		this.rightWallSensor = this.body.createFixture({
-			shape: new Box(0.1, 0.1, new Vec2(0.3, 0)),
-			isSensor: true,
-			filterMaskBits: 10,
-		});
-
-		this.leftWallSensor = this.body.createFixture({
-			shape: new Box(0.1, 0.1, new Vec2(-0.3, 0)),
-			isSensor: true,
-			filterMaskBits: 10,
+			filterMaskBits: 0b1,
 		});
 
 		world.p.on("end-contact", (contact) => {
@@ -104,7 +89,6 @@ export class Goomba extends Enemy {
 		const fixA = contact.getFixtureA();
 		const fixB = contact.getFixtureB();
 		this.checkEdgeSensors(fixA, fixB, contact);
-		this.checkWallSensors(fixA, fixB, contact);
 	}
 	checkEdgeSensors(fixA: Fixture, fixB: Fixture, contact: Contact) {
 		if (
@@ -114,6 +98,7 @@ export class Goomba extends Enemy {
 			fixB != this.rightEdgeSensor
 		)
 			return;
+		if (fixA.isSensor() && fixB.isSensor()) return;
 		const userA = fixA.getUserData();
 		const userB = fixB.getUserData();
 		const groundUser = (
@@ -152,34 +137,5 @@ export class Goomba extends Enemy {
 		this.touchedGroundsLeft = this.touchedGroundsLeft.filter(
 			(v) => v != "hack",
 		);
-	}
-
-	checkWallSensors(fixA: Fixture, fixB: Fixture, contact: Contact) {
-		if (
-			fixA != this.leftWallSensor &&
-			fixB != this.leftWallSensor &&
-			fixA != this.rightWallSensor &&
-			fixB != this.rightWallSensor
-		)
-			return;
-		if (!contact.isTouching()) return;
-
-		this.direction =
-			fixA == this.leftWallSensor || fixB == this.leftWallSensor ? 1 : -1;
-		this.body.setLinearVelocity(new Vec2(this.speed * this.direction, 0));
-	}
-
-	onSideTouch(world: World): void {
-		switch (this.sideTouchGOID) {
-			case GOID.Player: {
-				world.removeEntity(this.sideTouchID!);
-				break;
-			}
-		}
-	}
-	onStomp(world: World): void {
-		super.onStomp(world);
-		const player = world.entities.find((v) => v.id == this.stompID) as Player;
-		player.body.applyForceToCenter(new Vec2(0, -500));
 	}
 }

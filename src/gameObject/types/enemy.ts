@@ -1,12 +1,11 @@
-import { Box, Fixture, Shape, Vec2, WorldManifold } from "planck";
+import { Box, Contact, Fixture, Shape, Vec2 } from "planck";
 import { Entity } from "./entity";
-import { GameObject, GameObjectID, Property, PropType } from "gameObject";
+import { GameObject, GameObjectID, GOID, Property, PropType } from "gameObject";
 import { Sprite } from "pixi.js";
 import { World } from "world";
 import { PhysObjUserData } from "./physicsObject";
 import { getClassFromID } from "gameObject/utils";
 import { Player } from "@gameObjs/player";
-import { Ground } from "./ground";
 import { SerializedGO } from "@lib/serialize";
 
 export interface EnemyOptions {
@@ -20,18 +19,15 @@ export interface EnemyOptions {
 }
 
 export class Enemy extends Entity {
-	direction = -1;
-	stomp = false;
-	stompID?: string;
-	sideTouch = false;
-	sideTouchID?: string;
-	sideTouchGOID?: GameObjectID;
-	sideTouched?: number;
-	sideTouchGO?: GameObject;
+	_direction = -1;
+	rightWallSensor!: Fixture;
+	leftWallSensor!: Fixture;
 	stompSound = new Howl({
 		src: ["./sounds/stomp.wav"],
 		volume: 1,
 	});
+	speed = 0;
+	moving = true;
 	static props: Property[] = [
 		{
 			type: "number",
@@ -63,49 +59,40 @@ export class Enemy extends Entity {
 	}
 	update(dt: number, world: World): void {
 		super.update(dt, world);
-		if (this.stomp) {
-			this.onStomp(world);
-			this.stomp = false;
-			this.stompID = undefined;
-		}
 
-		if (this.sideTouch) {
-			const ent = world.entities.find((v) => v.id == this.sideTouchID);
-			this.sideTouchGO = ent;
-			if (this.sideTouchGO instanceof Enemy) {
-				this.sideTouchGO.sideTouch = true;
-				this.sideTouchGO.sideTouchID = this.id;
-				this.sideTouchGO.sideTouched = -this.sideTouched!;
-				this.sideTouchGO.sideTouchGO = this;
-				this.sideTouchGO.onSideTouchOtherEnemy(world);
-				this.onSideTouchOtherEnemy(world);
-				this.sideTouchGO.sideTouch = false;
-				this.sideTouchGO.sideTouchID = undefined;
-				this.sideTouchGO.sideTouched = undefined;
-				this.sideTouchGO.sideTouchGO = undefined;
-				this.sideTouch = false;
-				this.sideTouchID = undefined;
-				this.sideTouched = undefined;
-				this.sideTouchGO = undefined;
-				return;
-			}
-			this.onSideTouch(world);
-			this.sideTouch = false;
-			this.sideTouchID = undefined;
-			this.sideTouched = undefined;
-			this.sideTouchGO = undefined;
-		}
 		this.stompSound.pos(this.pos.x, this.pos.y);
+
+		if (!this.moving) return;
+		this.body.setLinearVelocity(
+			new Vec2(this.speed * this.direction, this.body.getLinearVelocity().y),
+		);
 	}
 	create(world: World): void {
 		super.create(world);
+
+		this.rightWallSensor = this.body.createFixture({
+			shape: new Box(0.025, 0.1, new Vec2(0.3, 0)),
+			isSensor: true,
+			filterMaskBits: 0b11,
+		});
+
+		this.leftWallSensor = this.body.createFixture({
+			shape: new Box(0.025, 0.1, new Vec2(-0.3, 0)),
+			isSensor: true,
+			filterMaskBits: 0b11,
+		});
+
+		world.p.on("begin-contact", (contact) => {
+			const fixA = contact.getFixtureA();
+			const fixB = contact.getFixtureB();
+			this.checkSide(fixA, fixB, contact, world);
+		});
 
 		world.p.on("pre-solve", (contact) => {
 			const fixA = contact.getFixtureA();
 			const fixB = contact.getFixtureB();
 			const userA = fixA.getUserData() as PhysObjUserData;
 			const userB = fixB.getUserData() as PhysObjUserData;
-			const worldManifold = contact.getWorldManifold(null)!;
 
 			if (userA == null || userB == null) return;
 
@@ -114,16 +101,7 @@ export class Enemy extends Entity {
 
 			if (userA.id != this.id && userB.id != this.id) return;
 
-			this.checkStomp(fixA, fixB, userA, userB, classA, classB);
-			this.checkSideTouch(
-				fixA,
-				fixB,
-				userA,
-				userB,
-				classA,
-				classB,
-				worldManifold,
-			);
+			this.checkStomp(fixA, fixB, userA, userB, classA, classB, world);
 		});
 	}
 	checkStomp(
@@ -133,6 +111,7 @@ export class Enemy extends Entity {
 		userB: PhysObjUserData,
 		classA: typeof GameObject,
 		classB: typeof GameObject,
+		world: World,
 	) {
 		if (
 			//@ts-expect-error
@@ -148,48 +127,64 @@ export class Enemy extends Entity {
 			return;
 
 		const fix = classA == Player ? fixA : fixB;
-		this.stomp = fix.getBody().getLinearVelocity().y > 0;
-		if (this.stomp) {
-			this.stompID = classA == Player ? userA.id : userB.id;
-			return;
-		}
+		const stomp = fix.getBody().getLinearVelocity().y > 0;
+		if (!stomp) return;
+
+		const enemyUser = classA == Player ? userB : userA;
+		const playerUser = classA == Player ? userA : userB;
+		const enemyFix = classA == Player ? fixB : fixA;
+		const playerFix = classA == Player ? fixA : fixB;
+
+		world.p.queueUpdate(() => {
+			this.onStomp(enemyUser, playerUser, enemyFix, playerFix, world);
+		});
 	}
-	checkSideTouch(
-		fixA: Fixture,
-		fixB: Fixture,
-		userA: PhysObjUserData,
-		userB: PhysObjUserData,
-		classA: typeof GameObject,
-		classB: typeof GameObject,
-		worldManifold: WorldManifold,
-	) {
-		if (this.stomp) return;
+	checkSide(fixA: Fixture, fixB: Fixture, contact: Contact, world: World) {
 		if (
-			!(classA.prototype instanceof Enemy) &&
-			!(classB.prototype instanceof Enemy)
+			fixA != this.leftWallSensor &&
+			fixB != this.leftWallSensor &&
+			fixA != this.rightWallSensor &&
+			fixB != this.rightWallSensor
 		)
 			return;
-		if (classA.prototype instanceof Ground) return;
-		if (classB.prototype instanceof Ground) return;
+		if (!contact.isTouching()) return;
+		if (fixA.isSensor() && fixB.isSensor()) return;
 
-		this.sideTouch = worldManifold?.normal.x != 0;
-		const fix = this.id != userA.id ? fixA : fixB;
-		if (!this.sideTouch) return;
-
-		this.sideTouchID = this.id != userA.id ? userA.id : userB.id;
-		this.sideTouchGOID = this.id != userA.id ? userA.goid : userB.goid;
-		this.sideTouched = fix.getBody().getLinearVelocity().x < 0 ? -1 : 1;
+		const userA = fixA.getUserData() as PhysObjUserData;
+		const userB = fixB.getUserData() as PhysObjUserData;
+		const other = userA == null ? userB : userA;
+		const sensorFix = userA == null ? fixA : fixB;
+		const otherFix = userA == null ? fixB : fixA;
+		if (otherFix.getBody().getLinearVelocity().y > 0) return;
+		world.p.queueUpdate(() => {
+			this.onSideTouch(other, sensorFix, otherFix, world);
+		});
 	}
-	onSideTouch(world: World) {
-		world.removeEntity(this.sideTouchID!);
+	onSideTouch(
+		_userData: PhysObjUserData,
+		_sensorFix: Fixture,
+		_otherFix: Fixture,
+		_world: World,
+	) {
+		if (_userData.goid == GOID.Player) {
+			_world.removeEntity(_userData.id);
+		} else {
+			this.direction = _sensorFix == this.leftWallSensor ? 1 : -1;
+			this.body.setLinearVelocity(new Vec2(this.speed * this.direction, 0));
+		}
 	}
-	onSideTouchOtherEnemy(_world: World) {
-		const pos = this.body.getPosition();
-		this.direction = this.sideTouched!;
-		pos.x += 0.05 * this.direction;
-	}
-	onStomp(world: World): void {
-		world.removeEntity(this.id);
+	onStomp(
+		_enemyUser: PhysObjUserData,
+		_playerUser: PhysObjUserData,
+		_enemyFix: Fixture,
+		_playerFix: Fixture,
+		_world: World,
+	): void {
+		_world.removeEntity(this.id);
+		const player = _world.entities.find(
+			(v) => v.id == _playerUser.id,
+		) as Player;
+		player.body.applyForceToCenter(new Vec2(0, -500), true);
 	}
 	serialize(): SerializedGO {
 		return {
@@ -219,5 +214,12 @@ export class Enemy extends Entity {
 				},
 			],
 		);
+	}
+	get direction() {
+		return this._direction;
+	}
+	set direction(direction: number) {
+		this._direction = direction;
+		this.sprite.scale.x = direction;
 	}
 }

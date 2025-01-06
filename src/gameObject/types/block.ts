@@ -91,8 +91,8 @@ export class Block extends PhysicsObject {
 				goid: this.goid,
 				id: this.id,
 			},
-			filterCategoryBits: 10,
-			filterGroupIndex: -10,
+			filterCategoryBits: 0b1,
+			filterGroupIndex: -0b1,
 		});
 		this.hitSensor = this.body.createFixture({
 			isSensor: true,
@@ -163,7 +163,7 @@ export class Block extends PhysicsObject {
 		this.hitID = user.id;
 		this.hitSide = -Math.ceil(contact.getManifold().localNormal.y);
 	}
-	onHit(world: World, player: Player): boolean {
+	onHit(_world: World, player: Player): boolean {
 		const vel = player.body.getLinearVelocity();
 		player.body.setLinearVelocity(new Vec2(vel.x, 0));
 		player.actionStates = player.actionStates.filter(

@@ -123,7 +123,9 @@ export class Paralax extends GameObject {
 	remove(world: World, _force?: boolean): boolean {
 		world.bottom.removeChild(this.bg);
 		world.bottom.removeChild(this.fg);
-		world.p.destroyBody(this.body);
+		world.p.queueUpdate(() => {
+			world.p.destroyBody(this.body);
+		});
 		return true;
 	}
 	serialize(): SerializedGO {

@@ -184,7 +184,7 @@ export class Player extends Entity {
 		this.sensor = this.body.createFixture({
 			shape: this.sensorShape,
 			isSensor: true,
-			filterMaskBits: 10,
+			filterMaskBits: 0b1,
 		});
 
 		world.p.on("begin-contact", (contact) => {
@@ -652,6 +652,7 @@ export class Player extends Entity {
 	checkGround(contact: Contact) {
 		const fixA = contact.getFixtureA();
 		const fixB = contact.getFixtureB();
+		if (fixA.isSensor() && fixB.isSensor()) return;
 		const userA = fixA.getUserData();
 		const userB = fixB.getUserData();
 

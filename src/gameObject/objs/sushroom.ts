@@ -2,13 +2,12 @@ import { capsule } from "@lib/shape";
 import { GameObject, GOID, PropertyValue } from "gameObject";
 import { Enemy } from "gameObject/types/enemy";
 import { ColorMatrixFilter, DisplacementFilter, Sprite } from "pixi.js";
-import { Box, Contact, Fixture, Shape, Vec2 } from "planck";
+import { Fixture, Shape, Vec2 } from "planck";
 import { World } from "world";
 import { Player } from "./player";
+import { PhysObjUserData } from "gameObject/types/physicsObject";
 
 export class Sushroom extends Enemy {
-	rightWallSensor!: Fixture;
-	leftWallSensor!: Fixture;
 	constructor(pos: Vec2, direction?: number) {
 		super({
 			pos,
@@ -33,37 +32,28 @@ export class Sushroom extends Enemy {
 	}
 	create(world: World): void {
 		super.create(world);
-		this.rightWallSensor = this.body.createFixture({
-			shape: new Box(0.01, 0.1, new Vec2(0.29, 0)),
-			isSensor: true,
-			filterMaskBits: 10,
-		});
-
-		this.leftWallSensor = this.body.createFixture({
-			shape: new Box(0.01, 0.1, new Vec2(-0.29, 0)),
-			isSensor: true,
-			filterMaskBits: 10,
-		});
-
-		world.p.on("begin-contact", (contact) => {
-			this.onBegin(contact);
-		});
 	}
 	update(dt: number, world: World): void {
 		super.update(dt, world);
 		const vel = this.body.getLinearVelocity();
 		this.body.setLinearVelocity(new Vec2(3 * this.direction, vel.y));
 	}
-	onStomp(world: World): void {
-		const ent = world.entities.find((v) => v.id == this.sideTouchID);
-		if (!(ent instanceof Player)) return;
-
+	onStomp(
+		_enemyUser: PhysObjUserData,
+		_playerUser: PhysObjUserData,
+		_enemyFix: Fixture,
+		_playerFix: Fixture,
+		world: World,
+	): void {
 		this.applyFilter(world);
 	}
-	onSideTouch(world: World): void {
-		const ent = world.entities.find((v) => v.id == this.sideTouchID);
-		if (!(ent instanceof Player)) return;
-
+	onSideTouch(
+		userData: PhysObjUserData,
+		_sensorFix: Fixture,
+		_otherFix: Fixture,
+		world: World,
+	): void {
+		if (userData.goid != GOID.Player) return;
 		this.applyFilter(world);
 	}
 	applyFilter(world: World) {
@@ -78,21 +68,5 @@ export class Sushroom extends Enemy {
 			scale: 50,
 		});
 		world.c.filters = [colorMatrix, filter];
-	}
-	onBegin(contact: Contact) {
-		const fixA = contact.getFixtureA();
-		const fixB = contact.getFixtureB();
-		if (
-			fixA != this.leftWallSensor &&
-			fixB != this.leftWallSensor &&
-			fixA != this.rightWallSensor &&
-			fixB != this.rightWallSensor
-		)
-			return;
-		if (!contact.isTouching()) return;
-
-		this.direction =
-			fixA == this.leftWallSensor || fixB == this.leftWallSensor ? 1 : -1;
-		this.body.setLinearVelocity(new Vec2(3 * this.direction, 0));
 	}
 }

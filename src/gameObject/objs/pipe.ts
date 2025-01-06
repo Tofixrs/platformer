@@ -118,32 +118,35 @@ export class Pipe extends Ground {
 		if (this.rotation == 3 && !Actions.hold("right")) return;
 
 		world.pause = true;
-		this.player.sprite.visible = false;
 		this.player.refreshTouchTick = world.tick + 2;
-		if (this.player.powerState > PowerState.Small && this.rotation == 0) {
-			const pipePosX = planckToPixi1D(this.pos.x);
-			this.player_big_crouch.scale.x = this.player.direction;
-			this.player_big_crouch.position = this.player.sprite.position;
-			this.player_big_crouch.position.x = pipePosX;
-			this.player_big_crouch.visible = true;
-		} else if (
-			this.player.powerState > PowerState.Small &&
-			this.rotation != 0
-		) {
-			const pipePosX = planckToPixi1D(this.pos.x);
-			this.player_big_stand.scale.x = this.player.direction;
-			this.player_big_stand.position = this.player.sprite.position;
-			this.player_big_stand.position.x = pipePosX;
-			this.player_big_stand.visible = true;
-		} else {
-			const pipePos = planckToPixi(this.pos);
-			this.player_small.scale.x = this.player.direction;
-			this.player_small.position = this.player.sprite.position;
-			this.player_small.visible = true;
-			if (this.rotation == 0 || this.rotation == 2) {
-				this.player_small.position.x = pipePos.x;
-			} else {
-				this.player_small.position.y = pipePos.y;
+		this.player_small.scale.x = this.player.direction;
+		this.player_big_stand.scale.x = this.player.direction;
+		this.player_big_crouch.scale.x = this.player.direction;
+		this.player.setAnim(
+			this.player.powerState > PowerState.Small ? "big_walk" : "small_walk",
+		);
+		this.player.sprite.visible = false;
+		const animSprite =
+			this.player.powerState > PowerState.Small
+				? this.rotation == 0
+					? this.player_big_crouch
+					: this.player_big_stand
+				: this.player_small;
+
+		animSprite.visible = true;
+		animSprite.position = this.player.sprite.position;
+		switch (this.rotation) {
+			case 2:
+			case 0: {
+				const pipePosX = planckToPixi1D(this.pos.x);
+				animSprite.x = pipePosX;
+				break;
+			}
+			case 1:
+			case 3: {
+				const pipePosY = planckToPixi1D(this.pos.y);
+				animSprite.y = pipePosY;
+				break;
 			}
 		}
 	}
@@ -472,7 +475,7 @@ export class Pipe extends Ground {
 			density: this.density,
 			shape: this.shape,
 			friction: this.friction,
-			filterCategoryBits: 10,
+			filterCategoryBits: 0b1,
 			userData: {
 				goid: this.goid,
 				id: this.id,
@@ -501,6 +504,7 @@ export class Pipe extends Ground {
 
 		this.playerSensor = this.body.createFixture({
 			isSensor: true,
+			filterMaskBits: 0b10,
 			shape: new Box(0.45, 0.1, offset, this.rotation * (Math.PI / 2)),
 		});
 

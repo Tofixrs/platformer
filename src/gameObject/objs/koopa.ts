@@ -7,18 +7,18 @@ import { Sprite, Texture } from "pixi.js";
 import { Box, Contact, Fixture, Shape, Vec2 } from "planck";
 import { World } from "world";
 import { Player } from "./player";
+import { getClassFromID } from "gameObject/utils";
+import { Block } from "gameObject/types/block";
 
 export class Koopa extends Enemy {
 	rightEdgeSensor!: Fixture;
 	leftEdgeSensor!: Fixture;
-	rightWallSensor!: Fixture;
-	leftWallSensor!: Fixture;
 	touchedGroundsLeft: string[] = ["hack", "hack"];
 	touchedGroundsRight: string[] = ["hack", "hack"];
 	speed = 4;
-	shellSpeed = 10;
+	nornmalSpeed = 4;
+	shellSpeed = 11;
 	shelled = false;
-	moving = true;
 	sideKillTimer = new Timer(0.2);
 	stompPushTimer = new Timer(0.2);
 	brickID?: string;
@@ -37,7 +37,6 @@ export class Koopa extends Enemy {
 			direction,
 		});
 		this.sprite.anchor.set(0.35, 0.75);
-		this.sprite.scale.x = this.direction;
 	}
 	static commonConstructor(
 		pos: Vec2,
@@ -59,16 +58,14 @@ export class Koopa extends Enemy {
 			world.removeEntity(this.brickID);
 			this.brickID = undefined;
 		}
-
-		if (!this.moving) return;
-		this.body.setLinearVelocity(
-			new Vec2(
-				(this.shelled ? this.shellSpeed : this.speed) * this.direction,
-				this.body.getLinearVelocity().y,
-			),
-		);
 	}
-	onStomp(world: World): void {
+	onStomp(
+		_enemyUser: PhysObjUserData,
+		playerUser: PhysObjUserData,
+		_enemyFix: Fixture,
+		_playerFix: Fixture,
+		world: World,
+	): void {
 		if (this.shelled && this.stompPushTimer.done()) {
 			this.moving = !this.moving;
 			this.kickSound.play();
@@ -79,36 +76,8 @@ export class Koopa extends Enemy {
 			this.setShelled(true);
 			this.stompPushTimer.reset();
 		}
-		const player = world.entities.find((v) => v.id == this.stompID) as Player;
+		const player = world.entities.find((v) => v.id == playerUser.id) as Player;
 		player.body.applyForceToCenter(new Vec2(0, -500), true);
-	}
-	onSideTouch(world: World): void {
-		switch (this.sideTouchGOID) {
-			case GOID.Player: {
-				if (this.shelled && !this.moving) {
-					this.moving = true;
-					this.kickSound.play();
-					this.sideKillTimer.reset();
-					this.direction = this.sideTouched!;
-				} else if (this.shelled && this.moving && this.sideKillTimer.done()) {
-					world.removeEntity(this.sideTouchID!);
-				} else if (!this.shelled) {
-					world.removeEntity(this.sideTouchID!);
-				}
-				break;
-			}
-		}
-	}
-	onSideTouchOtherEnemy(world: World): void {
-		if (this.shelled && this.moving) {
-			world.removeEntity(this.sideTouchID!);
-			return;
-		}
-
-		const pos = this.body.getPosition();
-		this.direction = this.sideTouched!;
-		pos.x += 0.05 * this.direction;
-		this.sprite.scale.x = this.direction;
 	}
 	setShelled(yes: boolean) {
 		this.moving = !yes;
@@ -120,31 +89,20 @@ export class Koopa extends Enemy {
 			? Texture.from("koopa_shelled")
 			: Texture.from("koopa");
 		this.sprite.anchor.set(yes ? 0.5 : 0.35, yes ? 0.5 : 0.7);
+		this.speed = this.shelled ? this.shellSpeed : this.nornmalSpeed;
 	}
 	create(world: World): void {
 		super.create(world);
 		this.rightEdgeSensor = this.body.createFixture({
 			shape: new Box(0.08, 0.1, new Vec2(0.18, 0.25)),
 			isSensor: true,
-			filterMaskBits: 10,
+			filterMaskBits: 0b1,
 		});
 
 		this.leftEdgeSensor = this.body.createFixture({
 			shape: new Box(0.08, 0.1, new Vec2(-0.18, 0.25)),
 			isSensor: true,
-			filterMaskBits: 10,
-		});
-
-		this.rightWallSensor = this.body.createFixture({
-			shape: new Box(0.1, 0.1, new Vec2(0.3, 0)),
-			isSensor: true,
-			filterMaskBits: 10,
-		});
-
-		this.leftWallSensor = this.body.createFixture({
-			shape: new Box(0.1, 0.1, new Vec2(-0.3, 0)),
-			isSensor: true,
-			filterMaskBits: 10,
+			filterMaskBits: 0b1,
 		});
 
 		world.p.on("end-contact", (contact) => {
@@ -163,7 +121,6 @@ export class Koopa extends Enemy {
 	onBegin(contact: Contact) {
 		const fixA = contact.getFixtureA();
 		const fixB = contact.getFixtureB();
-		this.checkWallSensors(fixA, fixB, contact);
 		this.checkEdgeSensors(fixA, fixB, contact);
 	}
 	checkEdgeSensors(fixA: Fixture, fixB: Fixture, contact: Contact) {
@@ -175,6 +132,7 @@ export class Koopa extends Enemy {
 			fixB != this.rightEdgeSensor
 		)
 			return;
+		if (fixA.isSensor() && fixB.isSensor()) return;
 		const userA = fixA.getUserData();
 		const userB = fixB.getUserData();
 		const groundUser = (
@@ -205,10 +163,8 @@ export class Koopa extends Enemy {
 
 		if (leftL > 0 && rightL == 0) {
 			this.direction = -1;
-			this.sprite.scale.x = this.direction;
 		} else if (leftL == 0 && rightL > 0) {
 			this.direction = 1;
-			this.sprite.scale.x = this.direction;
 		}
 		this.touchedGroundsRight = this.touchedGroundsRight.filter(
 			(v) => v != "hack",
@@ -217,29 +173,37 @@ export class Koopa extends Enemy {
 			(v) => v != "hack",
 		);
 	}
-
-	checkWallSensors(fixA: Fixture, fixB: Fixture, contact: Contact) {
-		if (
-			fixA != this.leftWallSensor &&
-			fixB != this.leftWallSensor &&
-			fixA != this.rightWallSensor &&
-			fixB != this.rightWallSensor
-		)
-			return;
-		if (!contact.isTouching()) return;
-
-		const userA = fixA.getUserData() as PhysObjUserData;
-		const userB = fixB.getUserData() as PhysObjUserData;
-		if ((userA || userB) && this.shelled && this.moving) {
-			const other = userA?.goid == GOID.Brick ? userA : userB;
-
-			if (other?.goid == GOID.Brick) {
-				this.brickID = other.id;
+	onSideTouch(
+		userData: PhysObjUserData,
+		sensorFix: Fixture,
+		_otherFix: Fixture,
+		world: World,
+	): void {
+		if (userData.goid == GOID.Player) {
+			if (this.shelled) {
+				if (this.moving) {
+					world.removeEntity(userData.id);
+				} else {
+					this.moving = true;
+					this.kickSound.play();
+					this.sideKillTimer.reset();
+					this.direction = sensorFix == this.leftWallSensor ? 1 : -1;
+				}
+			} else {
+				world.removeEntity(userData.id);
+			}
+		} else {
+			const objClass = getClassFromID(userData.goid);
+			if (
+				this.shelled &&
+				(objClass.prototype instanceof Block ||
+					objClass.prototype instanceof Enemy)
+			) {
+				world.removeEntity(userData.id);
+			} else {
+				this.direction = sensorFix == this.leftWallSensor ? 1 : -1;
+				this.body.setLinearVelocity(new Vec2(this.speed * this.direction, 0));
 			}
 		}
-		this.direction =
-			fixA == this.leftWallSensor || fixB == this.leftWallSensor ? 1 : -1;
-		this.body.setLinearVelocity(new Vec2(this.speed * this.direction, 0));
-		this.sprite.scale.x = this.direction;
 	}
 }

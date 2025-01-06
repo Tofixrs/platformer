@@ -50,7 +50,9 @@ export class PhysicsObject extends GameObject {
 		});
 	}
 	remove(world: World, _force: boolean = false): boolean {
-		world.p.destroyBody(this.body);
+		world.p.queueUpdate((world) => {
+			world.destroyBody(this.body);
+		});
 		return true;
 	}
 }

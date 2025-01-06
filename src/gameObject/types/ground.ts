@@ -52,7 +52,7 @@ export class Ground extends PhysicsObject {
 			density: this.density,
 			shape: this.shape,
 			friction: this.friction,
-			filterCategoryBits: 10,
+			filterCategoryBits: 0b01,
 			userData: {
 				goid: this.goid,
 				id: this.id,

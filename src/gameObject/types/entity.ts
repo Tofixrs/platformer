@@ -46,7 +46,22 @@ export class Entity extends PhysicsObject {
 		};
 	}
 	create(world: World): void {
-		super.create(world);
+		this.body = world.p.createBody({
+			position: this.pos,
+			fixedRotation: this.fixedRotation,
+			type: this.bodyType,
+		});
+
+		this.mainFix = this.body.createFixture({
+			density: this.density,
+			shape: this.shape,
+			friction: this.friction,
+			filterCategoryBits: 0b10,
+			userData: {
+				goid: this.goid,
+				id: this.id,
+			},
+		});
 
 		world.main.addChild(this.sprite);
 	}
