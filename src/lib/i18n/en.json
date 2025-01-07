@@ -82,5 +82,6 @@
 	"visibilityDesc": "If position of the camera on the specific axis the background will be visible\nThis allows for multiple backgrounds on one level",
 	"instakill": "Instant kill: ",
 	"invis": "Invisible: ",
-	"invisDesc": "Should the item box be invisible until opened"
+	"invisDesc": "Should the item box be invisible until opened",
+	"restart": "Restart level"
 }

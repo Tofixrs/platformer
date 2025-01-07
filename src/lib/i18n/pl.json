@@ -82,5 +82,6 @@
 	"visibilityDesc": "Jeśli pozycja na danej osi kamery jest większa od podanej wartości tło będzie widzialne\nPozwala to na kilka teł na jednym poziomie",
 	"instakill": "Mocny: ",
 	"invis": "Niewidzialny: ",
-	"invisDesc": "Czy pudełko ma być niewidzialne aż do otwarcia"
+	"invisDesc": "Czy pudełko ma być niewidzialne aż do otwarcia",
+	"restart": "Zacznij poziom od początku"
 }

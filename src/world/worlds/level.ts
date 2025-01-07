@@ -223,26 +223,46 @@ export class PauseWindow extends Window<{
 		onExit?: (self: PauseWindow) => void;
 	}): Content {
 		this.exit = data.exit;
-		const list = new List({
+		const buttons = [
+			new BigButton({
+				text: i18next.t("unpause"),
+				onClick: () => {
+					data.worldController.world!.pause = false;
+					this.visible = false;
+				},
+			}),
+			new BigButton({
+				text: i18next.t("restart"),
+				onClick: () => {
+					const world = data.worldController.world!;
+					const player = world.entities.find((v) => v.goid == GOID.Player);
+					world.removeEntity(player!.id, true, true);
+					this.visible = false;
+				},
+			}),
+			new BigButton({
+				text: i18next.t("exit"),
+				onClick: () => {
+					data.worldController.set(this.exit);
+					if (data.onExit) data.onExit(this);
+					this.visible = false;
+				},
+			}),
+		];
+		const list = new List<Container>({
 			type: "vertical",
 			elementsMargin: 20,
-			items: [
-				new BigButton({
-					text: i18next.t("unpause"),
-					onClick: () => {
-						data.worldController.world!.pause = false;
-						this.visible = false;
-					},
-				}),
-				new BigButton({
-					text: i18next.t("exit"),
-					onClick: () => {
-						data.worldController.set(this.exit);
-						if (data.onExit) data.onExit(this);
-						this.visible = false;
-					},
-				}),
-			],
+			items: buttons,
+		});
+		const listW = list.width;
+		for (let i = 0; i < buttons.length; i++) {
+			list.removeItem(i);
+		}
+		buttons.forEach((v) => {
+			const cont = new Container({ width: listW, height: v.height });
+			v.x = listW / 2 - v.width / 2;
+			cont.addChild(v);
+			list.addChild(cont);
 		});
 		return {
 			content: new Container({ children: [list] }),
