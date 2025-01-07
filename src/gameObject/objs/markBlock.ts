@@ -98,7 +98,12 @@ export class MarkBlock extends Block {
 		this.animSprite.visible = !yes;
 		this.currSprite = yes ? "hit" : "anim";
 	}
-	remove(world: World, force?: boolean): boolean {
+	remove(world: World, force?: boolean, anim?: boolean): boolean {
+		if (anim) {
+			this.anim = true;
+			this.spawnItem(world, 1);
+			return false;
+		}
 		super.remove(world, force);
 		world.main.removeChild(this.animSprite);
 		world.main.removeChild(this.hitSprite);
@@ -121,15 +126,17 @@ export class MarkBlock extends Block {
 			this.bumpSound.play();
 			return true;
 		}
+		this.spawnItem(world, this.hitSide!);
+
+		return true;
+	}
+	spawnItem(world: World, hitSide: number) {
+		if (!this.item) return;
 		const item = getClassFromID(this.item);
-		if (!item) {
-			this.bumpSound.play();
-			return true;
-		}
 
 		const pos = this.pos.clone();
-		pos.y -= -this.hitSide! * 0.75;
-		if (item.prototype instanceof Ground) return true;
+		pos.y -= hitSide * 0.75;
+		if (item.prototype instanceof Ground) return;
 		const go = item.commonConstructor(
 			pos,
 			new Box(0, 0),
@@ -137,10 +144,9 @@ export class MarkBlock extends Block {
 			Vec2.zero(),
 			[{ type: "number", name: "instant", value: "1" }],
 		);
-		world.addEntity(go);
 		this.item = undefined;
 
-		return true;
+		world.addEntity(go);
 	}
 	serialize(): SerializedGO {
 		return {

@@ -200,7 +200,10 @@ export class Koopa extends Enemy {
 				(objClass.prototype instanceof Block ||
 					objClass.prototype instanceof Enemy)
 			) {
-				world.removeEntity(userData.id);
+				world.removeEntity(userData.id, false, true);
+				if (objClass.prototype instanceof Block) {
+					this.direction = -this.direction;
+				}
 			} else {
 				this.direction = sensorFix == this.leftWallSensor ? 1 : -1;
 				this.body.setLinearVelocity(new Vec2(this.speed * this.direction, 0));
