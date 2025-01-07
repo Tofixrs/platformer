@@ -151,6 +151,7 @@ export class EditorUi extends Screen {
 						styles: {
 							position: "right",
 							height: "100%",
+							maxWidth: "25%",
 						},
 					},
 				},
