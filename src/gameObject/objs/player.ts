@@ -11,6 +11,7 @@ import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { capsule } from "@lib/shape";
 import { pixiToPlanck1D, planckToPixi } from "@lib/math/units";
 import { SerializedGO } from "@lib/serialize";
+import { smoothDamp2D } from "@lib/math/smoothDamp";
 
 export const PowerState = {
 	Small: 1,
@@ -115,6 +116,7 @@ export class Player extends Entity {
 	bigSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.45));
 	sensorDiveShape = new Box(0.4, 0.1, new Vec2(0, 0.2));
 	refreshTouchTick?: number;
+	camVelocity = Vec2.zero();
 	static props: Property[] = [
 		{
 			type: "number",
@@ -287,11 +289,10 @@ export class Player extends Entity {
 	}
 	followCam(world: World, dt: number) {
 		const moveDown = window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
-		const pos = lerp2D(
-			new Vec2(world.main.pivot.x, world.main.pivot.y),
-			new Vec2(this.sprite.x, this.sprite.y - moveDown),
-			20 * dt,
-		);
+		const currentPos = new Vec2(world.main.pivot.x, world.main.pivot.y);
+		const targetPos = new Vec2(this.sprite.x, this.sprite.y - moveDown);
+		const pos = smoothDamp2D(currentPos, targetPos, this.camVelocity, 0.25, dt);
+
 		world.main.pivot.set(pos.x, pos.y);
 		Howler.pos(this.pos.x, this.pos.y - pixiToPlanck1D(moveDown));
 	}
