@@ -101,7 +101,7 @@ export class MarkBlock extends Block {
 	remove(world: World, force?: boolean, anim?: boolean): boolean {
 		if (anim) {
 			this.anim = true;
-			this.spawnItem(world, 1);
+			this.spawnItem(world, -1);
 			return false;
 		}
 		super.remove(world, force);
@@ -135,7 +135,7 @@ export class MarkBlock extends Block {
 		const item = getClassFromID(this.item);
 
 		const pos = this.pos.clone();
-		pos.y -= hitSide * 0.75;
+		pos.y += hitSide * 0.75;
 		if (item.prototype instanceof Ground) return;
 		const go = item.commonConstructor(
 			pos,
