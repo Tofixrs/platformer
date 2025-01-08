@@ -356,8 +356,11 @@ export class Pipe extends Ground {
 		this.player_small.visible = !big;
 		this.player_big_crouch.visible = false;
 
-		const moveDown = window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
-		world.main.pivot.set(exitPipePosPixi.x, exitPipePosPixi.y - moveDown);
+		const camOffset = this.player!.calculateCamOffset();
+		world.main.pivot.set(
+			this.player!.sprite.x + camOffset.x,
+			this.player!.sprite.y + camOffset.y,
+		);
 		(world.entities.filter((v) => v.goid == GOID.Paralax) as Paralax[]).forEach(
 			(v) => v.updatePos(world.main.pivot),
 		);

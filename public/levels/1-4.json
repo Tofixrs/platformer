@@ -906,17 +906,95 @@
 	{ "_type": "brick", "data": { "pos": { "x": 18.5, "y": 36 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 19, "y": 36 } } },
 	{ "_type": "brick", "data": { "pos": { "x": 16.25, "y": 36.75 } } },
-	{ "_type": "brick", "data": { "pos": { "x": 16.75, "y": 36.75 } } },
 	{
-		"_type": "goomba",
-		"data": { "pos": { "x": 16.5, "y": 36 }, "direction": -1 }
+		"_type": "cameraWall",
+		"data": {
+			"pos": { "x": 151.25, "y": 0.25 },
+			"shapeVerts": [
+				{ "x": 7.75, "y": -10.75 },
+				{ "x": 7.75, "y": 10.75 },
+				{ "x": -7.75, "y": 10.75 },
+				{ "x": -7.75, "y": -10.75 }
+			],
+			"vertical": false
+		}
+	},
+	{
+		"_type": "cameraWall",
+		"data": {
+			"pos": { "x": 151.75, "y": -17.75 },
+			"shapeVerts": [
+				{ "x": 9.25, "y": -7.25 },
+				{ "x": 9.25, "y": 7.25 },
+				{ "x": -9.25, "y": 7.25 },
+				{ "x": -9.25, "y": -7.25 }
+			],
+			"vertical": false
+		}
+	},
+	{
+		"_type": "cameraWall",
+		"data": {
+			"pos": { "x": 180.75, "y": -2.625 },
+			"shapeVerts": [
+				{ "x": 19.75, "y": -6.875 },
+				{ "x": 19.75, "y": 6.875 },
+				{ "x": -19.75, "y": 6.875 },
+				{ "x": -19.75, "y": -6.875 }
+			],
+			"vertical": true
+		}
+	},
+	{
+		"_type": "cameraWall",
+		"data": {
+			"pos": { "x": 4.125, "y": 5 },
+			"shapeVerts": [
+				{ "x": 7.125, "y": -6 },
+				{ "x": 7.125, "y": 6 },
+				{ "x": -7.125, "y": 6 },
+				{ "x": -7.125, "y": -6 }
+			],
+			"vertical": false
+		}
+	},
+	{
+		"_type": "cameraWall",
+		"data": {
+			"pos": { "x": 31.75, "y": 33.5 },
+			"shapeVerts": [
+				{ "x": 7.5, "y": -5 },
+				{ "x": 7.5, "y": 5 },
+				{ "x": -7.5, "y": 5 },
+				{ "x": -7.5, "y": -5 }
+			],
+			"vertical": false
+		}
+	},
+	{
+		"_type": "cameraWall",
+		"data": {
+			"pos": { "x": 18.5, "y": 49 },
+			"shapeVerts": [
+				{ "x": 5.25, "y": -9.5 },
+				{ "x": 5.25, "y": 9.5 },
+				{ "x": -5.25, "y": 9.5 },
+				{ "x": -5.25, "y": -9.5 }
+			],
+			"vertical": true
+		}
 	},
 	{
 		"_type": "goomba",
-		"data": { "pos": { "x": 18.5, "y": 35.25 }, "direction": -1 }
+		"data": { "pos": { "x": 16.75, "y": 36.25 }, "direction": -1 }
 	},
 	{
 		"_type": "goomba",
-		"data": { "pos": { "x": 20.25, "y": 36.5 }, "direction": -1 }
-	}
+		"data": { "pos": { "x": 20.75, "y": 37 }, "direction": -1 }
+	},
+	{
+		"_type": "goomba",
+		"data": { "pos": { "x": 18.75, "y": 35.5 }, "direction": -1 }
+	},
+	{ "_type": "brick", "data": { "pos": { "x": 16.75, "y": 36.75 } } }
 ]

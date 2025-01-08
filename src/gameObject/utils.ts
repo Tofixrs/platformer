@@ -9,6 +9,7 @@ import { Goomba } from "@gameObjs/goomba";
 import { Grass } from "@gameObjs/grass";
 import { Ice } from "@gameObjs/ice";
 import { Koopa } from "@gameObjs/koopa";
+import { CameraWall } from "@gameObjs/cameraWall";
 import { Player } from "@gameObjs/player";
 import { Brick } from "@gameObjs/brick";
 import { Mushroom } from "@gameObjs/mushroom";
@@ -92,6 +93,10 @@ export function getClassFromID(id: GameObjectID): typeof GameObject {
 		case GOID.Pipe: {
 			//@ts-expect-error
 			return Pipe;
+		}
+		case GOID.CameraWall: {
+			//@ts-expect-error
+			return CameraWall;
 		}
 	}
 }

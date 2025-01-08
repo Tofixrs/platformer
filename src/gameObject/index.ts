@@ -92,6 +92,7 @@ export const GOID = {
 	Spike: "spike",
 	Sushroom: "sushroom",
 	Pipe: "pipe",
+	CameraWall: "cameraWall",
 } as const;
 
 type GOIOKeys = keyof typeof GOID;

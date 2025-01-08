@@ -2,16 +2,16 @@ import { Box, Contact, Fixture, Shape, Vec2 } from "planck";
 import { AnimatedSprite, Sprite, Texture } from "pixi.js";
 import { Entity } from "../types/entity";
 import { World } from "world";
-import { lerp2D } from "@lib/math/lerp";
 import { Actions } from "@lib/input";
 import { GameObject, GOID, Property, PropertyValue } from "gameObject";
 import { Howler } from "howler";
 import { Timer } from "@lib/ticker";
 import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { capsule } from "@lib/shape";
-import { pixiToPlanck1D, planckToPixi } from "@lib/math/units";
+import { pixiToPlanck, pixiToPlanck1D, planckToPixi } from "@lib/math/units";
 import { SerializedGO } from "@lib/serialize";
 import { smoothDamp2D } from "@lib/math/smoothDamp";
+import type { CameraWall } from "./cameraWall";
 
 export const PowerState = {
 	Small: 1,
@@ -117,6 +117,7 @@ export class Player extends Entity {
 	sensorDiveShape = new Box(0.4, 0.1, new Vec2(0, 0.2));
 	refreshTouchTick?: number;
 	camVelocity = Vec2.zero();
+	cameraWalls?: CameraWall[];
 	static props: Property[] = [
 		{
 			type: "number",
@@ -274,6 +275,7 @@ export class Player extends Entity {
 	}
 	update(dt: number, world: World): void {
 		super.update(dt, world);
+		this.checkCameraWalls(world);
 		this.followCam(world, dt);
 		this.handleAnim();
 		this.handleMove(dt);
@@ -287,14 +289,82 @@ export class Player extends Entity {
 			this.sprite.alpha = 1;
 		}
 	}
+	checkCameraWalls(world: World) {
+		if (this.cameraWalls) return;
+		this.cameraWalls = world.entities.filter(
+			(v) => v.goid == GOID.CameraWall,
+		) as CameraWall[];
+	}
 	followCam(world: World, dt: number) {
-		const moveDown = window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
+		if (!this.cameraWalls) return;
 		const currentPos = new Vec2(world.main.pivot.x, world.main.pivot.y);
-		const targetPos = new Vec2(this.sprite.x, this.sprite.y - moveDown);
+		const offset = this.calculateCamOffset();
+		const targetPos = new Vec2(
+			this.sprite.x + offset.x,
+			this.sprite.y + offset.y,
+		);
 		const pos = smoothDamp2D(currentPos, targetPos, this.camVelocity, 0.25, dt);
 
 		world.main.pivot.set(pos.x, pos.y);
-		Howler.pos(this.pos.x, this.pos.y - pixiToPlanck1D(moveDown));
+		const offsetPlanck = pixiToPlanck(new Vec2(offset.x, offset.y));
+		Howler.pos(this.pos.x + offsetPlanck.x, this.pos.y + offsetPlanck.y);
+	}
+	calculateCamOffset() {
+		const rightScreenEdge = this.sprite.x + window.innerWidth / 2;
+		const leftScreenEdge = this.sprite.x - window.innerWidth / 2;
+		const topScreenEdge = this.sprite.y - window.innerHeight / 2;
+		const bottomScreenEdge = this.sprite.y + window.innerHeight / 2;
+		return this.cameraWalls
+			?.filter((v) => {
+				if (
+					v.rightEdge > leftScreenEdge &&
+					v.leftEdge < rightScreenEdge &&
+					v.bottomEdge > topScreenEdge &&
+					v.topEdge < bottomScreenEdge
+				)
+					return true;
+				return false;
+			})
+			.map((v) => {
+				if (!v.vertical) {
+					if (v.leftEdge < rightScreenEdge && v.leftEdge > leftScreenEdge) {
+						return {
+							y: 0,
+							x: v.leftEdge - rightScreenEdge,
+						};
+					}
+					if (v.rightEdge > leftScreenEdge && v.rightEdge < rightScreenEdge) {
+						return {
+							y: 0,
+							x: v.rightEdge - leftScreenEdge,
+						};
+					}
+				} else {
+					if (v.bottomEdge > topScreenEdge && v.bottomEdge < bottomScreenEdge) {
+						return {
+							y: v.bottomEdge - topScreenEdge,
+							x: 0,
+						};
+					}
+
+					if (v.topEdge < bottomScreenEdge && v.topEdge > topScreenEdge) {
+						return {
+							x: 0,
+							y: v.topEdge - bottomScreenEdge,
+						};
+					}
+				}
+
+				return { x: 0, y: 0 };
+			})
+			.reduce(
+				(a, b) => {
+					a.x += b.x;
+					a.y += b.y;
+					return a;
+				},
+				{ x: 0, y: 0 },
+			)!;
 	}
 	handleMove(dt: number) {
 		if (Actions.hold("left")) {
