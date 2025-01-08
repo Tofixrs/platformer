@@ -37,9 +37,8 @@ export class Loop {
 		const dt = (t - this.lastTime) / 1000;
 		this.lastTime = t;
 		if (dt > 1 / this.minFps) {
-			console.log("asd");
 			this.accumulator += dt;
-			return;
+			return window.requestAnimationFrame((t) => this.loop(t));
 		}
 		if (this.fixedUpdate) {
 			this.accumulator += dt;
