@@ -33,6 +33,10 @@ export class Loop {
 			return window.requestAnimationFrame((t) => this.loop(t));
 		}
 		if (this.pause) return window.requestAnimationFrame((t) => this.loop(t));
+		if (t < this.lastTime) {
+			this.lastTime = t;
+			return window.requestAnimationFrame((t) => this.loop(t));
+		}
 		const dt = (t - this.lastTime) / 1000;
 		this.lastTime = t;
 		if (this.fixedUpdate) {

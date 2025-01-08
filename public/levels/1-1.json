@@ -1130,5 +1130,18 @@
 			],
 			"vertical": true
 		}
+	},
+	{
+		"_type": "cameraWall",
+		"data": {
+			"pos": { "x": -10.75, "y": 33 },
+			"shapeVerts": [
+				{ "x": 10.5, "y": -5 },
+				{ "x": 10.5, "y": 5 },
+				{ "x": -10.5, "y": 5 },
+				{ "x": -10.5, "y": -5 }
+			],
+			"vertical": false
+		}
 	}
 ]

@@ -10,7 +10,7 @@ export interface EntityOptions extends PhysicsObjectOptions {
 
 export class Entity extends PhysicsObject {
 	sprite: Sprite;
-	lastState?: PhysicsState;
+	lastState?: Vec2;
 
 	constructor(options: EntityOptions) {
 		super(options);
@@ -25,25 +25,18 @@ export class Entity extends PhysicsObject {
 
 	update(dt: number, _world: World): void {
 		if (!this.lastState) {
-			this.lastState = {
-				pos: new Vec2(this.sprite.x, this.sprite.y),
-				angle: this.sprite.angle,
-			};
+			this.lastState = new Vec2(this.sprite.x, this.sprite.y);
 		}
 
 		const lerpedPos = lerp2D(
-			this.lastState?.pos,
+			this.lastState,
 			planckToPixi(this.pos),
-			dt / World.physicsStepTime,
+			Math.min(dt / World.physicsStepTime, 1),
 		);
-		const lerpedAngle = lerp(this.lastState.angle, this.body!.getAngle(), 1);
 		this.sprite.x = lerpedPos.x;
 		this.sprite.y = lerpedPos.y;
-		this.sprite.rotation = lerpedAngle;
-		this.lastState = {
-			pos: new Vec2(this.sprite.x, this.sprite.y),
-			angle: this.sprite.angle,
-		};
+		this.sprite.rotation = this.body.getAngle();
+		this.lastState = new Vec2(this.sprite.x, this.sprite.y);
 	}
 	create(world: World): void {
 		this.body = world.p.createBody({
@@ -70,9 +63,4 @@ export class Entity extends PhysicsObject {
 		world.main.removeChild(this.sprite);
 		return true;
 	}
-}
-
-interface PhysicsState {
-	pos: Vec2;
-	angle: number;
 }

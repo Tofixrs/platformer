@@ -314,6 +314,7 @@ export class Player extends Entity {
 		const leftScreenEdge = this.sprite.x - window.innerWidth / 2;
 		const topScreenEdge = this.sprite.y - window.innerHeight / 2;
 		const bottomScreenEdge = this.sprite.y + window.innerHeight / 2;
+		if (!this.cameraWalls) return { x: 0, y: 0 };
 		return this.cameraWalls
 			?.filter((v) => {
 				if (
@@ -364,7 +365,7 @@ export class Player extends Entity {
 					return a;
 				},
 				{ x: 0, y: 0 },
-			)!;
+			);
 	}
 	handleMove(dt: number) {
 		if (Actions.hold("left")) {

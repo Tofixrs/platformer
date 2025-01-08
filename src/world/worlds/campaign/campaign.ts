@@ -202,17 +202,21 @@ export class Campaign extends World {
 		ent.forEach((v) => {
 			this.addEntity(v);
 			if (v.goid == GOID.Player) {
-				const p = v as Player;
-				const moveDown =
-					window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
-				this.main.pivot = p.sprite.position;
-				this.main.pivot.y -= moveDown;
-				if (this.playerPState) {
-					p.setPState(this.playerPState, this, false);
-				}
-				this.player = p;
+				this.player = v as Player;
 			}
 		});
+
+		if (this.player) {
+			this.player.checkCameraWalls(this);
+			const camOffset = this.player.calculateCamOffset();
+			this.main.pivot.set(
+				this.player.sprite.x + camOffset.x,
+				this.player.sprite.y + camOffset.y,
+			);
+			if (this.playerPState) {
+				this.player.setPState(this.playerPState, this, false);
+			}
+		}
 	}
 	recenter(screen: Rectangle): void {
 		super.recenter(screen);

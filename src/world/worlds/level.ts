@@ -95,16 +95,21 @@ export class Level extends World {
 			this.removeEntityIndex(i, true);
 		}
 		const ent = deserializeWorld(this.data);
+		let player: Player | undefined;
 		ent.forEach((v) => {
 			this.addEntity(v);
 			if (v.goid == GOID.Player) {
-				const p = v as Player;
-				const moveDown =
-					window.innerHeight > 540 ? window.innerHeight * 0.25 : 0;
-				this.main.pivot = p.sprite.position;
-				this.main.pivot.y -= moveDown;
+				player = v as Player;
 			}
 		});
+		if (player) {
+			player.checkCameraWalls(this);
+			const camOffset = player.calculateCamOffset();
+			this.main.pivot.set(
+				player.sprite.x + camOffset.x,
+				player.sprite.y + camOffset.y,
+			);
+		}
 	}
 	recenter(screen: Rectangle): void {
 		super.recenter(screen);

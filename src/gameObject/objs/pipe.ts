@@ -334,10 +334,7 @@ export class Pipe extends Ground {
 		this.player!.sprite.y = exitPipePosPixi.y;
 		this.player!.touchedGrounds = [];
 
-		this.player!.lastState = {
-			pos: exitPipePosPixi,
-			angle: 0,
-		};
+		this.player!.lastState = exitPipePos;
 		const spriteOffset = {
 			0: new Vec2(0, 100),
 			1: new Vec2(-100, 0),
