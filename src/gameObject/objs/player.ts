@@ -54,11 +54,11 @@ export class Player extends Entity {
 	static maxInstances = 1;
 	jumpSound = new Howl({
 		src: ["./sounds/jump.mp3"],
-		volume: 1,
+		volume: 0.25,
 	});
 	powerUpSound = new Howl({
 		src: ["./sounds/powerup.wav"],
-		volume: 1,
+		volume: 0.5,
 	});
 	dmgSound = new Howl({
 		src: ["./sounds/dmg.wav"],
