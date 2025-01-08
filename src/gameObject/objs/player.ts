@@ -382,9 +382,6 @@ export class Player extends Entity {
 		this.handleRoll(dt);
 		this.handleDive(dt);
 		this.handleGroundPound();
-		this.jumpSound.pos(this.pos.x, this.pos.y);
-		this.powerUpSound.pos(this.pos.x, this.pos.y);
-		this.deathSound.pos(this.pos.x, this.pos.y);
 	}
 	handleWalk(dt: number) {
 		if (this.actionStates.includes(ActionState.Locked)) return;
