@@ -13,6 +13,7 @@ export class Loop {
 	fixedUpdate?: () => void;
 	pause = false;
 	lastPause = false;
+	minFps = 1;
 	constructor({ tick, update, fixedUpdate }: LoopOpt) {
 		this.update = update;
 		this.tick = tick ? tick : this.tick;
@@ -35,6 +36,11 @@ export class Loop {
 		if (this.pause) return window.requestAnimationFrame((t) => this.loop(t));
 		const dt = (t - this.lastTime) / 1000;
 		this.lastTime = t;
+		if (dt > 1 / this.minFps) {
+			console.log("asd");
+			this.accumulator += dt;
+			return;
+		}
 		if (this.fixedUpdate) {
 			this.accumulator += dt;
 			while (this.accumulator >= this.tick) {
