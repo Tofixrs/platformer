@@ -18,7 +18,7 @@ export class Game {
 	static debug = false;
 	graphics = new Graphics();
 	worldController!: WorldController;
-	loop: Loop = new Loop({
+	loop = new Loop({
 		update: (dt) => this.update(dt),
 		fixedUpdate: () => this.fixedUpdate(),
 		tick: 1 / 40,

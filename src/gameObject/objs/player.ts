@@ -12,6 +12,7 @@ import { pixiToPlanck, pixiToPlanck1D, planckToPixi } from "@lib/math/units";
 import { SerializedGO } from "@lib/serialize";
 import { smoothDamp2D } from "@lib/math/smoothDamp";
 import type { CameraWall } from "./cameraWall";
+import { lerp2D } from "@lib/math/lerp";
 
 export const PowerState = {
 	Small: 1,
@@ -116,6 +117,7 @@ export class Player extends Entity {
 	bigSensorShape = new Box(0.2, 0.05, new Vec2(0, 0.45));
 	sensorDiveShape = new Box(0.4, 0.1, new Vec2(0, 0.2));
 	refreshTouchTick?: number;
+	pauseCamTilTick?: number;
 	camVelocity = Vec2.zero();
 	cameraWalls?: CameraWall[];
 	static props: Property[] = [
@@ -273,10 +275,32 @@ export class Player extends Entity {
 			}
 		}
 	}
+	lerpPos(dt: number, world: World) {
+		if (this.pauseCamTilTick && world.tick < this.pauseCamTilTick) {
+			const pos = planckToPixi(this.pos);
+			this.lastState = new Vec2(pos.x,pos.y);
+			this.sprite.x = pos.x;
+			this.sprite.y = pos.y;
+			return;
+		};
+		if (!this.lastState) {
+			this.lastState = new Vec2(this.sprite.x, this.sprite.y);
+		}
+
+		const lerpedPos = lerp2D(
+			this.lastState,
+			planckToPixi(this.pos),
+			Math.min(dt / World.physicsStepTime, 1),
+		);
+		this.sprite.x = lerpedPos.x;
+		this.sprite.y = lerpedPos.y;
+		this.sprite.rotation = this.body.getAngle();
+		this.lastState = new Vec2(this.sprite.x, this.sprite.y);
+	}
 	update(dt: number, world: World): void {
-		super.update(dt, world);
-		this.checkCameraWalls(world);
+		this.lerpPos(dt, world);
 		this.followCam(world, dt);
+		this.checkCameraWalls(world);
 		this.handleAnim();
 		this.handleMove(dt);
 
@@ -297,6 +321,8 @@ export class Player extends Entity {
 	}
 	followCam(world: World, dt: number) {
 		if (!this.cameraWalls) return;
+		if (this.pauseCamTilTick && world.tick < this.pauseCamTilTick) return;
+		this.pauseCamTilTick = undefined
 		const currentPos = new Vec2(world.main.pivot.x, world.main.pivot.y);
 		const offset = this.calculateCamOffset();
 		const targetPos = new Vec2(

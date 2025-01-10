@@ -4,6 +4,7 @@ import { planckToPixi } from "@lib/math/units";
 import { Sprite } from "pixi.js";
 import { Vec2 } from "planck";
 import { PhysicsObject, PhysicsObjectOptions } from "./physicsObject";
+import { GOID } from "gameObject";
 export interface EntityOptions extends PhysicsObjectOptions {
 	sprite: Sprite;
 }

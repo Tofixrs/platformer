@@ -1,6 +1,6 @@
 import { capsule } from "@lib/shape";
 import { Timer } from "@lib/ticker";
-import { GameObject, GOID, PropertyValue } from "gameObject";
+import { GameObject, GOID, Property, PropertyValue } from "gameObject";
 import { Enemy } from "gameObject/types/enemy";
 import { PhysObjUserData } from "gameObject/types/physicsObject";
 import { Sprite, Texture } from "pixi.js";
@@ -26,7 +26,21 @@ export class Koopa extends Enemy {
 		src: ["./sounds/kick.wav"],
 		volume: 1,
 	});
-	constructor(pos: Vec2, direction?: number) {
+	static props: Property[] = [
+		{
+			type: "number",
+			name: "direction",
+			defaultValue: "-1",
+			descriptionKey: "directionDesc",
+		},
+		{
+			type: "boolean",
+			name: "shelled",
+			defaultValue: "true",
+			descriptionKey: "shelledDesc"
+		}
+	];
+	constructor(pos: Vec2, direction?: number, shelled = false) {
 		super({
 			pos,
 			shape: capsule(new Vec2(0.23, 0.23)),
@@ -37,6 +51,8 @@ export class Koopa extends Enemy {
 			direction,
 		});
 		this.sprite.anchor.set(0.35, 0.75);
+		this.setShelled(shelled);
+		
 	}
 	static commonConstructor(
 		pos: Vec2,
@@ -46,7 +62,8 @@ export class Koopa extends Enemy {
 		props?: PropertyValue[],
 	): GameObject {
 		const direction = props?.find((v) => v.name == "direction");
-		return new Koopa(pos, Number(direction?.value));
+		const shelled = props?.find((v) => v.name == "shelled");
+		return new Koopa(pos, Number(direction?.value), shelled?.value == "true" || shelled?.value == "1");
 	}
 	update(dt: number, world: World): void {
 		super.update(dt, world);
@@ -70,6 +87,7 @@ export class Koopa extends Enemy {
 			this.moving = !this.moving;
 			this.kickSound.play();
 			this.stompPushTimer.reset();
+			this.reCheckSideTouch(world);
 		}
 		if (!this.shelled && this.stompPushTimer.done()) {
 			this.stompSound.play();
@@ -83,13 +101,35 @@ export class Koopa extends Enemy {
 		this.moving = !yes;
 		this.shelled = yes;
 		if (!yes) {
-			this.body.setLinearVelocity(new Vec2(0, 0));
+			this.body?.setLinearVelocity(new Vec2(0, 0));
 		}
 		this.sprite.texture = yes
 			? Texture.from("koopa_shelled")
 			: Texture.from("koopa");
 		this.sprite.anchor.set(yes ? 0.5 : 0.35, yes ? 0.5 : 0.7);
 		this.speed = this.shelled ? this.shellSpeed : this.nornmalSpeed;
+	}
+	reCheckSideTouch(world: World) {
+		for (let contact = this.body.getContactList(); contact; contact = contact.next) {
+			const c = contact.contact;
+			const fixA = c.getFixtureA();
+			const fixB = c.getFixtureB();
+			if (fixA != this.leftWallSensor && fixB != this.leftWallSensor && fixA != this.rightWallSensor && fixB != this.rightWallSensor) continue;
+
+			if (!c.isTouching()) continue;
+			const sensorFix = fixA == this.leftWallSensor || fixA == this.rightWallSensor ? fixA : fixB;
+			const otherFix = fixA == this.leftWallSensor || fixA == this.rightWallSensor ? fixB : fixA;
+			this.direction = sensorFix == this.leftWallSensor ? 1 : -1;
+			this.body.setLinearVelocity(new Vec2(this.speed * this.direction, 0));
+
+			const otherUser = otherFix.getUserData() as PhysObjUserData
+			if (otherUser?.goid == GOID.Brick || otherUser?.goid == GOID.Player) {
+				world.p.queueUpdate(() => {
+					world.removeEntity(otherUser.id);
+				})
+			}
+			
+		} 
 	}
 	create(world: World): void {
 		super.create(world);

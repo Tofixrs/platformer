@@ -42,6 +42,7 @@ export class SmallButton extends FancyButton {
 				style: {
 					fill: "white",
 					fontSize: 150,
+					fontFamily: "TwitterColorEmoji",
 					...textStyle,
 				},
 			}),

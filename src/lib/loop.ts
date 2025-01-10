@@ -3,6 +3,8 @@ interface LoopOpt {
 	tick?: number;
 	update: (dt: number) => void;
 	fixedUpdate?: () => void;
+	minFps?:number;
+	maxFps?:number;
 }
 
 export class Loop {
@@ -13,7 +15,9 @@ export class Loop {
 	fixedUpdate?: () => void;
 	pause = false;
 	lastPause = false;
-	constructor({ tick, update, fixedUpdate }: LoopOpt) {
+	private maxDt;
+	private minDt;
+	constructor({ tick, update, fixedUpdate, minFps, maxFps}: LoopOpt) {
 		this.update = update;
 		this.tick = tick ? tick : this.tick;
 		this.fixedUpdate = fixedUpdate;
@@ -22,6 +26,8 @@ export class Loop {
 			this.lastPause = true;
 		});
 		window.addEventListener("blur", () => (this.pause = true));
+		this.maxDt = 1 / (minFps ?? 1);
+		this.minDt = 1 / (maxFps?? Infinity);
 	}
 	run() {
 		window.requestAnimationFrame((t) => this.loop(t));
@@ -38,7 +44,13 @@ export class Loop {
 			return window.requestAnimationFrame((t) => this.loop(t));
 		}
 		const dt = (t - this.lastTime) / 1000;
+		if (this.minDt > dt) {
+			return window.requestAnimationFrame((t) => this.loop(t));
+		}
 		this.lastTime = t;
+		if (this.maxDt < dt) {
+			return window.requestAnimationFrame((t) => this.loop(t));
+		}
 		if (this.fixedUpdate) {
 			this.accumulator += dt;
 			while (this.accumulator >= this.tick) {

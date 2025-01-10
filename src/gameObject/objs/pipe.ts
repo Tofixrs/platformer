@@ -358,6 +358,7 @@ export class Pipe extends Ground {
 			this.player!.sprite.x + camOffset.x,
 			this.player!.sprite.y + camOffset.y,
 		);
+		this.player!.pauseCamTilTick = world.tick +5;
 		(world.entities.filter((v) => v.goid == GOID.Paralax) as Paralax[]).forEach(
 			(v) => v.updatePos(world.main.pivot),
 		);

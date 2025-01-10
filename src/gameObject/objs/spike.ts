@@ -112,7 +112,7 @@ export class Spike extends PhysicsObject {
 			density: this.density,
 			shape: this.shape,
 			friction: this.friction,
-			filterCategoryBits: 10,
+			filterCategoryBits: 0b1,
 			userData: {
 				goid: this.goid,
 				id: this.id,
