@@ -106,7 +106,7 @@ export class Koopa extends Enemy {
 		this.sprite.texture = yes
 			? Texture.from("koopa_shelled")
 			: Texture.from("koopa");
-		this.sprite.anchor.set(yes ? 0.5 : 0.35, yes ? 0.5 : 0.7);
+		this.sprite.anchor.set(yes ? 0.5 : 0.35, yes ? 0.5 : 0.75);
 		this.speed = this.shelled ? this.shellSpeed : this.nornmalSpeed;
 	}
 	reCheckSideTouch(world: World) {
